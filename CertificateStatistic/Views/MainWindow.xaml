@@ -1,0 +1,83 @@
+﻿<Window x:Class="CertificateStatistic.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        AllowsTransparency="True" 
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        Height="720" Width="1280"
+        MinHeight="720" MinWidth="1280">
+    <Grid>
+        <!--自定义标题栏-->
+        <Border Background="AliceBlue" Height="30" VerticalAlignment="Top" MouseLeftButtonDown="DragWindow">
+            <DockPanel>
+                <!--标题栏左侧-->
+                <TextBlock Height="30" Width="256" Text="勤教力学，为人师表" TextAlignment="Center" FontSize="25" FontFamily="STXinWei"/>
+                <!--标题栏右侧-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource TitleBarButtonStyle}" Click="Mini">
+                        <Image Source="\StaticResource\pic\mini.png"/>
+                    </Button>
+                    <Button Style="{StaticResource TitleBarButtonStyle}" Click="Max">
+                        <Image Source="\StaticResource\pic\max.png"/>
+                    </Button>
+                    <Button Style="{StaticResource TitleBarButtonStyle}" Click="Close" >
+                        <Image Source="\StaticResource\pic\close.png" Width="25" Height="25"/>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Grid Margin="0,30,0,0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--左侧导航栏-->
+            <StackPanel Grid.Column="0" Background="SkyBlue" >
+                <Image Margin="0,5" Source="\StaticResource\pic\logo.png" Height="120"/>
+                <TextBlock Margin="0,5" Text="获奖证书管理系统" Foreground="White" HorizontalAlignment="Center" FontSize="25" FontFamily="STHupo"/>
+                <ListBox ItemsSource="{Binding NavBarList}" Background="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedNavItem}">
+                    <!--这里的SelectedItem="{Binding SelectedNavItem}"，当点击某一导航项时，视为一次更新，通知后台改变并调用Navigate方法-->
+                    <ListBox.ItemContainerStyle>
+                        <!--自定义ListBoxItem样式-->
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <!--外层Border命名为HoverBorder-->
+                                        <Border x:Name="HoverBorder" Background="Transparent" Padding="70,0">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10" Height="30">
+                                                <Image Source="{Binding Icon}" VerticalAlignment="Center" Width="20"/>
+                                                <TextBlock Text="{Binding Title}" VerticalAlignment="Center" Margin="15,0" FontSize="20" FontFamily="STHupo" Foreground="White"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!--触发指定事件时，改变名为HoverBorder的控件的属 -->
+                                        <ControlTemplate.Triggers>
+                                            <!--悬停-->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="HoverBorder" Property="Background" Value="#66FFFFFF"/>
+                                            </Trigger>
+
+                                            <!--选中-->
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="HoverBorder" Property="Background" Value="#FF3BB7E9"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </StackPanel>
+
+            <!--主视图-->
+            <ContentControl Grid.Column="1" prism:RegionManager.RegionName="MainRegion"/>
+        </Grid>
+    </Grid>
+</Window>
