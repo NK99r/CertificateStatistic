@@ -8,8 +8,8 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Margin" Value="2,0,0,0"/>
-        <!--Style 定义的是控件的外部样式（如大小、背景颜色、边框等）
-                ControlTemplate 定义的是控件的内部结构（如 Grid、Border、ContentPresenter 等）-->
+        <!--Style定义的是控件的外部样式（如大小、背景颜色、边框等）
+            ControlTemplate定义的是控件的内部结构（如 Grid、Border、ContentPresenter 等）-->
         <!--去掉鼠标悬停时默认的蓝色框-->
         <Setter Property="Template">
             <Setter.Value>
@@ -23,6 +23,32 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="LightGray" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--轮播图箭头按钮样式-->
+    <Style x:Key="ArrowButtonStyle" TargetType="Button">
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <!--去掉鼠标悬停时默认的蓝色框-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Border>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#80bfbfbf" />
+                            <Setter Property="Cursor" Value="Hand"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

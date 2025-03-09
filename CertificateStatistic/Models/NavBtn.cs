@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CertificateStatistics.Models
 {
+    /// <summary>
+    /// 导航项
+    /// </summary>
     public class NavBtn
     {
         public string Title { get; set; }

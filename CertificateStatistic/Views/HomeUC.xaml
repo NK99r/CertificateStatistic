@@ -5,8 +5,89 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CertificateStatistics.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
-        <TextBlock Text="首页" FontSize="50"></TextBlock>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--轮播图-->
+        <Grid Grid.Column="0" Grid.Row="0" Margin="40">
+            <Image Source="{Binding CurrentSlide.ImagePath}" Width="600" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding OpenLinkCommand}" CommandParameter="{Binding CurrentSlide.Url}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Image>
+
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <Button Style="{StaticResource ArrowButtonStyle}" Command="{Binding PreviousCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                    <Image Source="/StaticResource/pic/Arrow_L.png" Width="30" Height="30"/>
+                </Button>
+                <Button Style="{StaticResource ArrowButtonStyle}" Command="{Binding NextCommand}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Image Source="/StaticResource/pic/Arrow_R.png" Width="30" Height="30"/>
+                </Button>
+            </Grid>
+
+            <!-- 标题 -->
+            <TextBlock Text="{Binding CurrentSlide.Title}" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Bottom" FontSize="30" Foreground="White" Background="#80bfbfbf" Width="600" />
+        </Grid>
+
+        <!--快速通道-->
+        <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="10,40,40,10" Background="Transparent">
+            <Border Background="SkyBlue" Padding="5">
+                <TextBlock Text="快速通道" FontSize="20" Foreground="White" FontWeight="Bold"/>
+            </Border>
+            <ListBox ItemsSource="{Binding LinkList}" Background="Transparent" BorderThickness="1" BorderBrush="SkyBlue">
+                <ListBox.ItemTemplate>
+                    <!--设置每一项的内容和布局-->
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Cursor="Hand">
+                            <Image Source="{Binding Icon}" Margin="5" Width="30" Height="30"/>
+                            <TextBlock Text="{Binding Title}" Margin="5" TextAlignment="Center" VerticalAlignment="Center" FontSize="15" FontWeight="Bold"/>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.OpenLinkCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
+                                                           CommandParameter="{Binding Url}">
+                                    </i:InvokeCommandAction>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <!--设置每一项的样式外观-->
+                <!--即DataTemplate里定义的控件可以再次在这里设置外观-->
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <!--定义 ListBoxItem 的布局和内容显示。-->
+                                    <Border Background="{TemplateBinding Background}" Padding="5">
+                                        <!--显示ListBoxItem的内容即上面DataTemplate中定义的内容-->
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#80bfbfbf"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

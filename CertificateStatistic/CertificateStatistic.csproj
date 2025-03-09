@@ -5,8 +5,28 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="ViewModels\StatisticUCViewModel.cs" />
+    <Compile Remove="Views\StatisticUC.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="StaticResource\Link\blcu.png" />
+    <None Remove="StaticResource\Link\bxg.png" />
+    <None Remove="StaticResource\Link\hwb.png" />
+    <None Remove="StaticResource\Link\jwgl.png" />
+    <None Remove="StaticResource\Link\lanqiao.png" />
+    <None Remove="StaticResource\Link\ncccu.png" />
+    <None Remove="StaticResource\Link\tsg.png" />
+    <None Remove="StaticResource\Link\wlfw.png" />
+    <None Remove="StaticResource\Link\xxt.png" />
+    <None Remove="StaticResource\Link\zhhy.png" />
+    <None Remove="StaticResource\Link\zw.png" />
+    <None Remove="StaticResource\pic\Arrow_L.png" />
+    <None Remove="StaticResource\pic\Arrow_R.png" />
     <None Remove="StaticResource\pic\close.png" />
     <None Remove="StaticResource\pic\home.png" />
+    <None Remove="StaticResource\pic\image1.jpg" />
+    <None Remove="StaticResource\pic\image2.jpg" />
+    <None Remove="StaticResource\pic\image3.jpg" />
     <None Remove="StaticResource\pic\logo.ico" />
     <None Remove="StaticResource\pic\logo.png" />
     <None Remove="StaticResource\pic\max.png" />
@@ -14,12 +34,33 @@
     <None Remove="StaticResource\pic\stat.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Remove="Views\StatisticUC.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="StaticResource\Link\blcu.png" />
+    <Resource Include="StaticResource\Link\bxg.png" />
+    <Resource Include="StaticResource\Link\hwb.png" />
+    <Resource Include="StaticResource\Link\jwgl.png" />
+    <Resource Include="StaticResource\Link\lanqiao.png" />
+    <Resource Include="StaticResource\Link\ncccu.png" />
+    <Resource Include="StaticResource\Link\tsg.png" />
+    <Resource Include="StaticResource\Link\wlfw.png" />
+    <Resource Include="StaticResource\Link\xxt.png" />
+    <Resource Include="StaticResource\Link\zhhy.png" />
+    <Resource Include="StaticResource\Link\zw.png" />
+    <Resource Include="StaticResource\pic\Arrow_L.png" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="StaticResource\pic\Arrow_R.png" />
     <Resource Include="StaticResource\pic\close.png" />
     <Resource Include="StaticResource\pic\home.png" />
+    <Resource Include="StaticResource\pic\image1.jpg" />
+    <Resource Include="StaticResource\pic\image2.jpg" />
+    <Resource Include="StaticResource\pic\image3.jpg" />
     <Resource Include="StaticResource\pic\logo.ico" />
     <Resource Include="StaticResource\pic\logo.png" />
     <Resource Include="StaticResource\pic\max.png" />

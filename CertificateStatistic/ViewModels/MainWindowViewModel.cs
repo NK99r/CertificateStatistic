@@ -10,19 +10,23 @@ namespace CertificateStatistic.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
+        //prism区域管理
         private readonly IRegionManager RegionManager;
 
         public MainWindowViewModel(IRegionManager regionManager)
         {
+            //构造器注入
             this.RegionManager = regionManager;
 
+            #region 导航初始化
             //添加导航栏选项
             NavBarList = new ObservableCollection<NavBtn>();
 
+            //给NavBarList添加导航对象
             CreateNavBar();
 
             NavigateCommand = new DelegateCommand<string>(Navigate);
-
+            #endregion
         }
 
         #region 左侧导航栏功能
@@ -68,11 +72,15 @@ namespace CertificateStatistic.ViewModels
                 RegionManager.RequestNavigate("MainRegion", viewName);
         }
 
+        /// <summary>
+        /// 添加导航项
+        /// </summary>
         private void CreateNavBar()
         {
             NavBarList.Clear();
             NavBarList.Add(new NavBtn() { Icon = "pack://application:,,,/CertificateStatistic;component/StaticResource/pic/home.png", Title = "首页", ViewName = "HomeUC" });
         }
         #endregion
+
     }
 }
