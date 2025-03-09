@@ -14,6 +14,7 @@
     <None Remove="StaticResource\Link\hwb.png" />
     <None Remove="StaticResource\Link\jwgl.png" />
     <None Remove="StaticResource\Link\lanqiao.png" />
+    <None Remove="StaticResource\Link\mtb.png" />
     <None Remove="StaticResource\Link\ncccu.png" />
     <None Remove="StaticResource\Link\tsg.png" />
     <None Remove="StaticResource\Link\wlfw.png" />
@@ -42,6 +43,7 @@
     <Resource Include="StaticResource\Link\hwb.png" />
     <Resource Include="StaticResource\Link\jwgl.png" />
     <Resource Include="StaticResource\Link\lanqiao.png" />
+    <Resource Include="StaticResource\Link\mtb.png" />
     <Resource Include="StaticResource\Link\ncccu.png" />
     <Resource Include="StaticResource\Link\tsg.png" />
     <Resource Include="StaticResource\Link\wlfw.png" />

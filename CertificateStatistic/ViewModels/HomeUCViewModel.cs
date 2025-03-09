@@ -15,6 +15,45 @@ namespace CertificateStatistic.ViewModels
 {
     internal class HomeUCViewModel:BindableBase
     {
+        public HomeUCViewModel()
+        {
+            //超链接
+            OpenLinkCommand = new DelegateCommand<string>(OpenLink);
+
+            #region 轮播图初始化
+            SlideList = new ObservableCollection<Slide>();
+
+            CreateSlideList();
+
+            NextCommand = new DelegateCommand(OnNext);
+
+            PreviousCommand = new DelegateCommand(OnPrevious);
+            #endregion
+
+            #region 快速通道初始化
+            LinkList = new ObservableCollection<Link>();
+
+            CreateHSTCLinkList();
+            #endregion
+
+            #region 新闻初始化
+            NewsList = new ObservableCollection<News>();
+            CreateNewsList();
+            #endregion
+        }
+
+        /// <summary>
+        /// 打开超链接
+        /// </summary>
+        /// <param name="url">链接</param>
+        private void OpenLink(string url)
+        {
+            if (!string.IsNullOrEmpty(url))
+            {
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+        }
+
         #region 轮播图
 
         public DelegateCommand NextCommand { get; }
@@ -102,28 +141,6 @@ namespace CertificateStatistic.ViewModels
 
         #endregion
 
-        public HomeUCViewModel()
-        {
-            //超链接
-            OpenLinkCommand = new DelegateCommand<string>(OpenLink);
-
-            #region 轮播图初始化
-            SlideList = new ObservableCollection<Slide>();
-
-            CreateSlideList();
-
-            NextCommand = new DelegateCommand(OnNext);
-
-            PreviousCommand = new DelegateCommand(OnPrevious);
-            #endregion
-
-            #region 快速通道初始化
-            LinkList = new ObservableCollection<Link>();
-
-            CreateHSTCLinkList();
-            #endregion
-        }
-
         #region 快速通道
 
         #region 通道项
@@ -168,20 +185,53 @@ namespace CertificateStatistic.ViewModels
             LinkList.Add(new Link { Icon = "/StaticResource/Link/bxg.png", Title = "传智杯全国IT技能大赛", Url = "https://www.boxuegu.com/match/" });
             LinkList.Add(new Link { Icon = "/StaticResource/Link/hwb.png", Title = "全国大学生物联网设计大赛(华为杯)", Url = "https://iot.sjtu.edu.cn/Default.aspx" });
             LinkList.Add(new Link { Icon = "/StaticResource/Link/ncccu.png", Title = "全国高校计算机能力挑战赛", Url = "http://www.ncccu.org.cn/" });
+            LinkList.Add(new Link { Icon = "/StaticResource/Link/mtb.png", Title = "码蹄杯全国大学生程序设计大赛", Url = "https://matiji.net/matibei" });
+        
         }
-        
-        
         #endregion
-        /// <summary>
-        /// 超链接
-        /// </summary>
-        /// <param name="url">链接</param>
-        private void OpenLink(string url)
+
+        #region 新闻
+
+        #region 新闻项
+        private News _news;
+
+        public News News
         {
-            if (!string.IsNullOrEmpty(url))
+            get { return _news; }
+            set
             {
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                _news = value;
+                RaisePropertyChanged();
             }
         }
+        #endregion
+
+        #region 新闻集合
+        private ObservableCollection<News> _newsList;
+
+        public ObservableCollection<News> NewsList
+        {
+            get { return _newsList; }
+            set
+            {
+                _newsList = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+        private void CreateNewsList()
+        {
+            NewsList.Add(new News { Title = "我校学子获华为开发者大赛广东赛区一等奖", Url = "https://news.hstc.edu.cn/info/1027/12915.htm" });
+            NewsList.Add(new News { Title = "我校学子获2024年（华为杯）全国物联网设计竞赛一等奖", Url = "https://news.hstc.edu.cn/info/1030/12921.htm" });
+            NewsList.Add(new News { Title = "我校学子在第十五届蓝桥杯全国软件和信息技术专业人才大赛中获佳绩", Url = "https://news.hstc.edu.cn/info/1027/12477.htm" });
+            NewsList.Add(new News { Title = "港大马毅团队等开源新作：用编码率正则化重构视觉自监督学习范式，“少即是多”", Url = "https://zhuanlan.zhihu.com/p/28803739244" });
+            NewsList.Add(new News { Title = "基于光线模型的成像系统标定与三维测量进展", Url = "https://www.china-vision.org/paper-detail/228732.html" });
+            NewsList.Add(new News { Title = "Generative Physical AI in Vision: A Survey（视觉领域生成式物理AI）", Url = "https://arxiv.org/abs/2501.10928" });
+        }
+        #endregion
+
+
     }
 }

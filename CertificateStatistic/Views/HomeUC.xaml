@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <!--轮播图-->
-        <Grid Grid.Column="0" Grid.Row="0" Margin="40">
+        <Grid Grid.Column="0" Grid.Row="0" Margin="40,40,30,10">
             <Image Source="{Binding CurrentSlide.ImagePath}" Width="600" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -45,7 +45,7 @@
         <!--快速通道-->
         <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="10,40,40,10" Background="Transparent">
             <Border Background="SkyBlue" Padding="5">
-                <TextBlock Text="快速通道" FontSize="20" Foreground="White" FontWeight="Bold"/>
+                <TextBlock Text="快速通道" FontSize="20"  Foreground="White" FontWeight="Bold"/>
             </Border>
             <ListBox ItemsSource="{Binding LinkList}" Background="Transparent" BorderThickness="1" BorderBrush="SkyBlue">
                 <ListBox.ItemTemplate>
@@ -71,7 +71,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
-                                    <!--定义 ListBoxItem 的布局和内容显示。-->
+                                    <!--定义ListBoxItem的布局和内容显示。-->
                                     <Border Background="{TemplateBinding Background}" Padding="5">
                                         <!--显示ListBoxItem的内容即上面DataTemplate中定义的内容-->
                                         <ContentPresenter/>
@@ -88,6 +88,48 @@
                 </ListBox.ItemContainerStyle>
             </ListBox>
         </StackPanel>
-        
+
+        <!--新闻链接-->
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="40,10,30,5">
+            <Border Background="SkyBlue" Padding="5">
+                <TextBlock Text="新闻链接" FontSize="20" Foreground="White" FontWeight="Bold"/>
+            </Border>
+            <ListBox ItemsSource="{Binding NewsList}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Cursor="Hand">
+                            <TextBlock Text="{Binding Title}" FontSize="15"/>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.OpenLinkCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
+                                                           CommandParameter="{Binding Url}">
+                                    </i:InvokeCommandAction>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <!--定义ListBoxItem的布局和内容显示。-->
+                                    <Border Background="{TemplateBinding Background}" Padding="5">
+                                        <!--显示ListBoxItem的内容即上面DataTemplate中定义的内容-->
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#80bfbfbf"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </StackPanel>
     </Grid>
 </UserControl>
