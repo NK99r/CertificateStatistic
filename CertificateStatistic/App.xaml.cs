@@ -19,6 +19,7 @@ namespace CertificateStatistic
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<HomeUC, HomeUCViewModel>();
+            containerRegistry.RegisterForNavigation<CertificateUC, CertificateViewModel>();
         }
     }
 }

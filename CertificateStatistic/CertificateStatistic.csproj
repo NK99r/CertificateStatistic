@@ -16,6 +16,7 @@
     <None Remove="StaticResource\Link\lanqiao.png" />
     <None Remove="StaticResource\Link\mtb.png" />
     <None Remove="StaticResource\Link\ncccu.png" />
+    <None Remove="StaticResource\Link\slide1.png" />
     <None Remove="StaticResource\Link\tsg.png" />
     <None Remove="StaticResource\Link\wlfw.png" />
     <None Remove="StaticResource\Link\xxt.png" />
@@ -25,13 +26,15 @@
     <None Remove="StaticResource\pic\Arrow_R.png" />
     <None Remove="StaticResource\pic\close.png" />
     <None Remove="StaticResource\pic\home.png" />
-    <None Remove="StaticResource\pic\image1.jpg" />
-    <None Remove="StaticResource\pic\image2.jpg" />
-    <None Remove="StaticResource\pic\image3.jpg" />
     <None Remove="StaticResource\pic\logo.ico" />
     <None Remove="StaticResource\pic\logo.png" />
     <None Remove="StaticResource\pic\max.png" />
     <None Remove="StaticResource\pic\mini.png" />
+    <None Remove="StaticResource\pic\navbar\cer.png" />
+    <None Remove="StaticResource\pic\navbar\home.png" />
+    <None Remove="StaticResource\pic\navbar\stat.png" />
+    <None Remove="StaticResource\pic\slide2.jpg" />
+    <None Remove="StaticResource\pic\slide3.jpg" />
     <None Remove="StaticResource\pic\stat.png" />
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +48,10 @@
     <Resource Include="StaticResource\Link\lanqiao.png" />
     <Resource Include="StaticResource\Link\mtb.png" />
     <Resource Include="StaticResource\Link\ncccu.png" />
+    <Resource Include="StaticResource\pic\navbar\cer.png" />
+    <Resource Include="StaticResource\pic\navbar\home.png" />
+    <Resource Include="StaticResource\pic\navbar\stat.png" />
+    <Resource Include="StaticResource\pic\slide1.jpg" />
     <Resource Include="StaticResource\Link\tsg.png" />
     <Resource Include="StaticResource\Link\wlfw.png" />
     <Resource Include="StaticResource\Link\xxt.png" />
@@ -58,15 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="StaticResource\pic\Arrow_R.png" />
-    <Resource Include="StaticResource\pic\close.png" />
-    <Resource Include="StaticResource\pic\home.png" />
-    <Resource Include="StaticResource\pic\image1.jpg" />
-    <Resource Include="StaticResource\pic\image2.jpg" />
-    <Resource Include="StaticResource\pic\image3.jpg" />
+    <Resource Include="StaticResource\pic\titlebar\close.png" />
     <Resource Include="StaticResource\pic\logo.ico" />
     <Resource Include="StaticResource\pic\logo.png" />
-    <Resource Include="StaticResource\pic\max.png" />
-    <Resource Include="StaticResource\pic\mini.png" />
-    <Resource Include="StaticResource\pic\stat.png" />
+    <Resource Include="StaticResource\pic\titlebar\max.png" />
+    <Resource Include="StaticResource\pic\titlebar\mini.png" />
+    <Resource Include="StaticResource\pic\slide2.jpg" />
+    <Resource Include="StaticResource\pic\slide3.jpg" />
   </ItemGroup>
 </Project>

@@ -114,9 +114,9 @@ namespace CertificateStatistic.ViewModels
         /// </summary>
         private void CreateSlideList()
         {
-            SlideList.Add(new Slide { ImagePath = "/StaticResource/pic/image1.jpg", Title = "Slide 1", Url = "https://www.baidu.com" });
-            SlideList.Add(new Slide { ImagePath = "/StaticResource/pic/image2.jpg", Title = "Slide 2", Url = "https://www.baidu.com" });
-            SlideList.Add(new Slide { ImagePath = "/StaticResource/pic/image3.jpg", Title = "Slide 3", Url = "https://www.baidu.com" });
+            SlideList.Add(new Slide { ImagePath = "/StaticResource/pic/slide1.jpg", Title = "2025年3月全国计算机等级考试报名工作启动", Url = "https://ncre.neea.edu.cn/html1/report/2412/138-1.htm#" });
+            SlideList.Add(new Slide { ImagePath = "/StaticResource/pic/slide2.jpg", Title = "中国制造2025", Url = "https://wap.miit.gov.cn/ztzl/lszt/zgzz2025/index.html" });
+            SlideList.Add(new Slide { ImagePath = "/StaticResource/pic/slide3.jpg", Title = "腾讯智慧能源数字孪生", Url = "https://cloud.tencent.com/product/enertwin" });
             CurrentIndex = 0;
         }
 

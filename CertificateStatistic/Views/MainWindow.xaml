@@ -19,13 +19,13 @@
                 <!--标题栏右侧-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource TitleBarButtonStyle}" Click="Mini">
-                        <Image Source="\StaticResource\pic\mini.png"/>
+                        <Image Source="\StaticResource\pic\titlebar\mini.png"/>
                     </Button>
                     <Button Style="{StaticResource TitleBarButtonStyle}" Click="Max">
-                        <Image Source="\StaticResource\pic\max.png"/>
+                        <Image Source="\StaticResource\pic\titlebar\max.png"/>
                     </Button>
                     <Button Style="{StaticResource TitleBarButtonStyle}" Click="Close" >
-                        <Image Source="\StaticResource\pic\close.png" Width="25" Height="25"/>
+                        <Image Source="\StaticResource\pic\titlebar\close.png" Width="25" Height="25"/>
                     </Button>
                 </StackPanel>
             </DockPanel>

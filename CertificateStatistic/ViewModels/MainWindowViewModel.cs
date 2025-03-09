@@ -78,7 +78,8 @@ namespace CertificateStatistic.ViewModels
         private void CreateNavBar()
         {
             NavBarList.Clear();
-            NavBarList.Add(new NavBtn() { Icon = "pack://application:,,,/CertificateStatistic;component/StaticResource/pic/home.png", Title = "首页", ViewName = "HomeUC" });
+            NavBarList.Add(new NavBtn() { Icon = "pack://application:,,,/CertificateStatistic;component/StaticResource/pic/navbar/home.png", Title = "首页", ViewName = "HomeUC" });
+            NavBarList.Add(new NavBtn() { Icon = "pack://application:,,,/CertificateStatistic;component/StaticResource/pic/navbar/cer.png", Title = "证书", ViewName = "CertificateUC" });
         }
         #endregion
 

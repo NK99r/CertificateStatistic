@@ -21,7 +21,7 @@
 
         <!--轮播图-->
         <Grid Grid.Column="0" Grid.Row="0" Margin="40,40,30,10">
-            <Image Source="{Binding CurrentSlide.ImagePath}" Width="600" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill">
+            <Image Cursor="Hand" Source="{Binding CurrentSlide.ImagePath}" Width="600" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
                         <i:InvokeCommandAction Command="{Binding OpenLinkCommand}" CommandParameter="{Binding CurrentSlide.Url}"/>
@@ -38,7 +38,7 @@
                 </Button>
             </Grid>
 
-            <!-- 标题 -->
+            <!--标题-->
             <TextBlock Text="{Binding CurrentSlide.Title}" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Bottom" FontSize="30" Foreground="White" Background="#80bfbfbf" Width="600" />
         </Grid>
 
