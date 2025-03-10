@@ -9,6 +9,36 @@
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
-        <TextBlock Text="d5awdasd"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Margin="20,10">
+            <DataGrid x:Name="CertificatesSheet" MaxHeight="700" Height="700" MinHeight="200" IsReadOnly="False">
+
+            </DataGrid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="20">
+            <Border Background="SkyBlue" Height="200" Width="300">
+                
+            </Border>    
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="20">
+            <Image Height="200" Width="300"></Image>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="2" Margin="20" Orientation="Vertical">
+            <Border Background="SkyBlue" Height="200" Width="300">
+
+            </Border>
+        </StackPanel>
     </Grid>
 </UserControl>
