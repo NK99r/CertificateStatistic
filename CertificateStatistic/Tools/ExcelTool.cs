@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace CertificateStatisticWPF.Tools
 {
@@ -137,6 +138,59 @@ namespace CertificateStatisticWPF.Tools
         {
             DataTable rawTable = ReadExcelFile(filePath); // 调用原始读取方法
             return ProcessData(rawTable);
+        }
+
+        /// <summary>
+        /// 导出数据到 Excel 文件
+        /// </summary>
+        /// <param name="data">要导出的数据集合</param>
+        /// <param name="filePath">保存路径</param>
+        public static void ExportToExcel(ObservableCollection<Certificate> data, string filePath)
+        {
+            // 创建工作簿
+            IWorkbook workbook;
+            if (filePath.EndsWith(".xlsx"))
+            {
+                workbook = new XSSFWorkbook(); // .xlsx 文件
+            }
+            else
+            {
+                workbook = new HSSFWorkbook(); // .xls 文件
+            }
+
+            // 创建工作表
+            ISheet sheet = workbook.CreateSheet("Sheet1");
+
+            // 添加表头
+            IRow headerRow = sheet.CreateRow(0);
+            headerRow.CreateCell(0).SetCellValue("学号");
+            headerRow.CreateCell(1).SetCellValue("姓名");
+            headerRow.CreateCell(2).SetCellValue("获奖项目");
+            headerRow.CreateCell(3).SetCellValue("类别");
+            headerRow.CreateCell(4).SetCellValue("赛事级别");
+            headerRow.CreateCell(5).SetCellValue("主办单位");
+            headerRow.CreateCell(6).SetCellValue("获奖日期");
+
+            // 添加数据行
+            for (int i = 0; i < data.Count; i++)
+            {
+                IRow dataRow = sheet.CreateRow(i + 1);
+                var item = data[i];
+
+                dataRow.CreateCell(0).SetCellValue(item.StudentID);
+                dataRow.CreateCell(1).SetCellValue(item.Name);
+                dataRow.CreateCell(2).SetCellValue(item.CertificateProject);
+                dataRow.CreateCell(3).SetCellValue(item.Category);
+                dataRow.CreateCell(4).SetCellValue(item.EventLevel);
+                dataRow.CreateCell(5).SetCellValue(item.Organizer);
+                dataRow.CreateCell(6).SetCellValue(item.Date);
+            }
+
+            // 保存文件
+            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            {
+                workbook.Write(fs);
+            }
         }
 
         /*

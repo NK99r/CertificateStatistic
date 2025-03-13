@@ -12,6 +12,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using CertificateStatisticWPF.Tools;
 using CertificateStatisticWPF.Models;
+using System.Windows.Controls;
 
 namespace CertificateStatistic.ViewModels
 {
@@ -20,15 +21,19 @@ namespace CertificateStatistic.ViewModels
         public CertificateViewModel()
         {
             #region Excel操作初始化
-            
-            LoadExcelCommand = new DelegateCommand(LoadExcelData);
+            ImportExcelCommand = new DelegateCommand(LoadExcelData);
+
+            ExportExcelCommand = new DelegateCommand(ExportExcelData);
+
             #endregion
 
         }
 
         #region 读写Excel操作
 
-        public DelegateCommand LoadExcelCommand { get; set; }
+        public DelegateCommand ImportExcelCommand { get; set; }
+
+        public DelegateCommand ExportExcelCommand { get; set; }
 
         #region Excel表数据集合
 
@@ -66,8 +71,14 @@ namespace CertificateStatistic.ViewModels
 
         #endregion
 
+        #region Excel文件操作方法
+        
+        /// <summary>
+        /// 打开Window文件选择并读取Excel数据
+        /// </summary>
         private void LoadExcelData()
         {
+            //打开导入文件对话框
             var openFileDialog = new OpenFileDialog { Filter = "Excel Files|*.xls;*.xlsx" };
             if (openFileDialog.ShowDialog() == true)
             {
@@ -75,6 +86,39 @@ namespace CertificateStatistic.ViewModels
                 ProcessedExcelData = ExcelTool.ReadAndProcessExcel(openFileDialog.FileName);
             }
         }
+
+        private void ExportExcelData()
+        {
+            try
+            {
+                if (ProcessedExcelData == null || ProcessedExcelData.Count == 0)
+                {
+                    MessageBox.Show("没有数据可以导出！");
+                    return;
+                }
+
+                // 打开保存文件对话框
+                var saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "Excel Files|*.xls;*.xlsx",
+                    FileName = "ExportedData.xlsx"
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    // 调用 ExcelTool 中的导出方法
+                    ExcelTool.ExportToExcel(ProcessedExcelData, saveFileDialog.FileName);
+                    MessageBox.Show("导出成功！");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("导出失败：" + e.Message);
+            }
+        }
+
+        #endregion
+
         #endregion
 
     }

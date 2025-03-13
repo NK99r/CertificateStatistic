@@ -30,10 +30,11 @@
                         <DataGridTextColumn Header="学号" Binding="{Binding StudentID}"/>
                         <DataGridTextColumn Header="姓名" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="获奖项目" Binding="{Binding CertificateProject}"/>
-                        <DataGridTextColumn Header="申报类别" Binding="{Binding Category}"/>
+                        <DataGridTextColumn Header="类别" Binding="{Binding Category}"/>
                         <DataGridTextColumn Header="赛事级别" Binding="{Binding EventLevel}" />
                         <DataGridTextColumn Header="主办单位" Binding="{Binding Organizer}"/>
                         <DataGridTextColumn Header="获奖日期" Binding="{Binding Date}"/>
+                        
                     </DataGrid.Columns>
                     
                     <!--表头样式-->
@@ -49,30 +50,33 @@
             
         </Grid>
 
-        <!--操作-->
-        <StackPanel Grid.Row="1" Grid.Column="0" Margin="20">
-            <Border Background="SkyBlue" Height="200" Width="300">
+        <!--Excel操作-->
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="20,5,5,5">
+            <Border Background="SkyBlue" Height="210" Width="150">
                 <!--Excel按钮-->
                 <StackPanel HorizontalAlignment="Left" Margin="10">
-                    <Button Style="{StaticResource ExcelButtonStyle}" Command="{Binding LoadExcelCommand}">
-                        <TextBlock Text="读取Excel文件" FontSize="15" Foreground="White" FontFamily="STHupo"/>
+                    <Button Style="{StaticResource ExcelButtonStyle}" Command="{Binding ImportExcelCommand}">
+                        <TextBlock Text="读取Excel文件" FontSize="15" Foreground="White" FontFamily="Arial" FontWeight="Bold"/>
+                    </Button>
+                    <Button Style="{StaticResource ExcelButtonStyle}" Command="{Binding ExportExcelCommand}">
+                        <TextBlock Text="导出Excel文件" FontSize="15" Foreground="White" FontFamily="Arial" FontWeight="Bold"/>
                     </Button>
                 </StackPanel>
             </Border>
         </StackPanel>
 
-        <!--分析结果-->
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="20">
-            <ScrollViewer>
-                <TextBlock Height="300" Width="300"></TextBlock>
-            </ScrollViewer>
+        <!--查询-->
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,5,5,5">
+            <Border Background="SkyBlue" Height="210" Width="400">
+
+            </Border>
 
         </StackPanel>
 
-        <!--分析功能-->
-        <StackPanel Grid.Row="1" Grid.Column="2" Margin="20" Orientation="Vertical">
-            <Border Background="SkyBlue" Height="200" Width="300">
-
+        <!--说明-->
+        <StackPanel Grid.Row="1" Grid.Column="2" Margin="5,5,20,5" Orientation="Vertical">
+            <Border Background="SkyBlue" Height="210" Width="400">
+                
             </Border>
         </StackPanel>
     </Grid>
