@@ -7,34 +7,69 @@
              mc:Ignorable="d" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="True">
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Background="AliceBlue">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Margin="20,10">
-            <DataGrid x:Name="CertificatesSheet" MaxHeight="700" Height="700" MinHeight="200" IsReadOnly="False">
+        <!--证书列表-->
+        <Grid Grid.Row="0" Grid.ColumnSpan="3" Margin="20,10">
+            <ScrollViewer VerticalScrollBarVisibility="auto"
+                          HorizontalScrollBarVisibility="Auto"
+                          CanContentScroll="False">
+                <DataGrid ItemsSource="{Binding ProcessedExcelData}" Style="{StaticResource DataGridStyle}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="学号" Binding="{Binding StudentID}"/>
+                        <DataGridTextColumn Header="姓名" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="获奖项目" Binding="{Binding CertificateProject}"/>
+                        <DataGridTextColumn Header="申报类别" Binding="{Binding Category}"/>
+                        <DataGridTextColumn Header="赛事级别" Binding="{Binding EventLevel}" />
+                        <DataGridTextColumn Header="主办单位" Binding="{Binding Organizer}"/>
+                        <DataGridTextColumn Header="获奖日期" Binding="{Binding Date}"/>
+                    </DataGrid.Columns>
+                    
+                    <!--表头样式-->
+                    <DataGrid.ColumnHeaderStyle>
+                        <StaticResource ResourceKey="DataGridColumnHeaderStyle" />
+                    </DataGrid.ColumnHeaderStyle>
+                    <!--每行样式-->
+                    <DataGrid.RowStyle>
+                        <StaticResource ResourceKey="DataGridRowStyle" />
+                    </DataGrid.RowStyle>
+                </DataGrid>
+            </ScrollViewer>
+            
+        </Grid>
 
-            </DataGrid>
-        </StackPanel>
-
+        <!--操作-->
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="20">
             <Border Background="SkyBlue" Height="200" Width="300">
-                
-            </Border>    
+                <!--Excel按钮-->
+                <StackPanel HorizontalAlignment="Left" Margin="10">
+                    <Button Style="{StaticResource ExcelButtonStyle}" Command="{Binding LoadExcelCommand}">
+                        <TextBlock Text="读取Excel文件" FontSize="15" Foreground="White" FontFamily="STHupo"/>
+                    </Button>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
+        <!--分析结果-->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="20">
-            <Image Height="200" Width="300"></Image>
+            <ScrollViewer>
+                <TextBlock Height="300" Width="300"></TextBlock>
+            </ScrollViewer>
+
         </StackPanel>
 
+        <!--分析功能-->
         <StackPanel Grid.Row="1" Grid.Column="2" Margin="20" Orientation="Vertical">
             <Border Background="SkyBlue" Height="200" Width="300">
 

@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:CertificateStatistic"
              xmlns:prism="http://prismlibrary.com/" >
     <Application.Resources>
-        <ResourceDictionary Source="StaticResource/ButtonStyle.xaml"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="StaticResource/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="StaticResource/DataGridStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>
