@@ -13,6 +13,9 @@ using NPOI.SS.UserModel;
 using CertificateStatisticWPF.Tools;
 using CertificateStatisticWPF.Models;
 using System.Windows.Controls;
+using System.ComponentModel;
+using System.Windows.Data;
+using Org.BouncyCastle.Tls;
 
 namespace CertificateStatistic.ViewModels
 {
@@ -24,9 +27,13 @@ namespace CertificateStatistic.ViewModels
             ImportExcelCommand = new DelegateCommand(LoadExcelData);
 
             ExportExcelCommand = new DelegateCommand(ExportExcelData);
-
             #endregion
 
+            #region 管理操作初始化
+            
+
+            HightLightCommand = new DelegateCommand(HighlightData);
+            #endregion
         }
 
         #region 读写Excel操作
@@ -55,9 +62,9 @@ namespace CertificateStatistic.ViewModels
         #endregion
 
         #region 处理后数据
-        private ObservableCollection<Certificate> _processedExcelData;
+        private ObservableCollection<CertificateStatisticWPF.Models.Certificate> _processedExcelData;
 
-        public ObservableCollection<Certificate> ProcessedExcelData
+        public ObservableCollection<CertificateStatisticWPF.Models.Certificate> ProcessedExcelData
         {
             get { return _processedExcelData; }
             set
@@ -84,6 +91,7 @@ namespace CertificateStatistic.ViewModels
             {
                 // 直接调用整合后的方法
                 ProcessedExcelData = ExcelTool.ReadAndProcessExcel(openFileDialog.FileName);
+                CertificateView = CollectionViewSource.GetDefaultView(ProcessedExcelData);
             }
         }
 
@@ -120,6 +128,92 @@ namespace CertificateStatistic.ViewModels
         #endregion
 
         #endregion
+
+        #region 管理操作
+
+        public DelegateCommand HightLightCommand;
+
+        #region 集合和属性
+
+        #region 表格操作视图
+        /// <summary>
+        /// CollectionView提供一个视图层，用于管理数据集合，允许方便的进行筛选、排序、分组、导航动作
+        /// </summary>
+        private ICollectionView _certificateView;
+
+        /// <summary>
+        /// CollectionView提供一个视图层，用于管理数据集合，允许方便的进行筛选、排序、分组、导航动作
+        /// </summary>
+        public ICollectionView CertificateView
+        {
+            get { return _certificateView; }
+            set
+            {
+                _certificateView = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region 文本属性
+        /// <summary>
+        /// 文本框文本
+        /// </summary>
+        private string _searchText;
+
+        /// <summary>
+        /// 文本框文本
+        /// </summary>
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                _searchText = value;
+                RaisePropertyChanged();
+                HighlightData();
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region 管理方法
+        private void HighlightData()
+        {
+            //重置所有行的高亮状态
+            foreach (var item in ProcessedExcelData)
+            {
+                item.IsHighlighted = false;
+            }
+
+            //如果搜索内容为空，则不清除高亮
+            if (string.IsNullOrEmpty(SearchText)) return;
+
+            //高亮符合条件的行
+            foreach (var item in CertificateView)
+            {
+                var certificate = item as CertificateStatisticWPF.Models.Certificate;
+                if (certificate == null) continue;
+
+                bool match = certificate.StudentID.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                             certificate.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                             certificate.CertificateProject.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                             certificate.EventLevel.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+
+                if (match)
+                {
+                    certificate.IsHighlighted = true;
+                }
+            }
+        }
+
+
+        #endregion
+
+        #endregion
+
+
 
     }
 }

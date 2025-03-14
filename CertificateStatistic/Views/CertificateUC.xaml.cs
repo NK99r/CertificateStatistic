@@ -24,5 +24,15 @@ namespace CertificateStatistic.Views
         {
             InitializeComponent();
         }
+
+        private void EditAllow(object sender, RoutedEventArgs e)
+        {
+            this.CertificatesDataGrid.IsReadOnly = false;
+        }
+
+        private void ReadOnly(object sender, RoutedEventArgs e)
+        {
+            this.CertificatesDataGrid.IsReadOnly = true;
+        }
     }
 }

@@ -149,6 +149,7 @@ namespace CertificateStatisticWPF.Tools
         {
             // 创建工作簿
             IWorkbook workbook;
+
             if (filePath.EndsWith(".xlsx"))
             {
                 workbook = new XSSFWorkbook(); // .xlsx 文件
@@ -160,6 +161,15 @@ namespace CertificateStatisticWPF.Tools
 
             // 创建工作表
             ISheet sheet = workbook.CreateSheet("Sheet1");
+
+            //设置列宽
+            sheet.SetColumnWidth(0, 15 * 256);
+            sheet.SetColumnWidth(1, 10 * 256);
+            sheet.SetColumnWidth(2, 50 * 256);
+            sheet.SetColumnWidth(3, 10 * 256);
+            sheet.SetColumnWidth(4, 10 * 256);
+            sheet.SetColumnWidth(5, 30 * 256);
+            sheet.SetColumnWidth(6, 10 * 256);
 
             // 添加表头
             IRow headerRow = sheet.CreateRow(0);
@@ -187,7 +197,7 @@ namespace CertificateStatisticWPF.Tools
             }
 
             // 保存文件
-            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
             {
                 workbook.Write(fs);
             }
@@ -317,30 +327,31 @@ namespace CertificateStatisticWPF.Tools
         /// </returns>
         private static List<(string Text, int Index)> SplitProjects(string input)
         {
-            //使用换行符 '\n' 将输入字符串分割成多个行，StringSplitOptions.RemoveEmptyEntries忽略空行
             return input.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
                        .Select(line =>
-                       {    
-                           //Linq语句，对每一行进行修剪，去除两端的空白字符
-                           var match = Regex.Match(line.Trim(), @"^(\d+)[\.、]\s*(.+?)(/\d+(\.\d+)?)$");
+                       {
+                           var match = Regex.Match(line.Trim(), @"^(\d+)?[\.、]?\s*(.+?)(/\d+(\.\d+)?)$");
                            /*
                                 ^：匹配字符串的开始。
-                                (\d+)：匹配一个或多个数字，并将其捕获到一个分组中。
-                                [\.、]：匹配一个“点”或“顿号”。
+                                (\d+)?：匹配一个或多个数字，并将其捕获到一个分组中。可选。
+                                [\.、]?：匹配一个“点”或“顿号”。可选。
                                 \s*：匹配零个或多个空白字符。
                                 (.+?)：匹配任意字符，但采用非贪婪模式（+?），尽可能少地匹配字符。
-                                (/\d+(\.\d+)?)：匹配斜杠（/）后跟一个或多个数字，后面可能跟小数部分。这个部分是可选的。
+                                (/\d+(\.\d+)?)：匹配斜杠（/）后跟一个或多个数字，后面可能跟小数部分。可选。
                                 $：匹配字符串的结尾。
-                            */
-                           //如果正则匹配成功，且能够从match.Groups[1]（编号）中提取出一个有效的数字
-                           if (match.Success && int.TryParse(match.Groups[1].Value, out int index))
+                           */
+                           if (match.Success)
                            {
-                               //返回一个包含文本和序号的元组
-                               //Index：编号
-                               return (Text: match.Groups[2].Value.Trim(), Index: index);
+                               // 如果有编号，则提取编号
+                               if (int.TryParse(match.Groups[1].Value, out int index))
+                               {
+                                   return (Text: match.Groups[2].Value.Trim(), Index: index);
+                               }
+                               // 如果没有编号，则返回默认编号-1
+                               return (Text: match.Groups[2].Value.Trim(), Index: -1);
                            }
-                           //匹配失败（没有序号）则返回项目名和默认编号-1
-                           return (Text: line.Trim(), Index: -1); 
+                           // 如果正则匹配失败，则返回整行内容和默认编号-1
+                           return (Text: line.Trim(), Index: -1);
                        })
                        .ToList();
         }

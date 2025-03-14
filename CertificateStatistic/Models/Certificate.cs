@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CertificateStatisticWPF.Models
 {
-    internal class Certificate
+    internal class Certificate:BindableBase
     {
         public string StudentID { get; set; }
 
@@ -21,6 +22,17 @@ namespace CertificateStatisticWPF.Models
         public string Category { get; set; }
 
         public string Date { get; set; }
+
+        private bool _isHighlight;
+        public bool IsHighlighted
+        {
+            get { return _isHighlight; }
+            set
+            {
+                _isHighlight = value;
+                RaisePropertyChanged();
+            }
+        }
 
     }
 }

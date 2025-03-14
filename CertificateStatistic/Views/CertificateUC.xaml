@@ -15,7 +15,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -25,7 +25,7 @@
             <ScrollViewer VerticalScrollBarVisibility="auto"
                           HorizontalScrollBarVisibility="Auto"
                           CanContentScroll="False">
-                <DataGrid ItemsSource="{Binding ProcessedExcelData}" Style="{StaticResource DataGridStyle}">
+                <DataGrid x:Name="CertificatesDataGrid" ItemsSource="{Binding CertificateView}" Style="{StaticResource DataGridStyle}" RowStyle="{StaticResource HighlightStyle}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="学号" Binding="{Binding StudentID}"/>
                         <DataGridTextColumn Header="姓名" Binding="{Binding Name}"/>
@@ -34,33 +34,49 @@
                         <DataGridTextColumn Header="赛事级别" Binding="{Binding EventLevel}" />
                         <DataGridTextColumn Header="主办单位" Binding="{Binding Organizer}"/>
                         <DataGridTextColumn Header="获奖日期" Binding="{Binding Date}"/>
-                        
                     </DataGrid.Columns>
-                    
                     <!--表头样式-->
                     <DataGrid.ColumnHeaderStyle>
                         <StaticResource ResourceKey="DataGridColumnHeaderStyle" />
                     </DataGrid.ColumnHeaderStyle>
                     <!--每行样式-->
-                    <DataGrid.RowStyle>
-                        <StaticResource ResourceKey="DataGridRowStyle" />
-                    </DataGrid.RowStyle>
                 </DataGrid>
             </ScrollViewer>
-            
         </Grid>
 
         <!--Excel操作-->
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="20,5,5,5">
-            <Border Background="SkyBlue" Height="210" Width="150">
-                <!--Excel按钮-->
-                <StackPanel HorizontalAlignment="Left" Margin="10">
-                    <Button Style="{StaticResource ExcelButtonStyle}" Command="{Binding ImportExcelCommand}">
-                        <TextBlock Text="读取Excel文件" FontSize="15" Foreground="White" FontFamily="Arial" FontWeight="Bold"/>
-                    </Button>
-                    <Button Style="{StaticResource ExcelButtonStyle}" Command="{Binding ExportExcelCommand}">
-                        <TextBlock Text="导出Excel文件" FontSize="15" Foreground="White" FontFamily="Arial" FontWeight="Bold"/>
-                    </Button>
+            <Border Background="SkyBlue" Height="210" Width="300">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <!--Excel按钮-->
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button Style="{StaticResource ExcelButtonStyle}" Command="{Binding ImportExcelCommand}">
+                                <TextBlock Text="读取Excel文件" Style="{StaticResource ButtonTextStyle}"/>
+                            </Button>
+                            <Button Style="{StaticResource ExcelButtonStyle}" Command="{Binding ExportExcelCommand}">
+                                <TextBlock Text="导出Excel文件" Style="{StaticResource ButtonTextStyle}"/>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- 右边一排按钮 -->
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Button Style="{StaticResource ExcelButtonStyle}" Click="EditAllow">
+                                <TextBlock Text="开启编辑模式" Style="{StaticResource ButtonTextStyle}"/>
+                            </Button>
+                            <Button Style="{StaticResource ExcelButtonStyle}" Click="ReadOnly">
+                                <TextBlock Text="关闭编辑模式" Style="{StaticResource ButtonTextStyle}"/>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- 提示文本 -->
+                    <TextBlock Text="在导出Excel文件前，请检查以上表格的数据是否无误。如出现N/A，说明原Excel表格中的该行填写的条目数对不上" 
+                               Style="{StaticResource TipTextStyle}" TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>
         </StackPanel>
@@ -68,14 +84,20 @@
         <!--查询-->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,5,5,5">
             <Border Background="SkyBlue" Height="210" Width="400">
-
+                <StackPanel HorizontalAlignment="Left" Margin="20">
+                    <DockPanel>
+                        <TextBlock Text="查询：" Style="{StaticResource OperateTextStyle}"/>
+                        <!--UpdateSourceTrigger=PropertyChanged表示当文本发生改变时，ViewModel的SearchText随之改变-->
+                        <TextBox Height="25" Width="280" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  VerticalContentAlignment="Center"/>
+                    </DockPanel>
+                </StackPanel>
             </Border>
 
         </StackPanel>
 
         <!--说明-->
         <StackPanel Grid.Row="1" Grid.Column="2" Margin="5,5,20,5" Orientation="Vertical">
-            <Border Background="SkyBlue" Height="210" Width="400">
+            <Border Background="SkyBlue" Height="210" Width="300">
                 
             </Border>
         </StackPanel>

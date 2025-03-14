@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="StaticResource/ButtonStyle.xaml"/>
                 <ResourceDictionary Source="StaticResource/DataGridStyle.xaml"/>
+                <ResourceDictionary Source="StaticResource/TextBlockStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
