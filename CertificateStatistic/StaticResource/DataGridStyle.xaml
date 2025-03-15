@@ -7,10 +7,11 @@
         <Setter Property="MaxHeight" Value="700" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="MinHeight" Value="200" />
-        <Setter Property="EnableRowVirtualization" Value="False" />
-        <Setter Property="EnableColumnVirtualization" Value="False" />
+        <!--禁用自动生成列-->
         <Setter Property="AutoGenerateColumns" Value="False" />
+        <!--自动列宽-->
         <Setter Property="ColumnWidth" Value="Auto" />
+        <!--仅显示列头不显示行头(行头：表格左边有空行)-->
         <Setter Property="HeadersVisibility" Value="Column" />
         <Setter Property="RowBackground" Value="White" />
         <Setter Property="FontSize" Value="18" />
@@ -18,6 +19,8 @@
         <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+        <!--复制时是否包括列标题-->
+        <Setter Property="ClipboardCopyMode" Value="IncludeHeader"/>
     </Style>
 
     <!-- 表头样式 -->

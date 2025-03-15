@@ -5,7 +5,7 @@
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontFamily" Value="Arial"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="18"/>
     </Style>
     
     <!--按钮文本样式-->

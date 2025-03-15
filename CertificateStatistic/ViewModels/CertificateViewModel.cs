@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
 using Org.BouncyCastle.Tls;
+using System.Collections.Generic;
 
 namespace CertificateStatistic.ViewModels
 {
@@ -30,9 +31,9 @@ namespace CertificateStatistic.ViewModels
             #endregion
 
             #region 管理操作初始化
-            
-
             HightLightCommand = new DelegateCommand(HighlightData);
+
+            FilterCommand = new DelegateCommand<string>(FilterData);
             #endregion
         }
 
@@ -43,25 +44,6 @@ namespace CertificateStatistic.ViewModels
         public DelegateCommand ExportExcelCommand { get; set; }
 
         #region Excel表数据集合
-
-        #region Excel原始数据，用于备用保留
-        /// <summary>
-        /// DataRowView是DataTable中的一行数据，而DataTable代表整张表
-        /// </summary>
-        private ObservableCollection<DataRowView> _originalexcelData;
-
-        public ObservableCollection<DataRowView> OriginalExcelData
-        {
-            get { return _originalexcelData; }
-            set
-            {
-                _originalexcelData = value;
-                RaisePropertyChanged();
-            }
-        }
-        #endregion
-
-        #region 处理后数据
         private ObservableCollection<CertificateStatisticWPF.Models.Certificate> _processedExcelData;
 
         public ObservableCollection<CertificateStatisticWPF.Models.Certificate> ProcessedExcelData
@@ -73,9 +55,6 @@ namespace CertificateStatistic.ViewModels
                 RaisePropertyChanged();
             }
         }
-
-        #endregion
-
         #endregion
 
         #region Excel文件操作方法
@@ -131,11 +110,13 @@ namespace CertificateStatistic.ViewModels
 
         #region 管理操作
 
-        public DelegateCommand HightLightCommand;
+        public DelegateCommand HightLightCommand { get; set; }
+
+        public DelegateCommand<string> FilterCommand { get; set; }
 
         #region 集合和属性
 
-        #region 表格操作视图
+        #region 表格操作视图CertificateView
         /// <summary>
         /// CollectionView提供一个视图层，用于管理数据集合，允许方便的进行筛选、排序、分组、导航动作
         /// </summary>
@@ -155,15 +136,23 @@ namespace CertificateStatistic.ViewModels
         }
         #endregion
 
-        #region 文本属性
-        /// <summary>
-        /// 文本框文本
-        /// </summary>
+        #region 筛选表FilterList
+        private List<string> _filterList = new List<string>();
+
+        public List<string> FilterList
+        {
+            get { return _filterList; }
+            set
+            {
+                _filterList = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region 文本属性SearchText
         private string _searchText;
 
-        /// <summary>
-        /// 文本框文本
-        /// </summary>
         public string SearchText
         {
             get { return _searchText; }
@@ -179,9 +168,13 @@ namespace CertificateStatistic.ViewModels
         #endregion
 
         #region 管理方法
+        /// <summary>
+        /// 高亮包含搜索的关键词的行
+        /// </summary>
         private void HighlightData()
         {
             //重置所有行的高亮状态
+            if (ProcessedExcelData == null) return;
             foreach (var item in ProcessedExcelData)
             {
                 item.IsHighlighted = false;
@@ -196,10 +189,12 @@ namespace CertificateStatistic.ViewModels
                 var certificate = item as CertificateStatisticWPF.Models.Certificate;
                 if (certificate == null) continue;
 
-                bool match = certificate.StudentID.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                             certificate.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                bool match = certificate.StudentID.Contains(SearchText) ||
+                             certificate.Name.Contains(SearchText) ||
                              certificate.CertificateProject.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                             certificate.EventLevel.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+                             certificate.EventLevel.Contains(SearchText) ||
+                             certificate.Date.Contains(SearchText) ||
+                             certificate.Category.Contains(SearchText);
 
                 if (match)
                 {
@@ -208,7 +203,81 @@ namespace CertificateStatistic.ViewModels
             }
         }
 
+        /// <summary>
+        /// 过滤筛选
+        /// </summary>
+        /// <param name="filter">按钮上的的文本</param>
+        private void FilterData(string filter)
+        {
+            if (CertificateView == null)
+            {
+                MessageBox.Show("请先从数据库导数据或从文件导入数据");
+                return;
+            }
+            if (FilterList.Contains(filter)) FilterList.Remove(filter); //如果已选中，移出
+            else FilterList.Add(filter); //如果未选中，添加
+            //ICollection类的过滤逻辑。false不显示数据，true显示数据
 
+            CertificateView.Filter = item =>
+            {
+                var certificate = item as CertificateStatisticWPF.Models.Certificate;
+                if (certificate == null) return false;
+
+                //如果没有选中任何条件，显示所有数据
+                if (FilterList.Count == 0) return true;
+
+                /*
+                 * 检查 EventLevel 是否满足任一条件（或逻辑）使用linq语句
+                 * eventLevelFilterList.Count == 0表示若没有选中国家级或省部级则默认返回所有数据
+                 * 否则，任何certificate.EventLevel里包含至少一个条件（"国家级" 或 "省部级"）的就为true
+                 * Any()可以判断List里是否有国家级或省部级或二者都有
+                */
+                //从总筛选表里抽出赛事级别的条件表
+                List<string> eventLevelFilterList = FilterList.Where(f => f == "国家级" || f == "省部级").ToList();
+                bool matchEventLevel = eventLevelFilterList.Count == 0 || eventLevelFilterList.Any(filter => certificate.EventLevel.Contains(filter));
+
+                /*
+                 * 检查 Category 是否满足任一条件（或逻辑）
+                 * 需要独立处理这一筛选逻辑，因为非科研类有文体类、品德类等其他类，无法做“或”的逻辑
+                */
+                List<string> categoryFilterList = FilterList.Where(f => f == "科研类" || f == "非科研类").ToList();
+                bool matchCategory = true;
+                if (categoryFilterList.Contains("科研类") && categoryFilterList.Contains("非科研类"))
+                {
+                    //如果同时选中"科研类"和"非科研类"，则跳过 Category 筛选
+                    matchCategory = true;
+                }
+                else if (categoryFilterList.Contains("科研类"))
+                {
+                    //如果选中了"科研类"，则只显示科研类
+                    matchCategory = certificate.Category.Contains("科研类", StringComparison.OrdinalIgnoreCase);
+                }
+                else if (categoryFilterList.Contains("非科研类"))
+                {
+                    //如果选中了"非科研类"，则显示非科研类（即不包含 "科研类" 的行）
+                    matchCategory = !certificate.Category.Contains("科研类", StringComparison.OrdinalIgnoreCase);
+                }
+
+                /*
+                 * 检查Organizer是否满足任一条件（或逻辑）
+                 * 主办单位这一列中其他单位不包含数字和字母，纯数字字母组合必表示专利或软著
+                */
+                bool ZLButtonSelected = FilterList.Contains("专利/软著");
+                bool matchPatent = true;
+                if (ZLButtonSelected)
+                {
+                    //判断主办单位是否以 ZL 开头或以数字开头
+                    bool isPatent = certificate.Organizer.StartsWith("ZL", StringComparison.OrdinalIgnoreCase);
+                    bool isSoftware = char.IsDigit(certificate.Organizer[0]); //判断第一个字符是否为数字
+                    matchPatent = isPatent || isSoftware;
+                }
+
+                //同时满足 EventLevel、Category、Organizer的条件
+                return matchEventLevel && matchCategory && matchPatent;
+            };
+
+            CertificateView.Refresh();
+        }
         #endregion
 
         #endregion

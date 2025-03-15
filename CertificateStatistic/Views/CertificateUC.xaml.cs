@@ -23,6 +23,7 @@ namespace CertificateStatistic.Views
         public CertificateUC()
         {
             InitializeComponent();
+            this.CertificatesDataGrid.IsReadOnly = true;
         }
 
         private void EditAllow(object sender, RoutedEventArgs e)

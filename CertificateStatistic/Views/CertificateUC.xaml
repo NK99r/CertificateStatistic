@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -54,7 +54,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <!--Excel按钮-->
-                        <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <StackPanel Grid.Column="0">
                             <Button Style="{StaticResource ExcelButtonStyle}" Command="{Binding ImportExcelCommand}">
                                 <TextBlock Text="读取Excel文件" Style="{StaticResource ButtonTextStyle}"/>
                             </Button>
@@ -63,40 +63,49 @@
                             </Button>
                         </StackPanel>
 
-                        <!-- 右边一排按钮 -->
-                        <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Button Style="{StaticResource ExcelButtonStyle}" Click="EditAllow">
+                        <StackPanel Grid.Column="1">
+                            <Button Style="{StaticResource EditButtonStyle}" Click="EditAllow">
                                 <TextBlock Text="开启编辑模式" Style="{StaticResource ButtonTextStyle}"/>
                             </Button>
-                            <Button Style="{StaticResource ExcelButtonStyle}" Click="ReadOnly">
+                            <Button Style="{StaticResource EditButtonStyle}" Click="ReadOnly">
                                 <TextBlock Text="关闭编辑模式" Style="{StaticResource ButtonTextStyle}"/>
                             </Button>
                         </StackPanel>
                     </Grid>
 
                     <!-- 提示文本 -->
-                    <TextBlock Text="在导出Excel文件前，请检查以上表格的数据是否无误。如出现N/A，说明原Excel表格中的该行填写的条目数对不上" 
+                    <TextBlock Margin="10" Grid.ColumnSpan="2" Text="在导出Excel文件前，请检查以上表格的数据是否无误。如出现N/A，说明原Excel表格中的该行填写的条目数对不上" 
                                Style="{StaticResource TipTextStyle}" TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>
         </StackPanel>
 
         <!--查询-->
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,5,5,5">
-            <Border Background="SkyBlue" Height="210" Width="400">
-                <StackPanel HorizontalAlignment="Left" Margin="20">
-                    <DockPanel>
-                        <TextBlock Text="查询：" Style="{StaticResource OperateTextStyle}"/>
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+            <Border Background="SkyBlue" Height="210" Width="410">
+                <StackPanel Margin="10">
+                    <DockPanel Margin="5">
+                        <TextBlock Margin="5" Text="查询：" Style="{StaticResource OperateTextStyle}"/>
                         <!--UpdateSourceTrigger=PropertyChanged表示当文本发生改变时，ViewModel的SearchText随之改变-->
-                        <TextBox Height="25" Width="280" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  VerticalContentAlignment="Center"/>
+                        <TextBox Background="AliceBlue" Height="25" Width="300" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" TextWrapping="Wrap"/>
+                    </DockPanel>
+                    <DockPanel Margin="5">
+                        <TextBlock Margin="5" Text="筛选：" Style="{StaticResource OperateTextStyle}"/>
+                        <WrapPanel HorizontalAlignment="Left" Width="270">
+                            <ToggleButton Content="省部级" Command="{Binding FilterCommand}" CommandParameter="省部级" Style="{StaticResource FilterButtonStyle}"/>
+                            <ToggleButton Content="国家级" Command="{Binding FilterCommand}" CommandParameter="国家级" Style="{StaticResource FilterButtonStyle}"/>
+                            <ToggleButton Content="专利/软著" Command="{Binding FilterCommand}" CommandParameter="专利/软著" Style="{StaticResource FilterButtonStyle}"/>
+                            <Border Width="40"/>
+                            <ToggleButton Content="科研类" Command="{Binding FilterCommand}" CommandParameter="科研类" Style="{StaticResource FilterButtonStyle}"/>
+                            <ToggleButton Content="非科研类" Command="{Binding FilterCommand}" CommandParameter="非科研类" Style="{StaticResource FilterButtonStyle}"/>
+                        </WrapPanel>
                     </DockPanel>
                 </StackPanel>
             </Border>
-
         </StackPanel>
 
         <!--说明-->
-        <StackPanel Grid.Row="1" Grid.Column="2" Margin="5,5,20,5" Orientation="Vertical">
+        <StackPanel Grid.Row="1" Grid.Column="2" Margin="5,5,20,5">
             <Border Background="SkyBlue" Height="210" Width="300">
                 
             </Border>
