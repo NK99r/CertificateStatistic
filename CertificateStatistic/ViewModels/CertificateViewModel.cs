@@ -35,6 +35,8 @@ namespace CertificateStatistic.ViewModels
 
             FilterCommand = new DelegateCommand<string>(FilterData);
             #endregion
+
+            
         }
 
         #region 读写Excel操作
@@ -43,9 +45,10 @@ namespace CertificateStatistic.ViewModels
 
         public DelegateCommand ExportExcelCommand { get; set; }
 
-        #region Excel表数据集合
+        /// <summary>
+        /// Excel表数据集合
+        /// </summary>
         private ObservableCollection<CertificateStatisticWPF.Models.Certificate> _processedExcelData;
-
         public ObservableCollection<CertificateStatisticWPF.Models.Certificate> ProcessedExcelData
         {
             get { return _processedExcelData; }
@@ -55,10 +58,9 @@ namespace CertificateStatistic.ViewModels
                 RaisePropertyChanged();
             }
         }
-        #endregion
 
         #region Excel文件操作方法
-        
+
         /// <summary>
         /// 打开Window文件选择并读取Excel数据
         /// </summary>
@@ -68,9 +70,11 @@ namespace CertificateStatistic.ViewModels
             var openFileDialog = new OpenFileDialog { Filter = "Excel Files|*.xls;*.xlsx" };
             if (openFileDialog.ShowDialog() == true)
             {
-                // 直接调用整合后的方法
+                //直接调用整合后的方法
                 ProcessedExcelData = ExcelTool.ReadAndProcessExcel(openFileDialog.FileName);
                 CertificateView = CollectionViewSource.GetDefaultView(ProcessedExcelData);
+                //统计方法
+                Statisitc();
             }
         }
 
@@ -282,7 +286,97 @@ namespace CertificateStatistic.ViewModels
 
         #endregion
 
+        #region 统计
 
+        #region 统计项
+        /// <summary>
+        /// 总数
+        /// </summary>
+        private int _totalCount;
+        public int TotalCount
+        {
+            get { return _totalCount; }
+            set
+            {
+                _totalCount = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 总人数
+        /// </summary>
+        private int _totalPeople;
+        public int TotalPeople
+        {
+            get { return _totalPeople; }
+            set
+            {
+                _totalPeople = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 科研类总数
+        /// </summary>
+        private int _researchCount;
+        public int ResearchCount
+        {
+            get { return _researchCount; }
+            set
+            {
+                _researchCount = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 专利/软著总数
+        /// </summary>
+        private int _patentCount;
+        public int PatentCount
+        {
+            get { return _patentCount; }
+            set
+            {
+                _patentCount = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 国家级证书占比
+        /// </summary>
+        private double _multipleAwardPeople;
+        public double MultipleAwardPeople
+        {
+            get { return _multipleAwardPeople; }
+            set
+            {
+                _multipleAwardPeople = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// linq语句统计
+        /// </summary>
+        private void Statisitc()
+        {
+            TotalCount = ProcessedExcelData.Count;
+            TotalPeople = ProcessedExcelData.Select(item => item.StudentID).Distinct().Count();
+            //
+            var personAwardList = ProcessedExcelData.GroupBy(item => item.StudentID)    //按照学号，一个学生的多个奖项分为一组
+                                                    .Select(gruop => new {StudentID = gruop.Key, AwardCount = gruop.Count() }) //每项格式都是“{StudentID = n, AwardCount = n}”
+                                                    .ToList();
+            MultipleAwardPeople = personAwardList.Count(p => p.AwardCount > 1);
+            ResearchCount = ProcessedExcelData.Count(item => item.Category == "科研类");
+            PatentCount = ProcessedExcelData.Count(item => item.Organizer.StartsWith("ZL") || char.IsDigit(item.Organizer[0]));
+        }
+
+        #endregion
 
     }
 }

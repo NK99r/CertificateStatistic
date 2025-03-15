@@ -31,7 +31,7 @@
                         <DataGridTextColumn Header="姓名" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="获奖项目" Binding="{Binding CertificateProject}"/>
                         <DataGridTextColumn Header="类别" Binding="{Binding Category}"/>
-                        <DataGridTextColumn Header="赛事级别" Binding="{Binding EventLevel}" />
+                        <DataGridTextColumn Header="赛事级别" Binding="{Binding EventLevel}"/>
                         <DataGridTextColumn Header="主办单位" Binding="{Binding Organizer}"/>
                         <DataGridTextColumn Header="获奖日期" Binding="{Binding Date}"/>
                     </DataGrid.Columns>
@@ -44,7 +44,7 @@
             </ScrollViewer>
         </Grid>
 
-        <!--Excel操作-->
+        <!--列表操作-->
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="20,5,5,5">
             <Border Background="SkyBlue" Height="210" Width="300">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
@@ -80,17 +80,17 @@
             </Border>
         </StackPanel>
 
-        <!--查询-->
+        <!--管理-->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
             <Border Background="SkyBlue" Height="210" Width="410">
                 <StackPanel Margin="10">
                     <DockPanel Margin="5">
-                        <TextBlock Margin="5" Text="查询：" Style="{StaticResource OperateTextStyle}"/>
+                        <TextBlock Text="查询：" Style="{StaticResource OperateTextStyle}"/>
                         <!--UpdateSourceTrigger=PropertyChanged表示当文本发生改变时，ViewModel的SearchText随之改变-->
                         <TextBox Background="AliceBlue" Height="25" Width="300" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" TextWrapping="Wrap"/>
                     </DockPanel>
                     <DockPanel Margin="5">
-                        <TextBlock Margin="5" Text="筛选：" Style="{StaticResource OperateTextStyle}"/>
+                        <TextBlock Text="筛选：" Style="{StaticResource OperateTextStyle}"/>
                         <WrapPanel HorizontalAlignment="Left" Width="270">
                             <ToggleButton Content="省部级" Command="{Binding FilterCommand}" CommandParameter="省部级" Style="{StaticResource FilterButtonStyle}"/>
                             <ToggleButton Content="国家级" Command="{Binding FilterCommand}" CommandParameter="国家级" Style="{StaticResource FilterButtonStyle}"/>
@@ -104,10 +104,17 @@
             </Border>
         </StackPanel>
 
-        <!--说明-->
+        <!--统计-->
         <StackPanel Grid.Row="1" Grid.Column="2" Margin="5,5,20,5">
-            <Border Background="SkyBlue" Height="210" Width="300">
-                
+            <Border Background="SkyBlue" Height="210" Width="auto">
+                <StackPanel Margin="10">
+                    <TextBlock Margin="10" Text="统计结果" HorizontalAlignment="Center" Style="{StaticResource OperateTextStyle}"/>
+                    <TextBlock Text="{Binding TotalCount, StringFormat='总数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                    <TextBlock Text="{Binding TotalPeople, StringFormat='总人数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                    <TextBlock Text="{Binding MultipleAwardPeople, StringFormat='单人多奖人数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                    <TextBlock Text="{Binding ResearchCount, StringFormat='科研类总数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                    <TextBlock Text="{Binding PatentCount, StringFormat='专利/软著总数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                </StackPanel>
             </Border>
         </StackPanel>
     </Grid>

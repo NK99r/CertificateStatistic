@@ -136,8 +136,8 @@ namespace CertificateStatisticWPF.Tools
         /// <returns></returns>
         public static ObservableCollection<Certificate> ReadAndProcessExcel(string filePath)
         {
-            DataTable rawTable = ReadExcelFile(filePath); // 调用原始读取方法
-            return ProcessData(rawTable);
+            // 调用原始读取方法
+            return ProcessData(ReadExcelFile(filePath));
         }
 
         /// <summary>

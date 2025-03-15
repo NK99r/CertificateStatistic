@@ -5,7 +5,8 @@
     <Style x:Key="DataGridStyle" TargetType="DataGrid">
         <Setter Property="Background" Value="AliceBlue" />
         <Setter Property="MaxHeight" Value="700" />
-        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Height" Value="auto" />
+        <Setter Property="Width" Value="auto"/>
         <Setter Property="MinHeight" Value="200" />
         <!--禁用自动生成列-->
         <Setter Property="AutoGenerateColumns" Value="False" />
@@ -41,4 +42,5 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+    
 </ResourceDictionary>
