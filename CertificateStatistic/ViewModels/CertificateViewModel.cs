@@ -417,20 +417,21 @@ namespace CertificateStatistic.ViewModels
                     .GroupBy()后可能会有这样的数据：
                     [
                         [
-                            { StudentID = 123, CertificateProject = "奖项1", Date = "2022-05" }
+                            { StudentID = 123, 其他字段, CertificateProject = "奖项1", 其他字段, Date = "2022-05" }
                         ],
                         [
-                            { StudentID = 123, CertificateProject = "奖项1", Date = "2021-08" }
-                        ],
-                        [
-                            { StudentID = 456, CertificateProject = "奖项2", Date = "2022-01" },
-                            { StudentID = 456, CertificateProject = "奖项2", Date = "2022-03" }
-                        ],
-                        [
-                            { StudentID = 123, CertificateProject = "奖项1", Date = "2020-07" }
+                            { StudentID = 123, 其他字段, CertificateProject = "奖项1", 其他字段, Date = "2021-08" }
+                        ],                     
+                        [                      
+                            { StudentID = 456, 其他字段, CertificateProject = "奖项2", 其他字段, Date = "2022-01" },
+                            { StudentID = 456, 其他字段, CertificateProject = "奖项2", 其他字段, Date = "2022-03" }
+                        ],                     
+                        [                      
+                            { StudentID = 123, 其他字段, CertificateProject = "奖项1", 其他字段, Date = "2020-07" }
                         ]
+                        ...
                     ]
-                    第三组的学号-奖项-年份(仅年份)相同
+                    第三组的学号-奖项-年份相同
                     因为部分人在填写Excel表格时填写的某个赛事没有具体年份或哪一届，因此仅靠 学号+获奖项目名 无法保证数据库中一定没有这条数据
                 */
 
