@@ -1,29 +1,29 @@
 ﻿using Microsoft.Win32;
-using NPOI.XSSF.UserModel;
 using Prism.Commands;
 using Prism.Mvvm;
-using System.IO;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Windows;
 using System;
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
 using CertificateStatisticWPF.Tools;
-using CertificateStatisticWPF.Models;
-using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
-using Org.BouncyCastle.Tls;
 using System.Collections.Generic;
+using DailyApp.WPF.HttpClients;
+using CertificateStatisticWPF.Models;
+using CertificateStatisticAPI.Tools.Enum;
 
 namespace CertificateStatistic.ViewModels
 {
     internal class CertificateViewModel : BindableBase
     {
-        public CertificateViewModel()
+        private readonly HttpRestClient Client;
+
+        public CertificateViewModel(HttpRestClient _client)
         {
+            this.Client = _client;
+
             #region Excel操作初始化
             ImportExcelCommand = new DelegateCommand(LoadExcelData);
 
@@ -36,7 +36,10 @@ namespace CertificateStatistic.ViewModels
             FilterCommand = new DelegateCommand<string>(FilterData);
             #endregion
 
-            
+            #region 数据库操作初始化
+            DBImportCommand = new DelegateCommand(DBImport);
+            #endregion
+
         }
 
         #region 读写Excel操作
@@ -224,7 +227,7 @@ namespace CertificateStatistic.ViewModels
 
             CertificateView.Filter = item =>
             {
-                var certificate = item as CertificateStatisticWPF.Models.Certificate;
+                var certificate = item as Certificate;
                 if (certificate == null) return false;
 
                 //如果没有选中任何条件，显示所有数据
@@ -271,9 +274,10 @@ namespace CertificateStatistic.ViewModels
                 if (ZLButtonSelected)
                 {
                     //判断主办单位是否以 ZL 开头或以数字开头
-                    bool isPatent = certificate.Organizer.StartsWith("ZL", StringComparison.OrdinalIgnoreCase);
+                    bool isPatent1 = certificate.Organizer.StartsWith("ZL", StringComparison.OrdinalIgnoreCase);
+                    bool isPatent2 = certificate.Organizer.EndsWith("版权局");
                     bool isSoftware = char.IsDigit(certificate.Organizer[0]); //判断第一个字符是否为数字
-                    matchPatent = isPatent || isSoftware;
+                    matchPatent = isPatent1 || isSoftware || isPatent2;
                 }
 
                 //同时满足 EventLevel、Category、Organizer的条件
@@ -373,11 +377,94 @@ namespace CertificateStatistic.ViewModels
                                                     .ToList();
             MultipleAwardPeople = personAwardList.Count(p => p.AwardCount > 1);
             ResearchCount = ProcessedExcelData.Count(item => item.Category == "科研类");
-            PatentCount = ProcessedExcelData.Count(item => item.Organizer.StartsWith("ZL") || char.IsDigit(item.Organizer[0]));
+            PatentCount = ProcessedExcelData.Count(item => item.Organizer.StartsWith("ZL") || char.IsDigit(item.Organizer[0]) || item.Organizer.EndsWith("版权局"));
         }
 
         #endregion
 
+        #region 数据库操作
+        public DelegateCommand DBImportCommand { get; set; }
+
+        private void DBImport()
+        {
+            try
+            {
+                if (CertificateView == null || CertificateView.IsEmpty)
+                {
+                    MessageBox.Show("没有导入文件或当前数据为空");
+                    return;
+                }
+
+                var confirmResult = MessageBox.Show(
+                    "是否确认导入当前数据？请检查无误后继续！",
+                    "导入确认",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Question
+                );
+                if (confirmResult != MessageBoxResult.OK) return;
+
+                //获取当前DataGrid数据并去重（根据 StudentID + CertificateProject + 年份 分组。）
+                var certificates = CertificateView.Cast<Certificate>()
+                                    .GroupBy(c => new
+                                    {
+                                        c.StudentID,
+                                        c.CertificateProject,
+                                        Year = c.Date.Substring(0, 4)
+                                    })
+                                    .Select(g => g.First()) // 每组取第一条
+                                    .ToList();
+                /*  
+                    .GroupBy()后可能会有这样的数据：
+                    [
+                        [
+                            { StudentID = 123, CertificateProject = "奖项1", Date = "2022-05" }
+                        ],
+                        [
+                            { StudentID = 123, CertificateProject = "奖项1", Date = "2021-08" }
+                        ],
+                        [
+                            { StudentID = 456, CertificateProject = "奖项2", Date = "2022-01" },
+                            { StudentID = 456, CertificateProject = "奖项2", Date = "2022-03" }
+                        ],
+                        [
+                            { StudentID = 123, CertificateProject = "奖项1", Date = "2020-07" }
+                        ]
+                    ]
+                    第三组的学号-奖项-年份(仅年份)相同
+                    因为部分人在填写Excel表格时填写的某个赛事没有具体年份或哪一届，因此仅靠 学号+获奖项目名 无法保证数据库中一定没有这条数据
+                */
+
+                if (certificates.Count == 0)
+                {
+                    MessageBox.Show("无有效数据可导入");
+                    return;
+                }
+
+                var apiRequest = new ApiRequest<List<Certificate>>
+                {
+                    Route = "api/Statistic/AddCertificate",
+                    Method = RestSharp.Method.POST,
+                    Parameters = certificates
+                };
+
+                var apiResponse = Client.Execute(apiRequest);
+
+                if (apiResponse.Status == ResultStatus.Success)
+                {
+                    MessageBox.Show($"成功导入 {certificates.Count} 条数据");
+                }
+                else
+                {
+                    MessageBox.Show($"导入失败：{apiResponse.Msg}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"发生异常：{ex.Message}");
+            }
+        }
+
+        #endregion
     }
 }
 

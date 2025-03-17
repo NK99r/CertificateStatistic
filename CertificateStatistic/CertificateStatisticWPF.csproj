@@ -9,70 +9,71 @@
     <Compile Remove="Views\StatisticUC.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="StaticResource\Link\blcu.png" />
-    <None Remove="StaticResource\Link\bxg.png" />
-    <None Remove="StaticResource\Link\hwb.png" />
-    <None Remove="StaticResource\Link\jwgl.png" />
-    <None Remove="StaticResource\Link\lanqiao.png" />
-    <None Remove="StaticResource\Link\mtb.png" />
-    <None Remove="StaticResource\Link\ncccu.png" />
-    <None Remove="StaticResource\Link\slide1.png" />
-    <None Remove="StaticResource\Link\tsg.png" />
-    <None Remove="StaticResource\Link\wlfw.png" />
-    <None Remove="StaticResource\Link\xxt.png" />
-    <None Remove="StaticResource\Link\zhhy.png" />
-    <None Remove="StaticResource\Link\zw.png" />
-    <None Remove="StaticResource\pic\Arrow_L.png" />
-    <None Remove="StaticResource\pic\Arrow_R.png" />
-    <None Remove="StaticResource\pic\close.png" />
-    <None Remove="StaticResource\pic\home.png" />
-    <None Remove="StaticResource\pic\logo.ico" />
-    <None Remove="StaticResource\pic\logo.png" />
-    <None Remove="StaticResource\pic\max.png" />
-    <None Remove="StaticResource\pic\mini.png" />
-    <None Remove="StaticResource\pic\navbar\cer.png" />
-    <None Remove="StaticResource\pic\navbar\home.png" />
-    <None Remove="StaticResource\pic\navbar\stat.png" />
-    <None Remove="StaticResource\pic\slide2.jpg" />
-    <None Remove="StaticResource\pic\slide3.jpg" />
-    <None Remove="StaticResource\pic\stat.png" />
+    <None Remove="Asset\Link\blcu.png" />
+    <None Remove="Asset\Link\bxg.png" />
+    <None Remove="Asset\Link\hwb.png" />
+    <None Remove="Asset\Link\jwgl.png" />
+    <None Remove="Asset\Link\lanqiao.png" />
+    <None Remove="Asset\Link\mtb.png" />
+    <None Remove="Asset\Link\ncccu.png" />
+    <None Remove="Asset\Link\slide1.png" />
+    <None Remove="Asset\Link\tsg.png" />
+    <None Remove="Asset\Link\wlfw.png" />
+    <None Remove="Asset\Link\xxt.png" />
+    <None Remove="Asset\Link\zhhy.png" />
+    <None Remove="Asset\Link\zw.png" />
+    <None Remove="Asset\pic\Arrow_L.png" />
+    <None Remove="Asset\pic\Arrow_R.png" />
+    <None Remove="Asset\pic\close.png" />
+    <None Remove="Asset\pic\home.png" />
+    <None Remove="Asset\pic\logo.ico" />
+    <None Remove="Asset\pic\logo.png" />
+    <None Remove="Asset\pic\max.png" />
+    <None Remove="Asset\pic\mini.png" />
+    <None Remove="Asset\pic\navbar\cer.png" />
+    <None Remove="Asset\pic\navbar\home.png" />
+    <None Remove="Asset\pic\navbar\stat.png" />
+    <None Remove="Asset\pic\slide2.jpg" />
+    <None Remove="Asset\pic\slide3.jpg" />
+    <None Remove="Asset\pic\stat.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Remove="Views\StatisticUC.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="StaticResource\Link\blcu.png" />
-    <Resource Include="StaticResource\Link\bxg.png" />
-    <Resource Include="StaticResource\Link\hwb.png" />
-    <Resource Include="StaticResource\Link\jwgl.png" />
-    <Resource Include="StaticResource\Link\lanqiao.png" />
-    <Resource Include="StaticResource\Link\mtb.png" />
-    <Resource Include="StaticResource\Link\ncccu.png" />
-    <Resource Include="StaticResource\pic\navbar\cer.png" />
-    <Resource Include="StaticResource\pic\navbar\home.png" />
-    <Resource Include="StaticResource\pic\navbar\stat.png" />
-    <Resource Include="StaticResource\pic\slide1.jpg" />
-    <Resource Include="StaticResource\Link\tsg.png" />
-    <Resource Include="StaticResource\Link\wlfw.png" />
-    <Resource Include="StaticResource\Link\xxt.png" />
-    <Resource Include="StaticResource\Link\zhhy.png" />
-    <Resource Include="StaticResource\Link\zw.png" />
-    <Resource Include="StaticResource\pic\Arrow_L.png" />
+    <Resource Include="Asset\Link\blcu.png" />
+    <Resource Include="Asset\Link\bxg.png" />
+    <Resource Include="Asset\Link\hwb.png" />
+    <Resource Include="Asset\Link\jwgl.png" />
+    <Resource Include="Asset\Link\lanqiao.png" />
+    <Resource Include="Asset\Link\mtb.png" />
+    <Resource Include="Asset\Link\ncccu.png" />
+    <Resource Include="Asset\pic\navbar\cer.png" />
+    <Resource Include="Asset\pic\navbar\home.png" />
+    <Resource Include="Asset\pic\navbar\stat.png" />
+    <Resource Include="Asset\pic\slide1.jpg" />
+    <Resource Include="Asset\Link\tsg.png" />
+    <Resource Include="Asset\Link\wlfw.png" />
+    <Resource Include="Asset\Link\xxt.png" />
+    <Resource Include="Asset\Link\zhhy.png" />
+    <Resource Include="Asset\Link\zw.png" />
+    <Resource Include="Asset\pic\Arrow_L.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NPOI" Version="2.7.2" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
-    <PackageReference Include="Tesseract" Version="5.2.0" />
+    <PackageReference Include="RestSharp" Version="106.12.0" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="StaticResource\pic\Arrow_R.png" />
-    <Resource Include="StaticResource\pic\titlebar\close.png" />
-    <Resource Include="StaticResource\pic\logo.ico" />
-    <Resource Include="StaticResource\pic\logo.png" />
-    <Resource Include="StaticResource\pic\titlebar\max.png" />
-    <Resource Include="StaticResource\pic\titlebar\mini.png" />
-    <Resource Include="StaticResource\pic\slide2.jpg" />
-    <Resource Include="StaticResource\pic\slide3.jpg" />
+    <Resource Include="Asset\pic\Arrow_R.png" />
+    <Resource Include="Asset\pic\titlebar\close.png" />
+    <Resource Include="Asset\pic\logo.ico" />
+    <Resource Include="Asset\pic\logo.png" />
+    <Resource Include="Asset\pic\titlebar\max.png" />
+    <Resource Include="Asset\pic\titlebar\mini.png" />
+    <Resource Include="Asset\pic\slide2.jpg" />
+    <Resource Include="Asset\pic\slide3.jpg" />
   </ItemGroup>
 </Project>

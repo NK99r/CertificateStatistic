@@ -1,11 +1,16 @@
+using CertificateStatisticAPI;
+using SqlSugar;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+//ÒÀÀµ×¢ÈëÈÝÆ÷
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<SqlSugarScope>(factory => SqlSugarContext.DB);
 
 var app = builder.Build();
 

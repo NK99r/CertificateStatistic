@@ -27,13 +27,13 @@
                           CanContentScroll="False">
                 <DataGrid x:Name="CertificatesDataGrid" ItemsSource="{Binding CertificateView}" Style="{StaticResource DataGridStyle}" RowStyle="{StaticResource HighlightStyle}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="学号" Binding="{Binding StudentID}"/>
-                        <DataGridTextColumn Header="姓名" Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="获奖项目" Binding="{Binding CertificateProject}"/>
-                        <DataGridTextColumn Header="类别" Binding="{Binding Category}"/>
-                        <DataGridTextColumn Header="赛事级别" Binding="{Binding EventLevel}"/>
-                        <DataGridTextColumn Header="主办单位" Binding="{Binding Organizer}"/>
-                        <DataGridTextColumn Header="获奖日期" Binding="{Binding Date}"/>
+                        <DataGridTextColumn Header="学号" Binding="{Binding StudentID, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="姓名" Binding="{Binding Name, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="获奖项目" Binding="{Binding CertificateProject, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="类别" Binding="{Binding Category, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="赛事级别" Binding="{Binding EventLevel, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="主办单位" Binding="{Binding Organizer, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="获奖日期" Binding="{Binding Date, Mode=TwoWay, StringFormat='yyyy-MM'}"/>
                     </DataGrid.Columns>
                     <!--表头样式-->
                     <DataGrid.ColumnHeaderStyle>
@@ -89,6 +89,7 @@
                         <!--UpdateSourceTrigger=PropertyChanged表示当文本发生改变时，ViewModel的SearchText随之改变-->
                         <TextBox Background="AliceBlue" Height="25" Width="300" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" TextWrapping="Wrap"/>
                     </DockPanel>
+                    
                     <DockPanel Margin="5">
                         <TextBlock Text="筛选：" Style="{StaticResource OperateTextStyle}"/>
                         <WrapPanel HorizontalAlignment="Left" Width="270">
@@ -100,6 +101,16 @@
                             <ToggleButton Content="非科研类" Command="{Binding FilterCommand}" CommandParameter="非科研类" Style="{StaticResource FilterButtonStyle}"/>
                         </WrapPanel>
                     </DockPanel>
+
+                    <DockPanel Margin="5">
+                        <TextBlock Text="导入：" VerticalAlignment="Center" Style="{StaticResource OperateTextStyle}"/>
+                        <Button HorizontalAlignment="Left" Command="{Binding DBImportCommand}" Style="{StaticResource DataBaseButtonStyle}">
+                            <TextBlock Text="本表导入到数据库" Style="{StaticResource ButtonTextStyle}"/>
+                        </Button>
+                        <Button HorizontalAlignment="Left" Style="{StaticResource PreviewButtonStyle}">
+                            <TextBlock Text="表格规范预览" Style="{StaticResource ButtonTextStyle}"/>
+                        </Button>
+                    </DockPanel>
                 </StackPanel>
             </Border>
         </StackPanel>
@@ -109,11 +120,13 @@
             <Border Background="SkyBlue" Height="210" Width="auto">
                 <StackPanel Margin="10">
                     <TextBlock Margin="10" Text="统计结果" HorizontalAlignment="Center" Style="{StaticResource OperateTextStyle}"/>
-                    <TextBlock Text="{Binding TotalCount, StringFormat='总数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
-                    <TextBlock Text="{Binding TotalPeople, StringFormat='总人数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
-                    <TextBlock Text="{Binding MultipleAwardPeople, StringFormat='单人多奖人数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
-                    <TextBlock Text="{Binding ResearchCount, StringFormat='科研类总数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
-                    <TextBlock Text="{Binding PatentCount, StringFormat='专利/软著总数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                    <DockPanel Margin="15,0,0,0">
+                        <TextBlock Text="{Binding TotalCount, StringFormat='总数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                        <TextBlock Text="{Binding ResearchCount, StringFormat='科研类总数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                        <TextBlock Text="{Binding TotalPeople, StringFormat='总人数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                        <TextBlock Text="{Binding MultipleAwardPeople, StringFormat='单人多奖人数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                        <TextBlock Text="{Binding PatentCount, StringFormat='专利/软著总数: {0}'}" Style="{StaticResource StatisticTextStyle}"/>
+                    </DockPanel>
                 </StackPanel>
             </Border>
         </StackPanel>

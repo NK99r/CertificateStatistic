@@ -32,10 +32,10 @@
 
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <Button Style="{StaticResource ArrowButtonStyle}" Command="{Binding PreviousCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
-                    <Image Source="/StaticResource/pic/Arrow_L.png" Width="30" Height="30"/>
+                    <Image Source="/Asset/pic/Arrow_L.png" Width="30" Height="30"/>
                 </Button>
                 <Button Style="{StaticResource ArrowButtonStyle}" Command="{Binding NextCommand}" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Image Source="/StaticResource/pic/Arrow_R.png" Width="30" Height="30"/>
+                    <Image Source="/Asset/pic/Arrow_R.png" Width="30" Height="30"/>
                 </Button>
             </Grid>
 

@@ -19,13 +19,13 @@
                 <!--标题栏右侧-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource TitleBarButtonStyle}" Click="Mini">
-                        <Image Source="\StaticResource\pic\titlebar\mini.png"/>
+                        <Image Source="\Asset\pic\titlebar\mini.png"/>
                     </Button>
                     <Button Style="{StaticResource TitleBarButtonStyle}" Click="Max">
-                        <Image Source="\StaticResource\pic\titlebar\max.png"/>
+                        <Image Source="\Asset\pic\titlebar\max.png"/>
                     </Button>
                     <Button Style="{StaticResource TitleBarButtonStyle}" Click="Close" >
-                        <Image Source="\StaticResource\pic\titlebar\close.png" Width="25" Height="25"/>
+                        <Image Source="\Asset\pic\titlebar\close.png" Width="25" Height="25"/>
                     </Button>
                 </StackPanel>
             </DockPanel>
@@ -39,7 +39,7 @@
 
             <!--左侧导航栏-->
             <StackPanel Grid.Column="0" Background="SkyBlue" >
-                <Image Margin="0,5" Source="\StaticResource\pic\logo.png" Height="120"/>
+                <Image Margin="0,5" Source="\Asset\pic\logo.png" Height="120"/>
                 <TextBlock Margin="0,5" Text="获奖证书管理系统" Foreground="White" HorizontalAlignment="Center" FontSize="25" FontFamily="STHupo"/>
                 <ListBox ItemsSource="{Binding NavBarList}" Background="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedNavItem}">
                     <!--这里的SelectedItem="{Binding SelectedNavItem}"，当点击某一导航项时，视为一次更新，通知后台改变并调用Navigate方法-->
