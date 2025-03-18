@@ -9,19 +9,19 @@
     <Compile Remove="Views\StatisticUC.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Asset\Link\blcu.png" />
-    <None Remove="Asset\Link\bxg.png" />
-    <None Remove="Asset\Link\hwb.png" />
-    <None Remove="Asset\Link\jwgl.png" />
-    <None Remove="Asset\Link\lanqiao.png" />
-    <None Remove="Asset\Link\mtb.png" />
-    <None Remove="Asset\Link\ncccu.png" />
-    <None Remove="Asset\Link\slide1.png" />
-    <None Remove="Asset\Link\tsg.png" />
-    <None Remove="Asset\Link\wlfw.png" />
-    <None Remove="Asset\Link\xxt.png" />
-    <None Remove="Asset\Link\zhhy.png" />
-    <None Remove="Asset\Link\zw.png" />
+    <None Remove="Asset\link\blcu.png" />
+    <None Remove="Asset\link\bxg.png" />
+    <None Remove="Asset\link\hwb.png" />
+    <None Remove="Asset\link\jwgl.png" />
+    <None Remove="Asset\link\lanqiao.png" />
+    <None Remove="Asset\link\mtb.png" />
+    <None Remove="Asset\link\ncccu.png" />
+    <None Remove="Asset\link\slide1.png" />
+    <None Remove="Asset\link\tsg.png" />
+    <None Remove="Asset\link\wlfw.png" />
+    <None Remove="Asset\link\xxt.png" />
+    <None Remove="Asset\link\zhhy.png" />
+    <None Remove="Asset\link\zw.png" />
     <None Remove="Asset\pic\Arrow_L.png" />
     <None Remove="Asset\pic\Arrow_R.png" />
     <None Remove="Asset\pic\close.png" />
@@ -33,6 +33,7 @@
     <None Remove="Asset\pic\navbar\cer.png" />
     <None Remove="Asset\pic\navbar\home.png" />
     <None Remove="Asset\pic\navbar\stat.png" />
+    <None Remove="Asset\pic\Preview.png" />
     <None Remove="Asset\pic\slide2.jpg" />
     <None Remove="Asset\pic\slide3.jpg" />
     <None Remove="Asset\pic\stat.png" />
@@ -41,22 +42,23 @@
     <Page Remove="Views\StatisticUC.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Asset\Link\blcu.png" />
-    <Resource Include="Asset\Link\bxg.png" />
-    <Resource Include="Asset\Link\hwb.png" />
-    <Resource Include="Asset\Link\jwgl.png" />
-    <Resource Include="Asset\Link\lanqiao.png" />
-    <Resource Include="Asset\Link\mtb.png" />
-    <Resource Include="Asset\Link\ncccu.png" />
+    <Resource Include="Asset\link\blcu.png" />
+    <Resource Include="Asset\link\bxg.png" />
+    <Resource Include="Asset\link\hwb.png" />
+    <Resource Include="Asset\link\jwgl.png" />
+    <Resource Include="Asset\link\lanqiao.png" />
+    <Resource Include="Asset\link\mtb.png" />
+    <Resource Include="Asset\link\ncccu.png" />
     <Resource Include="Asset\pic\navbar\cer.png" />
     <Resource Include="Asset\pic\navbar\home.png" />
     <Resource Include="Asset\pic\navbar\stat.png" />
+    <Resource Include="Asset\pic\Preview.png" />
     <Resource Include="Asset\pic\slide1.jpg" />
-    <Resource Include="Asset\Link\tsg.png" />
-    <Resource Include="Asset\Link\wlfw.png" />
-    <Resource Include="Asset\Link\xxt.png" />
-    <Resource Include="Asset\Link\zhhy.png" />
-    <Resource Include="Asset\Link\zw.png" />
+    <Resource Include="Asset\link\tsg.png" />
+    <Resource Include="Asset\link\wlfw.png" />
+    <Resource Include="Asset\link\xxt.png" />
+    <Resource Include="Asset\link\zhhy.png" />
+    <Resource Include="Asset\link\zw.png" />
     <Resource Include="Asset\pic\Arrow_L.png" />
   </ItemGroup>
   <ItemGroup>

@@ -107,8 +107,8 @@
                         <Button HorizontalAlignment="Left" Command="{Binding DBImportCommand}" Style="{StaticResource DataBaseButtonStyle}">
                             <TextBlock Text="本表导入到数据库" Style="{StaticResource ButtonTextStyle}"/>
                         </Button>
-                        <Button HorizontalAlignment="Left" Style="{StaticResource PreviewButtonStyle}">
-                            <TextBlock Text="表格规范预览" Style="{StaticResource ButtonTextStyle}"/>
+                        <Button Command="{Binding OpenPreviewDialogCommand}" HorizontalAlignment="Left" Style="{StaticResource PreviewButtonStyle}">
+                            <TextBlock Text="报错看表格规范预览" Style="{StaticResource ButtonTextStyle}"/>
                         </Button>
                     </DockPanel>
                 </StackPanel>

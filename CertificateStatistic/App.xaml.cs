@@ -1,6 +1,8 @@
 ﻿using CertificateStatistic.ViewModels;
 using CertificateStatistic.Views;
 using CertificateStatistics.Views;
+using CertificateStatisticWPF.ViewModels;
+using CertificateStatisticWPF.Views.Dialogs;
 using Prism.Ioc;
 using System.Windows;
 
@@ -16,10 +18,16 @@ namespace CertificateStatistic
             return Container.Resolve<MainWindow>();
         }
 
+        /// <summary>
+        /// 依赖注入容器
+        /// </summary>
+        /// <param name="containerRegistry"></param>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<HomeUC, HomeUCViewModel>();
             containerRegistry.RegisterForNavigation<CertificateUC, CertificateViewModel>();
+
+            containerRegistry.RegisterDialog<PreviewDialog, PreviewDialogViewModel>();
         }
     }
 }
