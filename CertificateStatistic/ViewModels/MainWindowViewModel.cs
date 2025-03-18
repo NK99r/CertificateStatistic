@@ -78,8 +78,9 @@ namespace CertificateStatistic.ViewModels
         private void CreateNavBar()
         {
             NavBarList.Clear();
-            NavBarList.Add(new NavBtn() { Icon = "pack://application:,,,/CertificateStatisticWPF;component/Asset/pic/navbar/home.png", Title = "首页", ViewName = "HomeUC" });
-            NavBarList.Add(new NavBtn() { Icon = "pack://application:,,,/CertificateStatisticWPF;component/Asset/pic/navbar/cer.png", Title = "证书", ViewName = "CertificateUC" });
+            NavBarList.Add(new NavBtn() { Icon = "/Asset/pic/navbar/home.png", Title = "首页", ViewName = "HomeUC" });
+            NavBarList.Add(new NavBtn() { Icon = "/Asset/pic/navbar/cer.png", Title = "证书", ViewName = "CertificateUC" });
+            NavBarList.Add(new NavBtn() { Icon = "/Asset/pic/navbar/stat.png", Title = "统计", ViewName = "StatisticUC" });
         }
         #endregion
 

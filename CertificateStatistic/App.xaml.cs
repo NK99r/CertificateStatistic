@@ -2,6 +2,7 @@
 using CertificateStatistic.Views;
 using CertificateStatistics.Views;
 using CertificateStatisticWPF.ViewModels;
+using CertificateStatisticWPF.Views;
 using CertificateStatisticWPF.Views.Dialogs;
 using Prism.Ioc;
 using System.Windows;
@@ -26,6 +27,7 @@ namespace CertificateStatistic
         {
             containerRegistry.RegisterForNavigation<HomeUC, HomeUCViewModel>();
             containerRegistry.RegisterForNavigation<CertificateUC, CertificateViewModel>();
+            containerRegistry.RegisterForNavigation<StatisticUC, StatisticViewModel>();
 
             containerRegistry.RegisterDialog<PreviewDialog, PreviewDialogViewModel>();
         }

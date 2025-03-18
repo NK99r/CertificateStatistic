@@ -6,7 +6,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="ViewModels\StatisticUCViewModel.cs" />
-    <Compile Remove="Views\StatisticUC.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Asset\link\blcu.png" />
@@ -37,9 +36,6 @@
     <None Remove="Asset\pic\slide2.jpg" />
     <None Remove="Asset\pic\slide3.jpg" />
     <None Remove="Asset\pic\stat.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Remove="Views\StatisticUC.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Asset\link\blcu.png" />
