@@ -5,6 +5,7 @@ using Prism.Regions;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace CertificateStatistic.ViewModels
 {

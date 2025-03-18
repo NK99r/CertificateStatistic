@@ -45,14 +45,25 @@ namespace DailyApp.WPF.HttpClients
 
             RestSharpClient.BaseUrl = new Uri(NetWorkConfig.BASEURL + apiRequest.Route);
             var res = RestSharpClient.Execute(request);//请求
-            if (res.StatusCode == System.Net.HttpStatusCode.OK)//请求成功
+            switch (res.StatusCode)
             {
-                //DeserializeObject 反序列化  json字符串->对象
-                return JsonConvert.DeserializeObject<ApiResponse<T>>(res.Content);
-            }
-            else
-            {
-                return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "服务器忙，请稍后" };
+                case System.Net.HttpStatusCode.OK:
+                    //DeserializeObject 反序列化  json字符串->对象
+                    return JsonConvert.DeserializeObject<ApiResponse<T>>(res.Content);
+                case System.Net.HttpStatusCode.BadRequest:
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "您的操作有误" };
+                case System.Net.HttpStatusCode.Unauthorized:
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "身份校验失败" };
+                case System.Net.HttpStatusCode.NotFound:
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "网络链接失败，请检查您的网络设置" };
+                case System.Net.HttpStatusCode.BadGateway:
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "服务器被关停，请联系我" };
+                case System.Net.HttpStatusCode.ServiceUnavailable:
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "服务器暂不可用" };
+                case System.Net.HttpStatusCode.GatewayTimeout:
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "服务器超时，请重试" };
+                default:
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "未知的错误" };
             }
         }
     }

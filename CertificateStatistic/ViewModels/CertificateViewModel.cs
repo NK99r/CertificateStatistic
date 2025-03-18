@@ -460,7 +460,7 @@ namespace CertificateStatistic.ViewModels
 
                 var apiRequest = new ApiRequest<List<Certificate>>
                 {
-                    Route = "api/Statistic/AddCertificate",
+                    Route = "api/Certificate/AddCertificate",
                     Method = RestSharp.Method.POST,
                     Parameters = certificates
                 };
@@ -487,10 +487,11 @@ namespace CertificateStatistic.ViewModels
             var parameters = new DialogParameters();
             parameters.Add("Tip",
                   "1.如果出现Index and length must refer to a location within the string，说明学生填写的获奖项目数与日期数对不上" + "\n" 
-                + "2.有专利/软著行的，应尽量填写其专利号/软著号，没有填写编号则填写“中华人民共和国国家版权局”" + "\n"
+                + "2.如果出现Unable to cast object of type 'MS.Internal.NamedObject' to type 'CertificateStatisticWPF.Models.Certificate'，说明您还没有关闭编辑模式" + "\n"
                 + "3.如确实有同一学生在同一年的不同月份获得同一奖项(概率不大)，请联系我" + "\n"
                 + "4.导入的原Excel表格中的日期列的格式尽量为年份/月份，确保年份在开头且为4位数" + "\n"
-                + "5.有其他报错或问题，请联系我");
+                + "5.有专利/软著行的，应尽量填写其专利号/软著号，没有填写编号则填写“中华人民共和国国家版权局”"
+                + "6.有其他报错或问题，请联系我");
             parameters.Add("Preview", "pack://application:,,,/Asset/pic/Preview.png");
 
             DialogService.ShowDialog("PreviewDialog", parameters, result =>
