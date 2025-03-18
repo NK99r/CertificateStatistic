@@ -1,8 +1,8 @@
 ﻿using CertificateStatisticAPI.DataModels;
 using CertificateStatisticAPI.Tools;
-using CertificateStatisticAPI.Tools.Enum;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mysqlx;
 using SqlSugar;
 
 namespace CertificateStatisticAPI.Controllers
@@ -23,12 +23,32 @@ namespace CertificateStatisticAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ResponseResult<List<string>> GetAvailableYears()
+        public IActionResult GetAvailableYears()
         {
-            //返回数据库中目前拥有的年份，如2022、2023、2024...
-            //SqlFunc是SqlSugar框架调用SQL函数的方式
-            List<string> list = DB.Queryable<Certificate>().Select(c => SqlFunc.Substring(c.Date, 0, 4)).Distinct().ToList();
-            return new ResponseResult<List<string>> { Status = ResultStatus.Success, Msg = "获得数据成功", Data = list};
+            var ResponseResult = new ResponseResult();
+            try
+            {
+                //返回数据库中目前拥有的年份，如2022、2023、2024...
+                //SqlFunc是SqlSugar框架调用SQL函数的方式
+                List<string> list = DB.Queryable<Certificate>().Select(c => SqlFunc.Substring(c.Date, 0, 4)).Distinct().ToList();
+                if (list != null)
+                {
+                    ResponseResult.Status = 1;
+                    ResponseResult.Msg = "获得数据成功";
+                    ResponseResult.Data = list;
+                }
+                else
+                {
+                    ResponseResult.Status = -1;
+                    ResponseResult.Msg = "获得数据失败，请稍后重试";
+                }
+            }
+            catch (Exception ex)
+            {
+                ResponseResult.Status = -1;
+                ResponseResult.Msg = $"获取数据失败：{ex.Message}";
+            }
+            return Ok(ResponseResult);
         }
 
         /// <summary>
@@ -37,14 +57,43 @@ namespace CertificateStatisticAPI.Controllers
         /// <param name="year">对应年份</param>
         /// <returns></returns>
         [HttpPost]
-        public ResponseResult<List<Certificate>> GetByYear([FromBody] string year)
+        public IActionResult GetByYear([FromBody] string year)
         {
-            var query = DB.Queryable<Certificate>();
-            if (year != "全部")
-                //如果选择某一年，筛选
-                query = query.Where(c => c.Date.StartsWith(year));
-            //否则直接返回
-            return new ResponseResult<List<Certificate>> { Data = query.ToList() };
+            var ResponseResult = new ResponseResult();
+            try
+            {
+                var query = DB.Queryable<Certificate>();
+                if (query != null)
+                {
+                    if (year != "全部")
+                    {
+                        //如果选择某一年，筛选该年
+                        query = query.Where(c => c.Date.StartsWith(year));
+                        ResponseResult.Status = 1;
+                        ResponseResult.Msg = "获取一年数据成功";
+                        ResponseResult.Data = query.ToList();
+                    }
+                    else
+                    {
+                        ResponseResult.Status = 1;
+                        ResponseResult.Msg = "获取全部数据成功";
+                        ResponseResult.Data = query.ToList();
+                    }
+                }
+                else
+                {
+                    ResponseResult.Status = -1;
+                    ResponseResult.Msg = "获取数据失败";
+                }
+                return Ok(ResponseResult);
+            }
+            catch (Exception ex)
+            {
+                ResponseResult.Status = -1;
+                ResponseResult.Msg = $"获取数据失败:{ex.Message}";
+            }
+            return Ok(ResponseResult);
+
         }
 
 

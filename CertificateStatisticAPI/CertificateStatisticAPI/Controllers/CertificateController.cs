@@ -1,4 +1,4 @@
-﻿using CertificateStatisticAPI.Tools.Enum;
+﻿
 using CertificateStatisticAPI.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +24,10 @@ namespace CertificateStatisticAPI.Controllers
         /// <param name="certificate">[FromBody]特性从请求的 body 中获取一个 JSON 格式的数据，并将其反序列化成 Certificate 类型的对象</param>
         /// <returns>统一封装结果</returns>
         [HttpPost]
-        public ResponseResult<string> AddCertificate([FromBody] List<Certificate> certificates)
+        public IActionResult AddCertificate([FromBody] List<Certificate> certificates)
         {
+            var ResponseResult = new ResponseResult();
+
             try
             {
                 //获得传递过来的表的三个字段的组合集合(学号+获奖项目+年份组合的集合)
@@ -55,21 +57,24 @@ namespace CertificateStatisticAPI.Controllers
                 {
                     var duplicateList = string.Join("\n", duplicates.Select(d => $"{d.StudentID}-{d.CertificateProject}-{d.Year}"));
                     //对于存在的重复数据的每一项，转换为字符串格式：学号-获奖项目-年份
-                    return new ResponseResult<string>
-                    {
-                        Status = ResultStatus.Error,
-                        Msg = $"发现重复数据：{duplicateList}"
-                    };
+
+                    ResponseResult.Status = -1;
+                    ResponseResult.Msg = $"发现重复数据：{duplicateList}";
+
+                    return Ok(ResponseResult);
                 }
 
                 //否则正常插入
                 DB.Insertable(certificates).ExecuteReturnSnowflakeIdList();
-                return new ResponseResult<string> { Status = ResultStatus.Success, Msg = "数据导入成功" };
+                ResponseResult.Status = 1;
+                ResponseResult.Msg = "数据导入成功";
             }
             catch (Exception ex)
             {
-                return new ResponseResult<string> { Status = ResultStatus.Error, Msg = $"数据导入失败：{ex.Message}" };
+                ResponseResult.Status = -1;
+                ResponseResult.Msg = $"数据导入失败：{ex.Message}";
             }
+            return Ok(ResponseResult);
         }
     }
 }

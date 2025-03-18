@@ -11,7 +11,7 @@ namespace DailyApp.WPF.HttpClients
     /// <summary>
     /// 请求模型
     /// </summary>
-    internal class ApiRequest<T>
+    internal class ApiRequest
     {
        /// <summary>
        /// 请求地址/api路由地址
@@ -26,7 +26,7 @@ namespace DailyApp.WPF.HttpClients
         /// <summary>
         /// 请求参数
         /// </summary>
-        public T Parameters { get; set; }
+        public object Parameters { get; set; }
 
         /// <summary>
         /// 发送的数据类型

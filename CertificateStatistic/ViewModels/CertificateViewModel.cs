@@ -12,7 +12,6 @@ using System.Windows.Data;
 using System.Collections.Generic;
 using DailyApp.WPF.HttpClients;
 using CertificateStatisticWPF.Models;
-using CertificateStatisticAPI.Tools.Enum;
 using Prism.Services.Dialogs;
 
 namespace CertificateStatistic.ViewModels
@@ -458,7 +457,7 @@ namespace CertificateStatistic.ViewModels
                     return;
                 }
 
-                var apiRequest = new ApiRequest<List<Certificate>>
+                var apiRequest = new ApiRequest
                 {
                     Route = "api/Certificate/AddCertificate",
                     Method = RestSharp.Method.POST,
@@ -467,7 +466,7 @@ namespace CertificateStatistic.ViewModels
 
                 var apiResponse = Client.Execute(apiRequest);
 
-                if (apiResponse.Status == ResultStatus.Success)
+                if (apiResponse.Status == 1)
                 {
                     MessageBox.Show($"成功导入 {certificates.Count} 条数据");
                 }

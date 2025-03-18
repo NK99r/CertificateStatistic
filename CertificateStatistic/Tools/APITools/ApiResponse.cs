@@ -1,16 +1,15 @@
-﻿using CertificateStatisticAPI.Tools.Enum;
-
+﻿
 namespace CertificateStatisticAPI.Tools
 {
     /// <summary>
     /// 统一封装返回结果
     /// </summary>
-    public class ApiResponse<T>
+    public class ApiResponse
     {
         /// <summary>
         /// 状态结果
         /// </summary>
-        public ResultStatus Status { get; set; }
+        public int Status { get; set; }
 
         /// <summary>
         /// 消息描述
@@ -20,6 +19,6 @@ namespace CertificateStatisticAPI.Tools
         /// <summary>
         /// 返回结果
         /// </summary>
-        public T Data { get; set; }
+        public object Data { get; set; }
     }
 }
