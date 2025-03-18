@@ -1,6 +1,4 @@
-﻿using CertificateStatisticAPI.Tools.Enum;
-using CertificateStatisticAPI.Tools;
-using Microsoft.AspNetCore.Http;
+﻿using CertificateStatisticAPI.Tools;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 using CertificateStatisticAPI.DataModels;
@@ -57,18 +55,18 @@ namespace CertificateStatisticAPI.Controllers
                     //对于存在的重复数据的每一项，转换为字符串格式：学号-获奖项目-年份
                     return new ResponseResult<string>
                     {
-                        Status = ResultStatus.Error,
+                        Status = -1,
                         Msg = $"发现重复数据：{duplicateList}"
                     };
                 }
 
                 //否则正常插入
                 DB.Insertable(certificates).ExecuteReturnSnowflakeIdList();
-                return new ResponseResult<string> { Status = ResultStatus.Success, Msg = "数据导入成功" };
+                return new ResponseResult<string> { Status = 1, Msg = "数据导入成功" };
             }
             catch (Exception ex)
             {
-                return new ResponseResult<string> { Status = ResultStatus.Error, Msg = $"数据导入失败：{ex.Message}" };
+                return new ResponseResult<string> { Status = -1, Msg = $"数据导入失败：{ex.Message}" };
             }
         }
     }

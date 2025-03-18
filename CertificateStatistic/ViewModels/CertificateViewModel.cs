@@ -12,7 +12,6 @@ using System.Windows.Data;
 using System.Collections.Generic;
 using DailyApp.WPF.HttpClients;
 using CertificateStatisticWPF.Models;
-using CertificateStatisticAPI.Tools.Enum;
 using Prism.Services.Dialogs;
 
 namespace CertificateStatistic.ViewModels
@@ -26,13 +25,13 @@ namespace CertificateStatistic.ViewModels
 
         private readonly IDialogService DialogService;
 
-        public CertificateViewModel(HttpRestClient _client, IDialogService _dialogService)
+        public CertificateViewModel(HttpRestClient Client, IDialogService DialogService)
         {
             //构造器注入
-            this.Client = _client;
+            this.Client = Client;
 
             //构造器注入
-            this.DialogService = _dialogService;
+            this.DialogService = DialogService;
 
             #region Excel操作初始化
             ImportExcelCommand = new DelegateCommand(LoadExcelData);
@@ -413,7 +412,7 @@ namespace CertificateStatistic.ViewModels
                 }
 
                 var confirmResult = MessageBox.Show(
-                    "是否确认导入当前数据？请检查无误后继续！",
+                    "是否确认导入当前数据？请检查无误后继续",
                     "导入确认",
                     MessageBoxButton.OKCancel,
                     MessageBoxImage.Question
@@ -467,7 +466,7 @@ namespace CertificateStatistic.ViewModels
 
                 var apiResponse = Client.Execute(apiRequest);
 
-                if (apiResponse.Status == ResultStatus.Success)
+                if (apiResponse.Status == 1)
                 {
                     MessageBox.Show($"成功导入 {certificates.Count} 条数据");
                 }

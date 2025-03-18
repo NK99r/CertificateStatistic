@@ -1,4 +1,4 @@
-﻿using CertificateStatisticAPI.Tools.Enum;
+﻿
 
 namespace CertificateStatisticAPI.Tools
 {
@@ -10,7 +10,7 @@ namespace CertificateStatisticAPI.Tools
         /// <summary>
         /// 状态结果
         /// </summary>
-        public ResultStatus Status { get; set; }
+        public int Status { get; set; }
 
         /// <summary>
         /// 消息描述

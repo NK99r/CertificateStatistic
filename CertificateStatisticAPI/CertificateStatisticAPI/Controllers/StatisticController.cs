@@ -1,6 +1,5 @@
 ﻿using CertificateStatisticAPI.DataModels;
 using CertificateStatisticAPI.Tools;
-using CertificateStatisticAPI.Tools.Enum;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
@@ -28,7 +27,7 @@ namespace CertificateStatisticAPI.Controllers
             //返回数据库中目前拥有的年份，如2022、2023、2024...
             //SqlFunc是SqlSugar框架调用SQL函数的方式
             List<string> list = DB.Queryable<Certificate>().Select(c => SqlFunc.Substring(c.Date, 0, 4)).Distinct().ToList();
-            return new ResponseResult<List<string>> { Status = ResultStatus.Success, Msg = "获得数据成功", Data = list};
+            return new ResponseResult<List<string>> { Status = 1, Msg = "获得数据成功", Data = list};
         }
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace CertificateStatisticAPI.Controllers
                 //如果选择某一年，筛选
                 query = query.Where(c => c.Date.StartsWith(year));
             //否则直接返回
-            return new ResponseResult<List<Certificate>> { Data = query.ToList() };
+            return new ResponseResult<List<Certificate>> { Status = 1, Msg = "获得数据成功", Data = query.ToList() };
         }
 
 

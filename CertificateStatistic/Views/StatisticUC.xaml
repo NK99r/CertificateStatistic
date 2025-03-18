@@ -7,9 +7,36 @@
              mc:Ignorable="d" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="AliceBlue">
-    <Grid>
-            
-    </Grid>
+    <md:DrawerHost>
+        <md:DrawerHost.TopDrawerContent>
+            <Border Background="Black" Width="1024">
+                <StackPanel>
+                    <ItemsControl>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="2022" Height="30" Width="256">
+                                    
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </md:DrawerHost.TopDrawerContent>
+
+        <Grid>
+            <!-- 顶部工具栏 -->
+            <DockPanel>
+                <Button ToolTip="打开筛选抽屉">
+                    <md:PackIcon Kind="Menu" Width="24" Height="24"/>
+                </Button>
+            </DockPanel>
+
+            <!-- 统计内容占位 -->
+            <ContentControl prism:RegionManager.RegionName="StatisticContentRegion"/>
+        </Grid>
+    </md:DrawerHost>
 </UserControl>
