@@ -1,4 +1,5 @@
 ﻿using CertificateStatisticAPI.Tools;
+using CertificateStatisticAPI.Tools.Enum;
 using CertificateStatisticWPF.Enum;
 using Newtonsoft.Json;
 using RestSharp;
@@ -50,19 +51,19 @@ namespace DailyApp.WPF.HttpClients
                     //DeserializeObject 反序列化  json字符串->对象
                     return JsonConvert.DeserializeObject<ApiResponse<T>>(res.Content);
                 case System.Net.HttpStatusCode.BadRequest:
-                    return new ApiResponse<T> { Status = -1, Msg = "您的操作有误" };
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "您的操作有误" };
                 case System.Net.HttpStatusCode.Unauthorized:
-                    return new ApiResponse<T> { Status = -1, Msg = "身份校验失败" };
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "身份校验失败" };
                 case System.Net.HttpStatusCode.NotFound:
-                    return new ApiResponse<T> { Status = -1, Msg = "网络链接失败，请检查您的网络设置" };
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "网络链接失败，请检查您的网络设置" };
                 case System.Net.HttpStatusCode.BadGateway:
-                    return new ApiResponse<T> { Status = -1, Msg = "服务器被关停，请联系我" };
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "服务器被关停，请联系我" };
                 case System.Net.HttpStatusCode.ServiceUnavailable:
-                    return new ApiResponse<T> { Status = -1, Msg = "服务器暂不可用" };
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "服务器暂不可用" };
                 case System.Net.HttpStatusCode.GatewayTimeout:
-                    return new ApiResponse<T> { Status = -1, Msg = "服务器超时，请重试" };
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "服务器超时，请重试" };
                 default:
-                    return new ApiResponse<T> { Status = -1, Msg = "未知的错误" };
+                    return new ApiResponse<T> { Status = ResultStatus.Error, Msg = "未知的错误" };
             }
         }
     }
