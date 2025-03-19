@@ -30,6 +30,8 @@
     <None Remove="Asset\pic\max.png" />
     <None Remove="Asset\pic\mini.png" />
     <None Remove="Asset\pic\navbar\cer.png" />
+    <None Remove="Asset\pic\navbar\folder_close.png" />
+    <None Remove="Asset\pic\navbar\folder_open.png" />
     <None Remove="Asset\pic\navbar\home.png" />
     <None Remove="Asset\pic\navbar\stat.png" />
     <None Remove="Asset\pic\Preview.png" />
@@ -46,6 +48,8 @@
     <Resource Include="Asset\link\mtb.png" />
     <Resource Include="Asset\link\ncccu.png" />
     <Resource Include="Asset\pic\navbar\cer.png" />
+    <Resource Include="Asset\pic\navbar\folder_close.png" />
+    <Resource Include="Asset\pic\navbar\folder_open.png" />
     <Resource Include="Asset\pic\navbar\home.png" />
     <Resource Include="Asset\pic\navbar\stat.png" />
     <Resource Include="Asset\pic\Preview.png" />
@@ -58,7 +62,8 @@
     <Resource Include="Asset\pic\Arrow_L.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+    <PackageReference Include="HandyControl" Version="3.5.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NPOI" Version="2.7.2" />

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DailyApp.WPF.HttpClients
 {
@@ -38,8 +39,8 @@ namespace DailyApp.WPF.HttpClients
 
             if (apiRequest.Parameters != null)//参数
             {
-                //自动处理JSON序列化 对象->json字符串
-                request.AddJsonBody(apiRequest.Parameters);
+                //处理JSON序列化 对象->json字符串
+                request.AddParameter("param", JsonConvert.SerializeObject(apiRequest.Parameters), ParameterType.RequestBody);
             }
 
             RestSharpClient.BaseUrl = new Uri(NetWorkConfig.BASEURL + apiRequest.Route);

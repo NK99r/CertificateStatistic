@@ -9,32 +9,64 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             Background="AliceBlue">
-    <md:DrawerHost>
+             Background="AliceBlue"
+             Height="720" Width="1024">
+    <!--抽屉控件-->
+    <!--抽屉打开关闭取决于YearsToggleButton的IsChecked属性-->
+    <md:DrawerHost IsTopDrawerOpen="{Binding ElementName=YearsToggleButton, Path=IsChecked}">
+        <!--抽屉内容-->
         <md:DrawerHost.TopDrawerContent>
-            <Border Width="1024">
-                <ItemsControl ItemsSource="{Binding YearButtonList}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button >
-                                
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+            <Border Height="100" Width="1024" Background="AliceBlue">
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <ScrollViewer.Resources>
+                        <!--设置滚动条样式-->
+                        <Style TargetType="ScrollBar">
+                            <Setter Property="Background" Value="LightGray"/>
+                        </Style>
+                    </ScrollViewer.Resources>
+                    <ItemsControl ItemsSource="{Binding YearButtonList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Width="1024" Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Height="100" Width="100">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Image x:Name="ButtonImage" Height="50" Width="50" Source="\Asset\pic\navbar\folder_close.png"/>
+                                                <TextBlock Text="{Binding Year}" HorizontalAlignment="Center" FontFamily="Arial" FontWeight="Bold"/>
+                                            </StackPanel>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="ButtonImage" Property="Source" Value="\Asset\pic\navbar\folder_open.png"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </Border>
         </md:DrawerHost.TopDrawerContent>
-        <!-- 主内容区域 -->
+        
         <Grid>
-            <!-- 顶部工具栏 -->
-            <DockPanel>
-                <Button ToolTip="打开筛选抽屉">
-                    <md:PackIcon Kind="Menu" Width="24" Height="24"/>
-                </Button>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <!--顶部抽屉图标-->
+            <DockPanel Grid.Row="0">
+                <ToggleButton DockPanel.Dock="Top" IsChecked="False" x:Name="YearsToggleButton" Style="{StaticResource MaterialDesignActionLightToggleButton}" Cursor="Hand">
+                    <md:PackIcon Kind="ArrowDownThick" Width="30" Height="30"/>
+                </ToggleButton>
             </DockPanel>
 
-            <!-- 统计内容占位 -->
-            <ContentControl prism:RegionManager.RegionName="StatisticContentRegion"/>
+            <ContentControl Grid.Row="1" prism:RegionManager.RegionName="StatisticContentRegion"/>
         </Grid>
     </md:DrawerHost>
 </UserControl>

@@ -1,6 +1,8 @@
 ﻿using CertificateStatisticWPF.Models;
 using DailyApp.WPF.HttpClients;
 using ImTools;
+using Newtonsoft.Json;
+using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -19,9 +21,14 @@ namespace CertificateStatisticWPF.ViewModels
         public StatisticViewModel(HttpRestClient Client)
         {
             this.Client = Client;
-			LoadAvailableYear();
+
+            //.ConfigureAwait(false)避免回到原始线程，同时防止死锁
+            LoadAvailableYear().ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// 年份按钮集合
+        /// </summary>
 		private ObservableCollection<YearButton> _yearButtonList;
 		public ObservableCollection<YearButton> YearButtonList
 		{
@@ -33,28 +40,43 @@ namespace CertificateStatisticWPF.ViewModels
 			}
 		}
 
-		private void LoadAvailableYear()
+        /// <summary>
+        /// 加载年份按钮，async表示异步方法，允许加载时程序做其他事情(不阻塞UI)
+        /// </summary>
+        /// <returns>Task用于没有返回值的异步操作，表示异步操作的执行过程</returns>
+		private async Task LoadAvailableYear()
 		{
-			var request = new ApiRequest
+			try
 			{
-				Route = "api/Statistic/GetAvailableYears",
-				Method = RestSharp.Method.GET,
-			};
+                var request = new ApiRequest
+                {
+                    Route = "api/Statistic/GetAvailableYears",
+                    Method = RestSharp.Method.GET,
+                };
 
-            var response = Client.Execute(request);
-			if (response.Status == 1)
-			{
-                var yearList = response.Data as List<string>;
-				yearList.Insert(0, "全部");
+                //Client.Execute(request)放入线程池执行，避免阻塞UI
+                //await表示等待Task.Run完成并获得返回值
+                var response = await Task.Run(() => Client.Execute(request));
+                if (response.Status == 1)
+                {
+                    var yearList = JsonConvert.DeserializeObject<List<string>>(response.Data.ToString());
+                    yearList.Reverse();
+                    yearList.Insert(0, "全部");
 
-                YearButtonList = new ObservableCollection<YearButton>();
-				foreach (var year in yearList)
-				{
-					YearButtonList.Add(new YearButton { Year = year });
-				}
+                    //添加按钮
+                    YearButtonList = new ObservableCollection<YearButton>();
+                    foreach (var year in yearList)
+                    {
+                        YearButtonList.Add(new YearButton { Year = year });
+                    }
+                }
             }
-			MessageBox.Show("1");
+			catch (Exception ex)
+			{
+                MessageBox.Show("获取数据异常:" + ex.Message);
+			}
+
 		}
 
-	}
+    }
 }
