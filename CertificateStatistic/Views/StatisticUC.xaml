@@ -32,7 +32,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Height="100" Width="100">
+                                <Button Height="100" Width="100" Command="{Binding DataContext.SelectYearCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Year}">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -66,7 +66,7 @@
                 </ToggleButton>
             </DockPanel>
 
-            <ContentControl Grid.Row="1" prism:RegionManager.RegionName="StatisticContentRegion"/>
+            <ContentControl Grid.Row="1" prism:RegionManager.RegionName="StatisticChartsRegion"/>
         </Grid>
     </md:DrawerHost>
 </UserControl>

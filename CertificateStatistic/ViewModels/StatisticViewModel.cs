@@ -4,6 +4,7 @@ using ImTools;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,14 +17,25 @@ namespace CertificateStatisticWPF.ViewModels
 {
     class StatisticViewModel:BindableBase
     {
+        //webapi工具
         private readonly HttpRestClient Client;
 
-        public StatisticViewModel(HttpRestClient Client)
+        //prism区域管理
+        private readonly IRegionManager RegionManager;
+
+        public StatisticViewModel(HttpRestClient Client, IRegionManager RegionManager)
         {
+            //构造器注入
             this.Client = Client;
+
+            //构造器注入
+            this.RegionManager = RegionManager;
 
             //.ConfigureAwait(false)避免回到原始线程，同时防止死锁
             LoadAvailableYear().ConfigureAwait(false);
+
+            //异步lambda，async表示其为异步方法，接受一个year参数并传入方法异步执行
+            SelectYearCommand = new DelegateCommand<string>(async (year) => await SelectYear(year));
         }
 
         /// <summary>
@@ -59,7 +71,7 @@ namespace CertificateStatisticWPF.ViewModels
                 var response = await Task.Run(() => Client.Execute(request));
                 if (response.Status == 1)
                 {
-                    var yearList = JsonConvert.DeserializeObject<List<string>>(response.Data.ToString());
+                    List<string> yearList = JsonConvert.DeserializeObject<List<string>>(response.Data.ToString());
                     yearList.Reverse();
                     yearList.Insert(0, "全部");
 
@@ -75,8 +87,37 @@ namespace CertificateStatisticWPF.ViewModels
 			{
                 MessageBox.Show("获取数据异常:" + ex.Message);
 			}
-
 		}
+
+        public DelegateCommand<string> SelectYearCommand { get; set; }
+
+        private async Task SelectYear(string year)
+        {
+            try
+            {
+                var request = new ApiRequest 
+                {
+                    Route = "api/Statistic/GetByYear",
+                    Method = RestSharp.Method.POST,
+                    //选择全部则不传参数
+                    Parameters = year == "全部" ? null : year
+                };
+                var response = await Task.Run(() => Client.Execute(request));
+
+                if (response.Status == 1)
+                {
+                    List<Certificate> certificateList = JsonConvert.DeserializeObject<List<Certificate>>(response.Data.ToString());
+                    //把这个集合放入键值对，并从这个StatisticUC传给StatisitcChartsUC
+                    var parameters = new NavigationParameters { { "CertificateList", certificateList } };
+                    RegionManager.RequestNavigate("StatisticChartsRegion", "StatisticChartsUC", parameters);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("获取数据异常:" + ex.Message);
+            }
+        }
 
     }
 }

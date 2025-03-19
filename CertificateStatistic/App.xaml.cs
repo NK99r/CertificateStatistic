@@ -28,6 +28,7 @@ namespace CertificateStatistic
             containerRegistry.RegisterForNavigation<HomeUC, HomeUCViewModel>();
             containerRegistry.RegisterForNavigation<CertificateUC, CertificateViewModel>();
             containerRegistry.RegisterForNavigation<StatisticUC, StatisticViewModel>();
+            containerRegistry.RegisterForNavigation<StatisticChartsUC, StatisticChartsViewModel>();
 
             containerRegistry.RegisterDialog<PreviewDialog, PreviewDialogViewModel>();
         }
