@@ -56,7 +56,7 @@ namespace CertificateStatisticWPF.ViewModels
         /// 加载年份按钮，async表示异步方法，允许加载时程序做其他事情(不阻塞UI)
         /// </summary>
         /// <returns>Task用于没有返回值的异步操作，表示异步操作的执行过程</returns>
-		private async Task LoadAvailableYear()
+        private async Task LoadAvailableYear()
 		{
 			try
 			{
@@ -74,7 +74,7 @@ namespace CertificateStatisticWPF.ViewModels
                     List<string> yearList = JsonConvert.DeserializeObject<List<string>>(response.Data.ToString());
                     yearList.Reverse();
                     yearList.Insert(0, "全部");
-
+                    yearList.Insert(1, "近五年");
                     //添加按钮
                     YearButtonList = new ObservableCollection<YearButton>();
                     foreach (var year in yearList)
@@ -95,12 +95,16 @@ namespace CertificateStatisticWPF.ViewModels
         {
             try
             {
+                if(year != "全部" || year != "近五年")
+                {
+                    year = null;
+                }
                 var request = new ApiRequest 
                 {
                     Route = "api/Statistic/GetByYear",
                     Method = RestSharp.Method.POST,
                     //选择全部则不传参数
-                    Parameters = year == "全部" ? null : year
+                    Parameters = year
                 };
                 var response = await Task.Run(() => Client.Execute(request));
 
@@ -111,7 +115,6 @@ namespace CertificateStatisticWPF.ViewModels
                     var parameters = new NavigationParameters { { "CertificateList", certificateList } };
                     RegionManager.RequestNavigate("StatisticChartsRegion", "StatisticChartsUC", parameters);
                 }
-
             }
             catch (Exception ex)
             {

@@ -11,7 +11,10 @@
                 <ResourceDictionary Source="Asset/DataGridStyle.xaml"/>
                 <ResourceDictionary Source="Asset/TextBlockStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ScrollViewer.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="Segoe Fluent Icons"></FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

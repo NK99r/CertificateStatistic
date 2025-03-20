@@ -30,6 +30,30 @@
         </Setter>
     </Style>
     
+    <!--登录页面登录按钮-->
+    <Style x:Key="LoginButton" TargetType="Button">
+        <Setter Property="Background" Value="SkyBlue"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontFamily" Value="STHupo"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="5" 
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="0">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--首页轮播图箭头按钮样式-->
     <Style x:Key="ArrowButtonStyle" TargetType="Button">
         <Setter Property="Height" Value="30"/>

@@ -4,8 +4,7 @@
     <!-- DataGrid 样式 -->
     <Style x:Key="DataGridStyle" TargetType="DataGrid">
         <Setter Property="Background" Value="AliceBlue" />
-        <Setter Property="MaxHeight" Value="700" />
-        <Setter Property="Height" Value="auto" />
+        <Setter Property="Height" Value="auto"/>
         <Setter Property="Width" Value="auto"/>
         <Setter Property="MinHeight" Value="200" />
         <!--禁用自动生成列-->
@@ -17,11 +16,11 @@
         <Setter Property="RowBackground" Value="White" />
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontFamily" Value="Arial" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
         <!--复制时是否包括列标题-->
         <Setter Property="ClipboardCopyMode" Value="IncludeHeader"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
     </Style>
 
     <!-- 表头样式 -->
@@ -42,5 +41,4 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-    
 </ResourceDictionary>

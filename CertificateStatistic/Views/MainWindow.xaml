@@ -40,7 +40,7 @@
             <!--左侧导航栏-->
             <StackPanel Grid.Column="0" Background="SkyBlue" >
                 <Image Margin="0,5" Source="\Asset\pic\logo.png" Height="120"/>
-                <TextBlock Margin="0,5" Text="获奖证书管理系统" Foreground="White" HorizontalAlignment="Center" FontSize="25" FontFamily="STHupo"/>
+                <TextBlock Style="{StaticResource TitleTextStyle}" FontSize="25"/>
                 <ListBox ItemsSource="{Binding NavBarList}" Background="Transparent" BorderThickness="0" SelectedItem="{Binding SelectedNavItem}">
                     <!--这里的SelectedItem="{Binding SelectedNavItem}"，当点击某一导航项时，视为一次更新，通知后台改变并调用Navigate方法-->
                     <ListBox.ItemContainerStyle>

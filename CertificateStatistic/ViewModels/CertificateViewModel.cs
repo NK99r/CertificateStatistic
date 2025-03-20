@@ -111,8 +111,9 @@ namespace CertificateStatistic.ViewModels
 
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    ObservableCollection<Certificate> filterData = new ObservableCollection<Certificate>(CertificateView.Cast<Certificate>().ToList());
                     // 调用 ExcelTool 中的导出方法
-                    ExcelTool.ExportToExcel(ProcessedExcelData, saveFileDialog.FileName);
+                    ExcelTool.ExportToExcel(filterData, saveFileDialog.FileName);
                     MessageBox.Show("导出成功！");
                 }
             }

@@ -5,6 +5,7 @@ using CertificateStatisticWPF.ViewModels;
 using CertificateStatisticWPF.Views;
 using CertificateStatisticWPF.Views.Dialogs;
 using Prism.Ioc;
+using Prism.Services.Dialogs;
 using System.Windows;
 
 namespace CertificateStatistic
@@ -31,6 +32,19 @@ namespace CertificateStatistic
             containerRegistry.RegisterForNavigation<StatisticChartsUC, StatisticChartsViewModel>();
 
             containerRegistry.RegisterDialog<PreviewDialog, PreviewDialogViewModel>();
+            containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
+        }
+
+        protected override void InitializeShell(Window shell)
+        {
+            var dialogService = Container.Resolve<IDialogService>();
+            dialogService.ShowDialog("LoginDialog", new DialogParameters(), result =>
+            {
+                if (result.Result != ButtonResult.OK)
+                    Application.Current.Shutdown();
+                else
+                    shell.Show();
+            });
         }
     }
 }

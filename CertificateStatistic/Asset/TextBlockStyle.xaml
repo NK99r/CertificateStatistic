@@ -1,5 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--标题样式-->
+    <Style x:Key="TitleTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="STHupo"/>
+        <Setter Property="FontSize" Value="35"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Text" Value="获奖证书管理系统"/>
+        <Setter Property="Margin" Value="0,5"/>
+    </Style>
+    
     <!--提示样式-->
     <Style x:Key="TipTextStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="White"/>

@@ -7,12 +7,13 @@
              mc:Ignorable="d" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="AliceBlue">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -22,9 +23,7 @@
 
         <!--证书列表-->
         <Grid Grid.Row="0" Grid.ColumnSpan="3" Margin="20,10">
-            <ScrollViewer VerticalScrollBarVisibility="auto"
-                          HorizontalScrollBarVisibility="Auto"
-                          CanContentScroll="False">
+            <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Style="{StaticResource MaterialDesignScrollViewer}">
                 <DataGrid x:Name="CertificatesDataGrid" ItemsSource="{Binding CertificateView}" Style="{StaticResource DataGridStyle}" RowStyle="{StaticResource HighlightStyle}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="学号" Binding="{Binding StudentID, Mode=TwoWay}"/>
