@@ -1,6 +1,6 @@
 ﻿using SqlSugar;
 
-namespace CertificateStatisticAPI
+namespace CertificateStatisticAPI.Tools
 {
     public class SqlSugarContext
     {
@@ -16,7 +16,7 @@ namespace CertificateStatisticAPI
                     db.Aop.OnLogExecuting = (sql, pars) =>
                     {
                         //打印 SQL 语句
-                        Console.WriteLine(sql); 
+                        Console.WriteLine(sql);
                     };
                 }
             );

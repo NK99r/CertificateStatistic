@@ -31,7 +31,6 @@
         <!--显示错误提示-->
         <md:Snackbar x:Name="ErrorMsgBar" Grid.ColumnSpan="2" MessageQueue="{md:MessageQueue}"/>
 
-
         <md:Transitioner Grid.Row="1" SelectedIndex="{Binding SelectedIndex, FallbackValue=0}">
             <!--密码登录视图-->
             <md:TransitionerSlide>

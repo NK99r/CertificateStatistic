@@ -13,10 +13,6 @@ namespace CertificateStatisticWPF.ViewModels
 {
     internal class LoginDialogViewModel : BindableBase, IDialogAware
     {
-        public string Title { get; set; } = "获奖证书管理系统登录";
-
-        public event Action<IDialogResult> RequestClose;
-
         /// <summary>
         /// 事件管理器(消息队列用)
         /// </summary>
@@ -92,6 +88,10 @@ namespace CertificateStatisticWPF.ViewModels
         #endregion
 
         #region IDialogAware接口实现
+        public string Title { get; set; } = "获奖证书管理系统登录";
+
+        public event Action<IDialogResult> RequestClose;
+
         public bool CanCloseDialog()
         {
             return true;

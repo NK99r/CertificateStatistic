@@ -1,4 +1,5 @@
-using CertificateStatisticAPI;
+using CertificateStatisticAPI.Tools;
+using DailyApp.API.AutoMappers;
 using SqlSugar;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<SqlSugarScope>(factory => SqlSugarContext.DB);
+//AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperSettings));
 
 var app = builder.Build();
 
