@@ -117,5 +117,37 @@ namespace CertificateStatisticAPI.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// 获得用户盐值
+        /// </summary>
+        /// <param name="phoneNum">手机号</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetSalt(string phoneNum)
+        {
+            ResponseResult response = new ResponseResult();
+            try
+            {
+                var account = DB.Queryable<Account>().First(a => a.PhoneNum == phoneNum);
+                if (account == null)
+                {
+                    response.Status = -1;
+                    response.Msg = "用户不存在";
+                    return Ok(response);
+                }
+
+                response.Status = 1;
+                response.Msg = "获取盐值成功";
+                response.Data = account.Salt;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = -1;
+                response.Msg = $"{ex.Message}\n服务器忙,请稍等...";
+            }
+            return Ok(response);
+        }
+
     }
 }

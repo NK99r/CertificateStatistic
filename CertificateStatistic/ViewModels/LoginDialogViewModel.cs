@@ -101,6 +101,13 @@ namespace CertificateStatisticWPF.ViewModels
         private void Register()
         {
             //基本数据验证
+            // 验证手机号长度
+            if (AccountDTO.PhoneNum == null || AccountDTO.PhoneNum.Length > 11)
+            {
+                Aggregator.GetEvent<MsgEvent>().Publish("手机号格式不对");
+                return;
+            }
+
             if (string.IsNullOrEmpty(AccountDTO.PhoneNum) || string.IsNullOrEmpty(AccountDTO.Pwd) || string.IsNullOrEmpty(AccountDTO.ConfirmPwd))
             {
                 //将"注册信息不全"广播给订阅者(LoginDialog)
