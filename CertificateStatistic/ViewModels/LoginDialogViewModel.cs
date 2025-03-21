@@ -1,4 +1,8 @@
-﻿using DailyApp.WPF.HttpClients;
+﻿using CertificateStatisticAPI.Tools;
+using CertificateStatisticWPF.Models.DTOs;
+using CertificateStatisticWPF.Tools;
+using DailyApp.WPF.HttpClients;
+using DailyApp.WPF.MsgEvents;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -6,6 +10,7 @@ using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,8 +41,103 @@ namespace CertificateStatisticWPF.ViewModels
 
             ShowLogin_CpaContentCommand = new DelegateCommand(ShowLogin_CpaContent);
             #endregion
+
+            #region 登陆注册操作
+            AccountDTO = new AccountDTO();
+
+            RegisterCommand = new DelegateCommand(Register);
+            #endregion
         }
 
+        /// <summary>
+        /// 账号信息
+        /// </summary>
+        private AccountDTO _accountDTO;
+        public AccountDTO AccountDTO
+        {
+            get { return _accountDTO; }
+            set
+            {
+                _accountDTO = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #region 密码
+        /// <summary>
+        /// 密码
+        /// </summary>
+        private string _pwd;
+        public string Pwd
+        {
+            get { return _pwd; }
+            set
+            {
+                _pwd = value;
+                AccountDTO.Pwd = value;  // 自动更新 AccountDTO.Pwd
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 确认密码
+        /// </summary>
+        private string _confirmPwd;
+        public string ConfirmPwd
+        {
+            get { return _confirmPwd; }
+            set
+            {
+                _confirmPwd = value;
+                AccountDTO.ConfirmPwd = value;  // 同步到 AccountDTO.ConfirmPwd
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region 注册
+        public DelegateCommand RegisterCommand { get; set; }
+
+        private void Register()
+        {
+            //基本数据验证
+            if (string.IsNullOrEmpty(AccountDTO.PhoneNum) || string.IsNullOrEmpty(AccountDTO.Pwd) || string.IsNullOrEmpty(AccountDTO.ConfirmPwd))
+            {
+                //将"注册信息不全"广播给订阅者(LoginDialog)
+                Aggregator.GetEvent<MsgEvent>().Publish("注册信息不全");
+                return;
+            }
+
+            if (AccountDTO.Pwd != AccountDTO.ConfirmPwd)
+            {
+                Aggregator.GetEvent<MsgEvent>().Publish("两次密码输入不一致");
+                return;
+            }
+
+            //生成盐值
+            string salt = EncryptionTool.GenerateSalt();
+            AccountDTO.Salt = salt;
+
+            string hashedPassword = EncryptionTool.HashPassword(AccountDTO.Pwd, salt);
+            AccountDTO.Pwd = hashedPassword;
+
+            ApiRequest apiRequest = new ApiRequest();
+            apiRequest.Method = RestSharp.Method.POST;
+            apiRequest.Route = "api/Account/Register";
+            apiRequest.Parameters = AccountDTO;
+
+            ApiResponse response = Client.Execute(apiRequest);  //请求Api
+            if (response.Status == 1)
+            {
+                Aggregator.GetEvent<MsgEvent>().Publish(response.Msg);
+                SelectedIndex = 0;  //注册成功，切换到登录模块
+            }
+            else
+            {
+                Aggregator.GetEvent<MsgEvent>().Publish(response.Msg);
+            }
+        }
+        #endregion
 
 
 

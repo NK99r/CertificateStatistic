@@ -22,5 +22,10 @@ namespace CertificateStatisticWPF.Models.DTOs
         /// 再次输入的密码
         /// </summary>
         public string ConfirmPwd { get; set; }
+
+        /// <summary>
+        /// 密码盐值，每个用户各自唯一
+        /// </summary>
+        public string Salt { get; set; }
     }
 }

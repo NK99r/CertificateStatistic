@@ -12,6 +12,11 @@ namespace CertificateStatisticAPI.DataModels
 
         public string Pwd {  get; set; }
 
+        /// <summary>
+        /// 密码盐值，每个用户各自唯一
+        /// </summary>
+        public string Salt { get; set; }
+
         public DateTime RegDate { get; set; }
     }
 }

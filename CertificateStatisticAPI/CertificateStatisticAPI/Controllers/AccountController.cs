@@ -35,13 +35,13 @@ namespace CertificateStatisticAPI.Controllers
         /// <param name="accountDTO">WPF端传来的账号信息</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Register(AccountDTO accountDTO)
+        public IActionResult Register(AccountDTO loginDTO)
         {
             ResponseResult response = new ResponseResult();
             try
             {
                 //检查账号是否存在
-                bool exist = DB.Queryable<Account>().Any(a => a.PhoneNum == accountDTO.PhoneNum);
+                bool exist = DB.Queryable<Account>().Any(a => a.PhoneNum == loginDTO.PhoneNum);
                 if (exist)
                 {
                     response.Status = -1;
@@ -50,7 +50,7 @@ namespace CertificateStatisticAPI.Controllers
                 }
 
                 //映射转换 AccountDTO->Account
-                Account newAccount = AutoMapper.Map<Account>(accountDTO);
+                Account newAccount = AutoMapper.Map<Account>(loginDTO);
                 newAccount.RegDate = DateTime.Now;
 
                 //插入
@@ -75,7 +75,11 @@ namespace CertificateStatisticAPI.Controllers
             return Ok(response);
         }
 
-
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="accountDTO">WPF端传来的账号信息</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Login(AccountDTO accountDTO)
         {

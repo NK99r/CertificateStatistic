@@ -5,5 +5,10 @@
         public string PhoneNum { get; set; }
 
         public string Pwd { get; set; }
+
+        /// <summary>
+        /// 密码盐值，每个用户各自唯一
+        /// </summary>
+        public string Salt { get; set; }
     }
 }

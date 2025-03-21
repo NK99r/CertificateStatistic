@@ -8,6 +8,7 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:pwdEx="clr-namespace:DailyApp.WPF.Extensions"
              Width="600">
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
@@ -28,10 +29,7 @@
             <TextBlock Style="{StaticResource TitleTextStyle}" Foreground="SkyBlue"/>
         </StackPanel>
 
-        <!--显示错误提示-->
-        <md:Snackbar x:Name="ErrorMsgBar" Grid.ColumnSpan="2" MessageQueue="{md:MessageQueue}"/>
-
-        <md:Transitioner Grid.Row="1" SelectedIndex="{Binding SelectedIndex, FallbackValue=0}">
+        <md:Transitioner Grid.Row="1" SelectedIndex="{Binding SelectedIndex, FallbackValue=2}">
             <!--密码登录视图-->
             <md:TransitionerSlide>
                 <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center">
@@ -109,24 +107,40 @@
                     <!--一行手机号-->
                     <StackPanel Margin="5" Orientation="Horizontal" Height="25" HorizontalAlignment="Right">
                         <TextBlock VerticalAlignment="Center" Text="手机号："/>
-                        <TextBox md:HintAssist.Hint="请输入手机号" Width="200"/>
+                        <TextBox md:HintAssist.Hint="请输入手机号" Text="{Binding AccountDTO.PhoneNum}" Width="200"/>
                     </StackPanel>
 
                     <!--一行密码-->
                     <StackPanel Margin="5" Orientation="Horizontal" Height="25" HorizontalAlignment="Right">
                         <TextBlock VerticalAlignment="Center" Text="密码："/>
-                        <PasswordBox md:HintAssist.Hint="请输入密码" Width="200"/>
+                        <PasswordBox md:HintAssist.Hint="请输入密码" pwdEx:PasswordBoxExtend.Pwd="{Binding Pwd,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="200">
+                            <i:Interaction.Behaviors>
+                                <pwdEx:PasswordBoxBehavior></pwdEx:PasswordBoxBehavior>
+                            </i:Interaction.Behaviors>
+                        </PasswordBox>
                     </StackPanel>
 
                     <!--一行确认密码-->
                     <StackPanel Margin="5" Orientation="Horizontal" Height="25" HorizontalAlignment="Right">
                         <TextBlock VerticalAlignment="Center" Text="确认密码："/>
-                        <PasswordBox md:HintAssist.Hint="请再次输入密码" Width="200"/>
+                        <PasswordBox md:HintAssist.Hint="请再次输入密码" pwdEx:PasswordBoxExtend.Pwd="{Binding ConfirmPwd,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="200">
+                            <i:Interaction.Behaviors>
+                                <pwdEx:PasswordBoxBehavior></pwdEx:PasswordBoxBehavior>
+                            </i:Interaction.Behaviors>
+                        </PasswordBox>
                     </StackPanel>
 
-                    <Button Content="返回登录" Command="{Binding ShowLogin_PwdContentCommand}" Style="{StaticResource LoginButton}"/>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Button Content="注册" Command="{Binding RegisterCommand}" Width="100" Style="{StaticResource LoginButton}"/>
+                        <Button Content="返回登陆" Command="{Binding ShowLogin_PwdContentCommand}" Width="100" Style="{StaticResource LoginButton}"/>
+                    </StackPanel>
                 </StackPanel>
             </md:TransitionerSlide>
         </md:Transitioner>
+
+        <!--显示错误提示-->
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+            <md:Snackbar x:Name="ErrorMsgBar" Grid.ColumnSpan="2" MessageQueue="{md:MessageQueue}"/>
+        </StackPanel>
     </Grid>
 </UserControl>
