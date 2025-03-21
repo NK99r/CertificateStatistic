@@ -22,6 +22,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="5" HorizontalAlignment="Center">
@@ -29,21 +30,26 @@
             <TextBlock Style="{StaticResource TitleTextStyle}" Foreground="SkyBlue"/>
         </StackPanel>
 
-        <md:Transitioner Grid.Row="1" SelectedIndex="{Binding SelectedIndex, FallbackValue=2}">
+        <md:Transitioner Grid.Row="1" SelectedIndex="{Binding SelectedIndex, FallbackValue=0}">
             <!--密码登录视图-->
             <md:TransitionerSlide>
                 <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center">
                     <!--一行手机号-->
                     <StackPanel Margin="5" Orientation="Horizontal" Height="25" HorizontalAlignment="Right">
                         <TextBlock VerticalAlignment="Center" Text="手机号："/>
-                        <TextBox md:HintAssist.Hint="请输入手机号" Width="200"/>
+                        <TextBox md:HintAssist.Hint="请输入手机号" Text="{Binding AccountDTO.PhoneNum}" Width="200"/>
                     </StackPanel>
 
                     <!--一行密码-->
                     <StackPanel Margin="5" Orientation="Horizontal" Height="25" HorizontalAlignment="Right">
                         <TextBlock VerticalAlignment="Center" Text="密码："/>
-                        <PasswordBox md:HintAssist.Hint="请输入密码" Width="200"/>
+                        <PasswordBox md:HintAssist.Hint="请输入密码" pwdEx:PasswordBoxExtend.Pwd="{Binding Pwd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200">
+                            <i:Interaction.Behaviors>
+                                <pwdEx:PasswordBoxBehavior></pwdEx:PasswordBoxBehavior>
+                            </i:Interaction.Behaviors>
+                        </PasswordBox>
                     </StackPanel>
+                    
                     <DockPanel Margin="5" Height="15">
                         <TextBlock Margin="5,0" Text="注册账号" HorizontalAlignment="Left">
                             <i:Interaction.Triggers>
@@ -60,7 +66,8 @@
                             </i:Interaction.Triggers>
                         </TextBlock>
                     </DockPanel>
-                    <Button Content="登录" Style="{StaticResource LoginButton}"/>
+                    
+                    <Button Content="登录" Command="{Binding LoginCommand}" Style="{StaticResource LoginButton}"/>
                 </StackPanel>
             </md:TransitionerSlide>
             
@@ -70,7 +77,7 @@
                     <!--一行手机号-->
                     <StackPanel Margin="5" Orientation="Horizontal" Height="25">
                         <TextBlock VerticalAlignment="Center" Text="手机号："/>
-                        <TextBox md:HintAssist.Hint="请输入手机号" Width="200"/>
+                        <TextBox md:HintAssist.Hint="请输入手机号" Text="{Binding AccountDTO.PhoneNum}" Width="200"/>
                     </StackPanel>
                     <!--一行验证码-->
                     <StackPanel Margin="5" Orientation="Horizontal" Height="25">
@@ -139,8 +146,8 @@
         </md:Transitioner>
 
         <!--显示错误提示-->
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-            <md:Snackbar x:Name="ErrorMsgBar" Grid.ColumnSpan="2" MessageQueue="{md:MessageQueue}"/>
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center">
+            <md:Snackbar x:Name="ErrorMsgBar" Width="600" MessageQueue="{md:MessageQueue}"/>
         </StackPanel>
     </Grid>
 </UserControl>

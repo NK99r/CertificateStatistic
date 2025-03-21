@@ -3,6 +3,7 @@ using CertificateStatisticWPF.Models.DTOs;
 using CertificateStatisticWPF.Tools;
 using DailyApp.WPF.HttpClients;
 using DailyApp.WPF.MsgEvents;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -46,6 +47,8 @@ namespace CertificateStatisticWPF.ViewModels
             AccountDTO = new AccountDTO();
 
             RegisterCommand = new DelegateCommand(Register);
+
+            LoginCommand = new DelegateCommand(Login);
             #endregion
         }
 
@@ -74,7 +77,7 @@ namespace CertificateStatisticWPF.ViewModels
             set
             {
                 _pwd = value;
-                AccountDTO.Pwd = value;  // 自动更新 AccountDTO.Pwd
+                AccountDTO.Pwd = value;  //自动更新AccountDTO.Pwd
                 RaisePropertyChanged();
             }
         }
@@ -89,7 +92,7 @@ namespace CertificateStatisticWPF.ViewModels
             set
             {
                 _confirmPwd = value;
-                AccountDTO.ConfirmPwd = value;  // 同步到 AccountDTO.ConfirmPwd
+                AccountDTO.ConfirmPwd = value;  //自动更新AccountDTO.ConfirmPwd
                 RaisePropertyChanged();
             }
         }
@@ -101,10 +104,10 @@ namespace CertificateStatisticWPF.ViewModels
         private void Register()
         {
             //基本数据验证
-            // 验证手机号长度
-            if (AccountDTO.PhoneNum == null || AccountDTO.PhoneNum.Length > 11)
+            //验证手机号长度
+            if (AccountDTO.PhoneNum == null || AccountDTO.PhoneNum.Length != 11)
             {
-                Aggregator.GetEvent<MsgEvent>().Publish("手机号格式不对");
+                Aggregator.GetEvent<MsgEvent>().Publish("手机号不足11位");
                 return;
             }
 
@@ -146,7 +149,62 @@ namespace CertificateStatisticWPF.ViewModels
         }
         #endregion
 
+        #region 登录
+        public DelegateCommand LoginCommand { get; set; }
 
+        private void Login()
+        {
+            // 数据基本验证
+            if (AccountDTO.PhoneNum == null || AccountDTO.PhoneNum.Length != 11)
+            {
+                Aggregator.GetEvent<MsgEvent>().Publish("手机号不足11位");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(Pwd))
+            {
+                Aggregator.GetEvent<MsgEvent>().Publish("登录信息不全");
+                return;
+            }
+
+            //获取用户的盐值
+            ApiRequest saltRequest = new ApiRequest();
+            saltRequest.Method = RestSharp.Method.GET;
+            saltRequest.Route = $"api/Account/GetSalt?phoneNum={AccountDTO.PhoneNum}";
+
+            var saltResponse = Client.Execute(saltRequest);
+            if (saltResponse.Status != 1)
+            {
+                Aggregator.GetEvent<MsgEvent>().Publish("获取用户信息失败，确保手机号输入正确");
+                return;
+            }
+
+            AccountDTO.Salt = saltResponse.Data.ToString();
+
+            //对用户输入的密码进行加密
+            string hashedPassword = EncryptionTool.HashPassword(Pwd, AccountDTO.Salt);
+            AccountDTO.Pwd = hashedPassword;
+
+            //发送登录请求
+            ApiRequest loginRequest = new ApiRequest();
+            loginRequest.Method = RestSharp.Method.POST;
+            loginRequest.Route = "api/Account/Login";
+            loginRequest.Parameters = AccountDTO;
+
+            var loginResponse = Client.Execute(loginRequest);
+            if (loginResponse.Status == 1)
+            {
+                if (RequestClose != null)
+                {
+                    RequestClose(new DialogResult(ButtonResult.OK));
+                }
+            }
+            else
+            {
+                Aggregator.GetEvent<MsgEvent>().Publish(loginResponse.Msg);
+            }
+        }
+        #endregion
 
         #region 切换显示的内容
         /// <summary>
