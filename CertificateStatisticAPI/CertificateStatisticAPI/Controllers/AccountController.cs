@@ -45,7 +45,7 @@ namespace CertificateStatisticAPI.Controllers
                 if (exist)
                 {
                     response.Status = -1;
-                    response.Msg = "账号已存在";
+                    response.Msg = "用户已存在";
                     return Ok(response);
                 }
 
@@ -58,7 +58,7 @@ namespace CertificateStatisticAPI.Controllers
                 if (snowFlakeID != 0)
                 {
                     response.Status = 1;
-                    response.Msg = "注册成功，该账户雪花ID为：" + snowFlakeID.ToString();
+                    response.Msg = "注册成功，该用户雪花ID为：" + snowFlakeID.ToString();
                 }
                 else
                 {
@@ -68,15 +68,50 @@ namespace CertificateStatisticAPI.Controllers
             }
             catch (Exception ex)
             {
-                response.Status = -1;//失败
+                response.Status = -1;
                 response.Msg = $"{ex.Message}\n服务器忙,请稍等...";
 
             }
-
             return Ok(response);
-
         }
 
+
+        [HttpPost]
+        public IActionResult Login(AccountDTO accountDTO)
+        {
+            ResponseResult response = new ResponseResult();
+            try
+            {
+                //检查账号是否存在
+                var account = DB.Queryable<Account>().First(a => a.PhoneNum == accountDTO.PhoneNum);
+                if (account == null)
+                {
+                    response.Status = -1;
+                    response.Msg = "用户不存在，请检查手机号或注册";
+                    return Ok(response);
+                }
+                if(account.Pwd != accountDTO.Pwd)
+                {
+                    response.Status = -1;
+                    response.Msg = "密码错误，请重试";
+                    return Ok(response);
+                }
+
+                //映射转换 Account->AccountDTO
+                AccountDTO loginAccountDTO = AutoMapper.Map<AccountDTO>(account);
+
+                response.Status = 1;
+                response.Msg = "登录成功";
+                response.Data = loginAccountDTO;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = -1;
+                response.Msg = $"{ex.Message}\n服务器忙,请稍等...";
+            }
+            return Ok(response);
+        }
 
     }
 }

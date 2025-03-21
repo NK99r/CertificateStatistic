@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CertificateStatisticWPF.Models
+namespace CertificateStatisticWPF.Models.DTOs
 {
     class AccountDTO
     {
