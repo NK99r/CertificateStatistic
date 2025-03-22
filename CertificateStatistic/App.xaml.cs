@@ -35,15 +35,45 @@ namespace CertificateStatistic
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
         }
 
+        /// <summary>
+        /// 在主窗口初始化之前执行的方法
+        /// </summary>
+        /// <param name="shell"></param>
         protected override void InitializeShell(Window shell)
         {
+            //依赖注入容器获得IDialogService的实例
             var dialogService = Container.Resolve<IDialogService>();
+            //打开登录对话框
             dialogService.ShowDialog("LoginDialog", new DialogParameters(), result =>
             {
+                //result为回调函数，在对话框关闭时执行，其方法体表示对话框的返回结果
                 if (result.Result != ButtonResult.OK)
+                {
                     Application.Current.Shutdown();
+                }
                 else
+                {
+                    //MainWindow初始化
+                    if (Current.MainWindow == null)
+                    {
+                        Current.MainWindow = shell;
+                    }
+
+                    if (Current.MainWindow.DataContext == null)
+                    {
+                        //依赖注入获得主页面数据上下文
+                        Current.MainWindow.DataContext = Container.Resolve<MainWindowViewModel>();
+                    }
+
+                    var mainViewModel = Current.MainWindow.DataContext as MainWindowViewModel;
+                    if (mainViewModel != null)
+                    {
+                        //默认导航到首页
+                        mainViewModel.SetDefaultNavigation();
+                    }
+                    //显示主窗口
                     shell.Show();
+                }
             });
         }
     }

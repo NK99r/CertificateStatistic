@@ -85,5 +85,13 @@ namespace CertificateStatistic.ViewModels
         }
         #endregion
 
+        /// <summary>
+        /// 默认首页
+        /// </summary>
+        public void SetDefaultNavigation()
+        {
+            RegionManager.Regions["MainRegion"].RequestNavigate("HomeUC");
+        }
+
     }
 }
