@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CertificateStatisticWPF.Views
+namespace CertificateStatisticWPF.Views.ChartsUC
 {
     /// <summary>
-    /// StatisticChartsUC.xaml 的交互逻辑
+    /// SingleYearUC.xaml 的交互逻辑
     /// </summary>
-    public partial class StatisticChartsUC : UserControl
+    public partial class SingleYearUC : UserControl
     {
-        public StatisticChartsUC()
+        public SingleYearUC()
         {
             InitializeComponent();
         }

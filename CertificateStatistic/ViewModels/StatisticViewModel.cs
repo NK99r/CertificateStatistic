@@ -95,25 +95,44 @@ namespace CertificateStatisticWPF.ViewModels
         {
             try
             {
-                if(year != "全部" || year != "近五年")
+                if (year != "全部" && year != "近五年")
                 {
                     year = null;
                 }
+
                 var request = new ApiRequest 
                 {
                     Route = "api/Statistic/GetByYear",
                     Method = RestSharp.Method.POST,
-                    //选择全部则不传参数
                     Parameters = year
                 };
+
                 var response = await Task.Run(() => Client.Execute(request));
 
                 if (response.Status == 1)
                 {
+                    string viewName = "";
+                    if (year == "全部")
+                    {
+                        viewName = "AllYearsUC";
+                    }
+                    else if (year == "近五年")
+                    {
+                        viewName = "RecentFiveYearsUC";
+                    }
+                    else
+                    {
+                        viewName = "SingleYearUC";
+                    }
+
                     List<Certificate> certificateList = JsonConvert.DeserializeObject<List<Certificate>>(response.Data.ToString());
                     //把这个集合放入键值对，并从这个StatisticUC传给StatisitcChartsUC
-                    var parameters = new NavigationParameters { { "CertificateList", certificateList } };
-                    RegionManager.RequestNavigate("StatisticChartsRegion", "StatisticChartsUC", parameters);
+                    var parameters = new NavigationParameters 
+                    {
+                        { "CertificateList", certificateList },
+                        { "Year", year }
+                    };
+                    RegionManager.RequestNavigate("StatisticChartsRegion", viewName, parameters);
                 }
             }
             catch (Exception ex)

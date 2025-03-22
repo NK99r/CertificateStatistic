@@ -3,6 +3,7 @@ using CertificateStatistic.Views;
 using CertificateStatistics.Views;
 using CertificateStatisticWPF.ViewModels;
 using CertificateStatisticWPF.Views;
+using CertificateStatisticWPF.Views.ChartsUC;
 using CertificateStatisticWPF.Views.Dialogs;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
@@ -29,12 +30,17 @@ namespace CertificateStatistic
             containerRegistry.RegisterForNavigation<HomeUC, HomeUCViewModel>();
             containerRegistry.RegisterForNavigation<CertificateUC, CertificateViewModel>();
             containerRegistry.RegisterForNavigation<StatisticUC, StatisticViewModel>();
-            containerRegistry.RegisterForNavigation<StatisticChartsUC, StatisticChartsViewModel>();
+
+            //统计页导航
+            containerRegistry.RegisterForNavigation<AllYearsUC, AllYearsUCViewModel>();
+            containerRegistry.RegisterForNavigation<RecentFiveYearsUC, RecentFiveYearsUCViewModel>();
+            containerRegistry.RegisterForNavigation<SingleYearUC, SingleYearUCViewModel>();
 
             containerRegistry.RegisterDialog<PreviewDialog, PreviewDialogViewModel>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
         }
 
+        /*
         /// <summary>
         /// 在主窗口初始化之前执行的方法
         /// </summary>
@@ -76,5 +82,6 @@ namespace CertificateStatistic
                 }
             });
         }
+        */
     }
 }
