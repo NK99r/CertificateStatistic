@@ -18,9 +18,9 @@ namespace CertificateStatisticWPF.Views.ChartsUC
     /// <summary>
     /// AllYearsUC.xaml 的交互逻辑
     /// </summary>
-    public partial class AllYearsUC : UserControl
+    public partial class MultiYearsUC : UserControl
     {
-        public AllYearsUC()
+        public MultiYearsUC()
         {
             InitializeComponent();
         }

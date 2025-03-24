@@ -112,13 +112,9 @@ namespace CertificateStatisticWPF.ViewModels
                 if (response.Status == 1)
                 {
                     string viewName = "";
-                    if (year == "全部")
+                    if (year == "全部" || year == "近五年")
                     {
-                        viewName = "AllYearsUC";
-                    }
-                    else if (year == "近五年")
-                    {
-                        viewName = "RecentFiveYearsUC";
+                        viewName = "MultiYearsUC";
                     }
                     else
                     {

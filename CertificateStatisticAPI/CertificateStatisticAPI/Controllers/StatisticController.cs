@@ -1,9 +1,11 @@
 ﻿using CertificateStatisticAPI.DataModels;
+using CertificateStatisticAPI.DataModels.DTOs;
 using CertificateStatisticAPI.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mysqlx;
 using SqlSugar;
+using System.Collections.Generic;
 
 namespace CertificateStatisticAPI.Controllers
 {
@@ -120,6 +122,51 @@ namespace CertificateStatisticAPI.Controllers
 
         }
 
+        /// <summary>
+        /// 查询对应专业的数量
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetProfessionCount()
+        {
+            var ResponseResult = new ResponseResult();
+            try
+            {
+                var professionStat = DB.Queryable<Certificate>()
+                    //联表查询，条件为两者的ProID相同
+                    //详见果糖网：https://www.donet5.com/home/doc?masterId=1&typeId=1185
+                    .LeftJoin<Profession>((c, p) => c.ProID == p.ProID)     
+                    //按照专业名分组
+                    .GroupBy((c, p) => p.ProfessionName)
+                    //提取每组数据并化为新对象
+                    .Select((c, p) => new ProfessionCountDTO
+                    {
+                        //如果专业名称为空，返回 "其他专业"，否则返回原专业名称。
+                        ProfessionName = SqlFunc.IsNullOrEmpty(p.ProfessionName) ? "其他专业" : p.ProfessionName,
+                        //统计每个专业下StudentID数量
+                        //详见果糖网：https://www.donet5.com/home/doc?masterId=1&typeId=2243
+                        Count = SqlFunc.AggregateCount(c.StudentID)
+                    })
+                    .ToList();
 
+                if (professionStat != null)
+                {
+                    ResponseResult.Status = 1;
+                    ResponseResult.Msg = "获得数据成功";
+                    ResponseResult.Data = professionStat;
+                }
+                else
+                {
+                    ResponseResult.Status = -1;
+                    ResponseResult.Msg = "获得数据失败，请稍后重试";
+                }
+            }
+            catch (Exception ex)
+            {
+                ResponseResult.Status = -1;
+                ResponseResult.Msg = $"获取数据失败：{ex.Message}";
+            }
+            return Ok(ResponseResult);
+        }
     }
 }

@@ -12,21 +12,22 @@ using System.Windows.Media;
 
 namespace CertificateStatisticWPF.ViewModels
 {
-    internal class AllYearsUCViewModel : BindableBase, INavigationAware
+    internal class MultiYearsUCViewModel : BindableBase, INavigationAware
     {
 
-        public AllYearsUCViewModel()
+        public MultiYearsUCViewModel()
         {
-            #region 左上柱状图初始化
-            ColumnSeries = new SeriesCollection();
-
+            //获得所有年份
             YearLabels = new List<string>();
-            #endregion
 
-            #region 右上饼图初始化
+            //左上柱状图初始化
+            ColumnSeries = new SeriesCollection(); 
+
+            //右上饼图初始化
             PieSeries = new SeriesCollection();
-            #endregion
 
+            //左下分组柱状图初始化
+            EventLevelColumnSeries = new SeriesCollection();
         }
 
         #region 左上柱状图
@@ -181,13 +182,81 @@ namespace CertificateStatisticWPF.ViewModels
 
         #endregion
 
+        #region 左下分组柱状图
+        /// <summary>
+        /// 数据系列
+        /// </summary>
+        private SeriesCollection _eventLevelColumnSeries;
+        public SeriesCollection EventLevelColumnSeries
+        {
+            get { return _eventLevelColumnSeries; }
+            set
+            {
+                _eventLevelColumnSeries = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private void EvenLevelColumnChartData(List<Certificate> certificates)
+        {
+            //按年份和级别分组
+            var groupedData = certificates
+                .GroupBy(c => new { Year = c.Date.Substring(0, 4), Level = c.EventLevel }) // 按年份和级别分组
+                .Select(g => new
+                {
+                    Year = g.Key.Year,
+                    Level = g.Key.Level,
+                    Count = g.Count()
+                })
+                .ToList();
+
+            //创建分组柱状图数据
+            var provincialSeries = new ColumnSeries
+            {
+                Title = "省部级",
+                Values = new ChartValues<double>(),
+                Fill = Brushes.Orange,
+                DataLabels = true
+            };
+
+            var nationalSeries = new ColumnSeries
+            {
+                Title = "国家级",
+                Values = new ChartValues<double>(),
+                Fill = Brushes.OrangeRed,
+                DataLabels = true
+            };
+
+            //填充数据
+            foreach (var year in YearLabels)
+            {
+                //省部级数量
+                var provincialCount = groupedData
+                    .FirstOrDefault(g => g.Year == year && g.Level == "省部级")?.Count ?? 0;
+                provincialSeries.Values.Add((double)provincialCount);
+
+                //国家级数量
+                var nationalCount = groupedData
+                    .FirstOrDefault(g => g.Year == year && g.Level == "国家级")?.Count ?? 0;
+                nationalSeries.Values.Add((double)nationalCount);
+            }
+
+            EventLevelColumnSeries.Clear();
+            EventLevelColumnSeries.Add(provincialSeries);
+            EventLevelColumnSeries.Add(nationalSeries);
+        }
+        #endregion
+
         private void CreateCharts(List<Certificate> certificates)
         {
-            // 处理柱状图数据
+            //左上柱状图
             ColumnChartData(certificates);
 
-            // 处理饼图数据
+            //右上饼图
             PieChartData(certificates);
+
+            //左下分组柱状图
+            EvenLevelColumnChartData(certificates);
         }
 
         #region INavigationAware接口实现
