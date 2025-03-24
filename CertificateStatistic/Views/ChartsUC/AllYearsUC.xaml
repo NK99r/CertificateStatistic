@@ -21,24 +21,34 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0" Margin="10">
-            <lvc:CartesianChart Series="{Binding ColumnSeries}" LegendLocation="Top">
-                <!--X轴指标-->
-                <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="年份" Labels="{Binding YearLabels}" >
-                        <lvc:Axis.Separator>
-                            <lvc:Separator StrokeThickness="1" Stroke="#ccc"/>
-                        </lvc:Axis.Separator>
-                    </lvc:Axis>
-                </lvc:CartesianChart.AxisX>
-                <!--Y轴指标-->
-                <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="证书数量">
-                        <lvc:Axis.Separator>
-                            <lvc:Separator StrokeThickness="1" Stroke="#ccc"/>
-                        </lvc:Axis.Separator>
-                    </lvc:Axis>
-                </lvc:CartesianChart.AxisY>
-            </lvc:CartesianChart>
+            <StackPanel Orientation="Vertical">
+                <lvc:CartesianChart Name="柱状图" Series="{Binding ColumnSeries}" LegendLocation="Top" Height="300">
+                    <!--X轴指标-->
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="年份" Labels="{Binding YearLabels}" >
+                            <lvc:Axis.Separator>
+                                <lvc:Separator StrokeThickness="1" Stroke="#ccc"/>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <!--Y轴指标-->
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="证书数量">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator StrokeThickness="1" Stroke="#ccc"/>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+                <TextBlock Text="各年份证书数量统计" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="0" Grid.Column="1" Margin="10">
+            <StackPanel Orientation="Vertical">
+                <lvc:PieChart LegendLocation="Right" Series="{Binding PieSeries}" Height="300"/>
+                <TextBlock Text="全部证书类别占比统计" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>
