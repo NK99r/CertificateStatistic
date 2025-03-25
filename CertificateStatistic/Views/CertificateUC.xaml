@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="AliceBlue">
@@ -82,26 +83,26 @@
         <!--管理-->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
             <Border Background="SkyBlue" Height="210" Width="410">
-                <StackPanel Margin="10">
+                <StackPanel Margin="5">
                     <DockPanel Margin="5">
                         <TextBlock Text="查询：" Style="{StaticResource OperateTextStyle}"/>
                         <!--UpdateSourceTrigger=PropertyChanged表示当文本发生改变时，ViewModel的SearchText随之改变-->
-                        <TextBox Background="AliceBlue" Height="25" Width="300" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" TextWrapping="Wrap"/>
+                        <hc:TextBox Background="AliceBlue" Height="25" Width="300" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" TextWrapping="Wrap"/>
                     </DockPanel>
                     
-                    <DockPanel Margin="5">
+                    <DockPanel Margin="5,0">
                         <TextBlock Text="筛选：" Style="{StaticResource OperateTextStyle}"/>
-                        <WrapPanel HorizontalAlignment="Left" Width="270">
+                        <WrapPanel HorizontalAlignment="Left">
                             <ToggleButton Content="省部级" Command="{Binding FilterCommand}" CommandParameter="省部级" Style="{StaticResource FilterButtonStyle}"/>
                             <ToggleButton Content="国家级" Command="{Binding FilterCommand}" CommandParameter="国家级" Style="{StaticResource FilterButtonStyle}"/>
                             <ToggleButton Content="专利/软著" Command="{Binding FilterCommand}" CommandParameter="专利/软著" Style="{StaticResource FilterButtonStyle}"/>
-                            <Border Width="40"/>
+                            <Border Width="50"></Border>
                             <ToggleButton Content="科研类" Command="{Binding FilterCommand}" CommandParameter="科研类" Style="{StaticResource FilterButtonStyle}"/>
                             <ToggleButton Content="非科研类" Command="{Binding FilterCommand}" CommandParameter="非科研类" Style="{StaticResource FilterButtonStyle}"/>
                         </WrapPanel>
                     </DockPanel>
-
-                    <DockPanel Margin="5">
+                    <hc:ComboBox ItemsSource="{Binding ProfessionList}" DisplayMemberPath="ProfessionName" SelectedItem="{Binding SelectedProfession}" Margin="86,5" hc:InfoElement.Placeholder="专业"/>
+                    <DockPanel Margin="5,0">
                         <TextBlock Text="导入：" VerticalAlignment="Center" Style="{StaticResource OperateTextStyle}"/>
                         <Button HorizontalAlignment="Left" Command="{Binding DBImportCommand}" Style="{StaticResource DataBaseButtonStyle}">
                             <TextBlock Text="本表导入到数据库" Style="{StaticResource ButtonTextStyle}"/>

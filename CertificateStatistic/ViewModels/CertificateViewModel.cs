@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using DailyApp.WPF.HttpClients;
 using CertificateStatisticWPF.Models;
 using Prism.Services.Dialogs;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace CertificateStatistic.ViewModels
 {
@@ -25,13 +27,13 @@ namespace CertificateStatistic.ViewModels
 
         private readonly IDialogService DialogService;
 
-        public CertificateViewModel(HttpRestClient _client, IDialogService _dialogService)
+        public CertificateViewModel(HttpRestClient Client, IDialogService DialogService)
         {
             //构造器注入
-            this.Client = _client;
+            this.Client = Client;
 
             //构造器注入
-            this.DialogService = _dialogService;
+            this.DialogService = DialogService;
 
             #region Excel操作初始化
             ImportExcelCommand = new DelegateCommand(LoadExcelData);
@@ -43,6 +45,8 @@ namespace CertificateStatistic.ViewModels
             HightLightCommand = new DelegateCommand(HighlightData);
 
             FilterCommand = new DelegateCommand<string>(FilterData);
+
+            LoadProfessionList();
             #endregion
 
             #region 数据库操作初始化
@@ -184,6 +188,37 @@ namespace CertificateStatistic.ViewModels
         }
         #endregion
 
+        #region 专业列表ProfessionList
+        private ObservableCollection<Profession> _professionList;
+        public ObservableCollection<Profession> ProfessionList
+        {
+            get { return _professionList; }
+            set
+            {
+                _professionList = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+        #region 被选择的专业SelectedProfession
+        private Profession _selectedProfession;
+        public Profession SelectedProfession
+        {
+            get { return _selectedProfession; }
+            set
+            {
+                _selectedProfession = value;
+                RaisePropertyChanged();
+                // 触发筛选
+                if (value != null)
+                {
+                    FilterCommand.Execute(value.ProID);
+                }
+            }
+        }
+        #endregion
+
         #endregion
 
         #region 管理方法
@@ -292,11 +327,67 @@ namespace CertificateStatistic.ViewModels
                     matchPatent = isPatent1 || isSoftware || isPatent2;
                 }
 
-                //同时满足 EventLevel、Category、Organizer的条件
-                return matchEventLevel && matchCategory && matchPatent;
+                bool matchProfession = true;
+                if (SelectedProfession != null)
+                {
+                    // 从 StudentID 倒数第4位提取专业号
+                    string studentId = certificate.StudentID;
+                    string proIdFromStudent = "Other"; // 默认视为其他专业
+
+                    if (!string.IsNullOrEmpty(studentId) && studentId.Length >= 4)
+                    {
+                        proIdFromStudent = studentId.Substring(studentId.Length - 4, 1);
+                    }
+
+                    //判断是否匹配
+                    if (SelectedProfession.ProID == "Other")
+                    {
+                        //"其他专业"：检查专业号是否不在已知 ProID 列表中
+                        var validProIds = ProfessionList
+                            .Where(p => p.ProID != "Other")
+                            .Select(p => p.ProID)
+                            .ToList();
+                        matchProfession = !validProIds.Contains(proIdFromStudent);
+                    }
+                    else
+                    {
+                        matchProfession = (proIdFromStudent == SelectedProfession.ProID);
+                    }
+                }
+
+                //同时满足 EventLevel、Category、Organizer、Profession的条件
+                return matchEventLevel && matchCategory && matchPatent && matchProfession;
             };
 
             CertificateView.Refresh();
+        }
+
+        /// <summary>
+        /// 加载专业列表
+        /// </summary>
+        private void LoadProfessionList()
+        {
+            try
+            {
+                var request = new ApiRequest
+                {
+                    Route = "api/Certificate/GetAllProfession",
+                    Method = RestSharp.Method.GET
+                };
+
+                var response = Client.Execute(request);
+                if (response.Status == 1)
+                {
+                    var professionList = JsonConvert.DeserializeObject<List<Profession>>(response.Data.ToString());
+                    // 添加 "其他专业" 选项
+                    professionList.Add(new Profession { ProID = "Other", ProfessionName = "其他专业" });
+                    ProfessionList = new ObservableCollection<Profession>(professionList);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("获取专业数据失败：" + ex.Message);
+            }
         }
         #endregion
 

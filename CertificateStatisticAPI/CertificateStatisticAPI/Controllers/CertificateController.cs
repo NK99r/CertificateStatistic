@@ -13,9 +13,9 @@ namespace CertificateStatisticAPI.Controllers
     {
         private readonly SqlSugarScope DB;
 
-        public CertificateController(SqlSugarScope _dB)
+        public CertificateController(SqlSugarScope DB)
         {
-            this.DB = _dB;
+            this.DB = DB;
         }
 
         /// <summary>
@@ -68,6 +68,35 @@ namespace CertificateStatisticAPI.Controllers
                 DB.Insertable(certificates).ExecuteReturnSnowflakeIdList();
                 ResponseResult.Status = 1;
                 ResponseResult.Msg = "数据导入成功";
+            }
+            catch (Exception ex)
+            {
+                ResponseResult.Status = -1;
+                ResponseResult.Msg = $"数据导入失败：{ex.Message}";
+            }
+            return Ok(ResponseResult);
+        }
+
+        /// <summary>
+        /// 获得全部专业
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetAllProfession()
+        {
+            var ResponseResult = new ResponseResult();
+            try
+            {
+                List<Profession> professionList = DB.Queryable<Profession>().ToList();
+                if(professionList == null)
+                {
+                    ResponseResult.Status = -1;
+                    ResponseResult.Msg = "数据获取失败";
+                    return Ok(ResponseResult);
+                }
+                ResponseResult.Status = 1;
+                ResponseResult.Msg = "数据导入成功";
+                ResponseResult.Data = professionList;
             }
             catch (Exception ex)
             {
