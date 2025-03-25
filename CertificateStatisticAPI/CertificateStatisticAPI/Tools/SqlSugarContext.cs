@@ -10,14 +10,6 @@ namespace CertificateStatisticAPI.Tools
                     ConnectionString = "Server=localhost;Database=certificatestatisticdb;Uid=root;Pwd=1234;",
                     DbType = DbType.MySql,
                     IsAutoCloseConnection = true
-                },
-                db =>
-                {
-                    db.Aop.OnLogExecuting = (sql, pars) =>
-                    {
-                        //打印 SQL 语句
-                        Console.WriteLine(sql);
-                    };
                 }
             );
     }

@@ -9,38 +9,50 @@ using System.Text;
 using System.Threading.Tasks;
 using CertificateStatisticWPF.Models;
 using System.Windows.Media;
+using CertificateStatisticAPI.DataModels.DTOs;
+using DailyApp.WPF.HttpClients;
+using Newtonsoft.Json;
 
 namespace CertificateStatisticWPF.ViewModels
 {
     internal class MultiYearsUCViewModel : BindableBase, INavigationAware
     {
+        //webapi工具
+        private readonly HttpRestClient Client;
 
-        public MultiYearsUCViewModel()
+        public MultiYearsUCViewModel(HttpRestClient Client)
         {
+            this.Client = Client;
+
             //获得所有年份
             YearLabels = new List<string>();
 
+            //获得所有专业
+            ProfessionLabels = new List<string>();
+
             //左上柱状图初始化
-            ColumnSeries = new SeriesCollection(); 
+            YearColumnSeries = new SeriesCollection(); 
 
             //右上饼图初始化
             PieSeries = new SeriesCollection();
 
             //左下分组柱状图初始化
-            EventLevelColumnSeries = new SeriesCollection();
+            ProfessionColumnSeries = new SeriesCollection();
+
+
         }
 
         #region 左上柱状图
         /// <summary>
         /// 数据系列
         /// </summary>
-        private SeriesCollection _columnSeries;
-        public SeriesCollection ColumnSeries
+        private SeriesCollection _yearColumnSeries;
+        public SeriesCollection YearColumnSeries
         {
-            get { return _columnSeries; }
+            get { return _yearColumnSeries; }
             set
             {
-                _columnSeries = value;
+                _yearColumnSeries = value;
                 RaisePropertyChanged();
             }
         }
@@ -59,7 +71,8 @@ namespace CertificateStatisticWPF.ViewModels
             }
         }
 
-        private void ColumnChartData(List<Certificate> certificates)
+        
+        private void YearColumnChartData(List<Certificate> certificates)
         {
             /*
                 var yearGroups = new Dictionary<string, List<Certificate>>();
@@ -76,11 +89,24 @@ namespace CertificateStatisticWPF.ViewModels
                     }
                     yearGroups[year].Add(certificate);
                 }
-             */
-            //按年份分组并排序
+            */
+            //按年份分组（总数量）
             var yearGroups = certificates
                 .GroupBy(c => c.Date.Substring(0, 4))
                 .OrderBy(g => g.Key)
+                .ToList();
+
+            //按年份和级别分组（省部级/国家级）
+            var levelGroups = certificates
+                .GroupBy(c => new { 
+                    Year = c.Date.Substring(0, 4), 
+                    Level = c.EventLevel 
+                })
+                .Select(g => new {
+                    Year = g.Key.Year,
+                    Level = g.Key.Level,
+                    Count = g.Count()
+                })
                 .ToList();
 
             /*
@@ -94,20 +120,53 @@ namespace CertificateStatisticWPF.ViewModels
             //设置X轴标签
             YearLabels = yearGroups.Select(g => g.Key).ToList();
 
-            //生成柱状图数据
-            var columnValues = yearGroups
-                .Select(g => (double)g.Count())
-                .ToList();
-
-            ColumnSeries.Clear();
-            //添加柱状图系列
-            ColumnSeries.Add(new ColumnSeries
+            //创建数据系列
+            var totalSeries = new ColumnSeries
             {
-                Values = new ChartValues<double>(columnValues),
-                Title = "年度数量",
+                Title = "总数",
+                Values = new ChartValues<double>(),
                 Fill = Brushes.SteelBlue,
                 DataLabels = true
-            });
+            };
+
+            var provincialSeries = new ColumnSeries
+            {
+                Title = "省部级",
+                Values = new ChartValues<double>(),
+                Fill = Brushes.Orange,
+                DataLabels = true
+            };
+
+            var nationalSeries = new ColumnSeries
+            {
+                Title = "国家级",
+                Values = new ChartValues<double>(),
+                Fill = Brushes.OrangeRed,
+                DataLabels = true
+            };
+
+            // 填充数据
+            foreach (var year in YearLabels)
+            {
+                //总数量
+                var total = yearGroups.First(g => g.Key == year).Count();
+                totalSeries.Values.Add((double)total);
+
+                //省部级数量
+                var provincial = levelGroups
+                    .FirstOrDefault(g => g.Year == year && g.Level == "省部级")?.Count ?? 0;
+                provincialSeries.Values.Add((double)provincial);
+
+                //国家级数量
+                var national = levelGroups
+                    .FirstOrDefault(g => g.Year == year && g.Level == "国家级")?.Count ?? 0;
+                nationalSeries.Values.Add((double)national);
+            }
+
+            YearColumnSeries.Clear();
+            YearColumnSeries.Add(provincialSeries);
+            YearColumnSeries.Add(totalSeries);
+            YearColumnSeries.Add(nationalSeries);
         }
         #endregion
 
@@ -186,77 +245,70 @@ namespace CertificateStatisticWPF.ViewModels
         /// <summary>
         /// 数据系列
         /// </summary>
-        private SeriesCollection _eventLevelColumnSeries;
-        public SeriesCollection EventLevelColumnSeries
+        private SeriesCollection _professionColumnSeries;
+        public SeriesCollection ProfessionColumnSeries
         {
-            get { return _eventLevelColumnSeries; }
+            get { return _professionColumnSeries; }
             set
             {
-                _eventLevelColumnSeries = value;
+                _professionColumnSeries = value;
                 RaisePropertyChanged();
             }
         }
 
-        private void EvenLevelColumnChartData(List<Certificate> certificates)
+        /// <summary>
+        /// X轴年份指标集合
+        /// </summary>
+        private List<string> _professionLabels;
+        public List<string> ProfessionLabels
         {
-            //按年份和级别分组
-            var groupedData = certificates
-                .GroupBy(c => new { Year = c.Date.Substring(0, 4), Level = c.EventLevel }) // 按年份和级别分组
-                .Select(g => new
-                {
-                    Year = g.Key.Year,
-                    Level = g.Key.Level,
-                    Count = g.Count()
-                })
-                .ToList();
-
-            //创建分组柱状图数据
-            var provincialSeries = new ColumnSeries
+            get { return _professionLabels; }
+            set
             {
-                Title = "省部级",
-                Values = new ChartValues<double>(),
-                Fill = Brushes.Orange,
-                DataLabels = true
-            };
-
-            var nationalSeries = new ColumnSeries
-            {
-                Title = "国家级",
-                Values = new ChartValues<double>(),
-                Fill = Brushes.OrangeRed,
-                DataLabels = true
-            };
-
-            //填充数据
-            foreach (var year in YearLabels)
-            {
-                //省部级数量
-                var provincialCount = groupedData
-                    .FirstOrDefault(g => g.Year == year && g.Level == "省部级")?.Count ?? 0;
-                provincialSeries.Values.Add((double)provincialCount);
-
-                //国家级数量
-                var nationalCount = groupedData
-                    .FirstOrDefault(g => g.Year == year && g.Level == "国家级")?.Count ?? 0;
-                nationalSeries.Values.Add((double)nationalCount);
+                _professionLabels = value;
+                RaisePropertyChanged();
             }
+        }
 
-            EventLevelColumnSeries.Clear();
-            EventLevelColumnSeries.Add(provincialSeries);
-            EventLevelColumnSeries.Add(nationalSeries);
+        private void ProfessionColumnChartData(List<Certificate> certificates)
+        {
+            var request = new ApiRequest
+            {
+                Route = "api/Statistic/GetProfessionCount",
+                Method = RestSharp.Method.GET
+            };
+            var response = Client.Execute(request);
+
+            if (response.Status == 1)
+            {
+                var stats = JsonConvert.DeserializeObject<List<ProfessionCountDTO>>(response.Data.ToString());
+                ProfessionLabels = stats.Select(s => s.ProfessionName).ToList();
+                var values = stats.Select(s => (double)s.Count).ToList();
+
+                ProfessionColumnSeries = new SeriesCollection
+                {
+                    new ColumnSeries
+                    {
+                        Title = "专业分布",
+                        Values = new ChartValues<double>(values),
+                        Fill = Brushes.SteelBlue,
+                        DataLabels = true
+                    }
+                };
+            }
         }
         #endregion
 
         private void CreateCharts(List<Certificate> certificates)
         {
             //左上柱状图
-            ColumnChartData(certificates);
+            YearColumnChartData(certificates);
 
             //右上饼图
             PieChartData(certificates);
 
-            //左下分组柱状图
-            EvenLevelColumnChartData(certificates);
+            //左下柱状图
+            ProfessionColumnChartData(certificates);
         }
 
         #region INavigationAware接口实现

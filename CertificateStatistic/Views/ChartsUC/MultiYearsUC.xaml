@@ -21,16 +21,15 @@
 
         <Border Grid.Row="0" Grid.Column="0" Margin="5">
             <StackPanel Orientation="Vertical">
-                <lvc:CartesianChart Name="柱状图" Series="{Binding ColumnSeries}" LegendLocation="Top" Height="300">
-                    <!--X轴指标-->
+                <lvc:CartesianChart Series="{Binding YearColumnSeries}" LegendLocation="Top" Height="300">
                     <lvc:CartesianChart.AxisX>
-                        <lvc:Axis Title="年份" Labels="{Binding YearLabels}" >
+                        <lvc:Axis Labels="{Binding YearLabels}">
                             <lvc:Axis.Separator>
                                 <lvc:Separator StrokeThickness="1" Stroke="#ccc"/>
                             </lvc:Axis.Separator>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>
-                    <!--Y轴指标-->
+                    
                     <lvc:CartesianChart.AxisY>
                         <lvc:Axis Title="证书数量">
                             <lvc:Axis.Separator>
@@ -52,26 +51,25 @@
 
         <Border Grid.Row="1" Grid.Column="0" Margin="5">
             <StackPanel Orientation="Vertical">
-                <lvc:CartesianChart Series="{Binding EventLevelColumnSeries}" LegendLocation="Top" Height="300">
-                    <!-- X轴指标 -->
+                <lvc:CartesianChart Grid.Row="1" Grid.Column="1" Series="{Binding ProfessionColumnSeries}" LegendLocation="Top" Height="300">
                     <lvc:CartesianChart.AxisX>
-                        <lvc:Axis Title="年份" Labels="{Binding YearLabels}">
+                        <lvc:Axis Labels="{Binding ProfessionLabels}" LabelsRotation="20" Title="专业名称">
                             <lvc:Axis.Separator>
-                                <lvc:Separator StrokeThickness="1" Stroke="#ccc"/>
+                                <lvc:Separator Step="1" />
                             </lvc:Axis.Separator>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>
-                    <!-- Y轴指标 -->
+                    
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="证书数量">
-                            <lvc:Axis.Separator>
-                                <lvc:Separator StrokeThickness="1" Stroke="#ccc"/>
-                            </lvc:Axis.Separator>
-                        </lvc:Axis>
+                        <lvc:Axis/>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
-                <TextBlock Text="各年份证书级别统计" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                <TextBlock Text="各专业证书数量统计" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
             </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" Margin="5">
+
         </Border>
     </Grid>
 </UserControl>
