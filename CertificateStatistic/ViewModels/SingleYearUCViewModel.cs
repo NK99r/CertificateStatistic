@@ -23,10 +23,14 @@ namespace CertificateStatisticWPF.ViewModels
         {
             this.Client = Client;
 
+            //获得所有专业
+            ProfessionLabels = new List<string>();
 
             //右上饼图初始化
             PieSeries = new SeriesCollection();
 
+            //左下柱状图初始化
+            ProfessionColumnSeries = new SeriesCollection();
         }
 
         #region 右上饼图
@@ -100,13 +104,71 @@ namespace CertificateStatisticWPF.ViewModels
 
         #endregion
 
-        
+        #region 左下柱状图
+        /// <summary>
+        /// 数据系列
+        /// </summary>
+        private SeriesCollection _professionColumnSeries;
+        public SeriesCollection ProfessionColumnSeries
+        {
+            get { return _professionColumnSeries; }
+            set
+            {
+                _professionColumnSeries = value;
+                RaisePropertyChanged();
+            }
+        }
 
-        private void CreateCharts(List<Certificate> certificates)
+        /// <summary>
+        /// X轴年份指标集合
+        /// </summary>
+        private List<string> _professionLabels;
+        public List<string> ProfessionLabels
+        {
+            get { return _professionLabels; }
+            set
+            {
+                _professionLabels = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private void ProfessionColumnChartData(List<Certificate> certificates, string year)
+        {
+            var request = new ApiRequest
+            {
+                Route = $"api/Statistic/GetSingleYearProfessionCount?year={year}",
+                Method = RestSharp.Method.GET,
+            };
+            var response = Client.Execute(request);
+
+            if (response.Status == 1)
+            {
+                var stats = JsonConvert.DeserializeObject<List<ProfessionCountDTO>>(response.Data.ToString());
+                ProfessionLabels = stats.Select(s => s.ProfessionName).ToList();
+                var values = stats.Select(s => (double)s.Count).ToList();
+
+                ProfessionColumnSeries = new SeriesCollection
+                {
+                    new ColumnSeries
+                    {
+                        Title = "专业分布",
+                        Values = new ChartValues<double>(values),
+                        Fill = Brushes.SkyBlue,
+                        DataLabels = true
+                    }
+                };
+            }
+        }
+        #endregion
+
+        private void CreateCharts(List<Certificate> certificates,string year)
         {
             //右上饼图
             PieChartData(certificates);
 
+            //左下柱状图
+            ProfessionColumnChartData(certificates,year);
         }
 
         #region INavigationAware接口实现
@@ -117,7 +179,8 @@ namespace CertificateStatisticWPF.ViewModels
             if (navigationContext.Parameters.TryGetValue("CertificateList", out List<Certificate> certificates))
             {
                 //导航到该页时，执行此方法
-                CreateCharts(certificates);
+                navigationContext.Parameters.TryGetValue("Year", out string year);
+                CreateCharts(certificates,year);
             }
         }
 

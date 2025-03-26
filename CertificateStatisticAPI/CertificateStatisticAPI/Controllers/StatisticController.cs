@@ -99,11 +99,11 @@ namespace CertificateStatisticAPI.Controllers
         }
 
         /// <summary>
-        /// 查询对应专业的数量
+        /// 查询所有年份对应专业的证书数量
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetProfessionCount()
+        public IActionResult GetTotalYearProfessionCount()
         {
             var ResponseResult = new ResponseResult();
             try
@@ -124,6 +124,61 @@ namespace CertificateStatisticAPI.Controllers
                         Count = SqlFunc.AggregateCount(c.StudentID)
                     })
                     .ToList();
+
+                if (professionStat != null)
+                {
+                    ResponseResult.Status = 1;
+                    ResponseResult.Msg = "获得数据成功";
+                    ResponseResult.Data = professionStat;
+                }
+                else
+                {
+                    ResponseResult.Status = -1;
+                    ResponseResult.Msg = "获得数据失败，请稍后重试";
+                }
+            }
+            catch (Exception ex)
+            {
+                ResponseResult.Status = -1;
+                ResponseResult.Msg = $"获取数据失败：{ex.Message}";
+            }
+            return Ok(ResponseResult);
+        }
+
+        /// <summary>
+        /// 查询单个年份对应专业的证书数量
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetSingleYearProfessionCount(string year)
+        {
+            var ResponseResult = new ResponseResult();
+            try
+            {
+                if (string.IsNullOrEmpty(year) || year.Length != 4)
+                {
+                    ResponseResult.Status = -1;
+                    ResponseResult.Msg = "请输入有效的4位年份";
+                    return Ok(ResponseResult);
+                }
+
+                var professionStat = DB.Queryable<Certificate>()
+                                        //联表查询，条件为两者的ProID相同
+                                        //详见果糖网：https://www.donet5.com/home/doc?masterId=1&typeId=1185
+                                        .LeftJoin<Profession>((c, p) => c.ProID == p.ProID)
+                                        // 筛选指定年份
+                                        .Where((c, p) => c.Date.StartsWith(year))
+                                        //按照专业名分组
+                                        .GroupBy((c, p) => p.ProfessionName)
+                                        //提取每组数据并化为新对象
+                                        .Select((c, p) => new ProfessionCountDTO
+                                        {
+                                            //如果专业名称为空，返回 "其他专业"，否则返回原专业名称
+                                            ProfessionName = SqlFunc.IsNullOrEmpty(p.ProfessionName) ? "其他专业" : p.ProfessionName,
+                                            //统计每个专业下的证书数量
+                                            Count = SqlFunc.AggregateCount(c.ID) // 使用 ID 来统计数量
+                                        })
+                                        .ToList();
 
                 if (professionStat != null)
                 {

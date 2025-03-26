@@ -286,7 +286,7 @@ namespace CertificateStatisticWPF.ViewModels
         {
             var request = new ApiRequest
             {
-                Route = "api/Statistic/GetProfessionCount",
+                Route = "api/Statistic/GetTotalYearProfessionCount",
                 Method = RestSharp.Method.GET
             };
             var response = Client.Execute(request);
