@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStyle="None"
-        ResizeMode="CanResize"
+        ResizeMode="NoResize"
         AllowsTransparency="True" 
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
@@ -20,9 +20,6 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource TitleBarButtonStyle}" Click="Mini">
                         <Image Source="\Asset\pic\titlebar\mini.png"/>
-                    </Button>
-                    <Button Style="{StaticResource TitleBarButtonStyle}" Click="Max">
-                        <Image Source="\Asset\pic\titlebar\max.png"/>
                     </Button>
                     <Button Style="{StaticResource TitleBarButtonStyle}" Click="Close" >
                         <Image Source="\Asset\pic\titlebar\close.png" Width="25" Height="25"/>

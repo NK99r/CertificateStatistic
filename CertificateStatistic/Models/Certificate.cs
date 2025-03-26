@@ -23,6 +23,13 @@ namespace CertificateStatisticWPF.Models
 
         public string Date { get; set; }
 
+        public string ProID { get; set; }
+
+        public string Year
+        {
+            get => Date.Substring(0,4); 
+        }
+
         private bool _isHighlight;
         public bool IsHighlighted
         {

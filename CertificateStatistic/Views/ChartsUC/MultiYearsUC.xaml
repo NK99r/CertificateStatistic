@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              xmlns:prism="http://prismlibrary.com/"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             Background="AliceBlue">
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -19,7 +19,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="0" Margin="5">
+        <Border Background="AliceBlue" Grid.Row="0" Grid.Column="0" Margin="5">
             <StackPanel Orientation="Vertical">
                 <lvc:CartesianChart Series="{Binding YearColumnSeries}" LegendLocation="Top" Height="300">
                     <lvc:CartesianChart.AxisX>
@@ -42,16 +42,16 @@
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="0" Grid.Column="1" Margin="5">
+        <Border Background="AliceBlue" Grid.Row="0" Grid.Column="1" Margin="5">
             <StackPanel Orientation="Vertical">
                 <lvc:PieChart LegendLocation="Right" Series="{Binding PieSeries}" Height="300"/>
                 <TextBlock Text="全部证书类别占比统计" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="0" Margin="5">
+        <Border Background="AliceBlue" Grid.Row="1" Grid.Column="0" Margin="5">
             <StackPanel Orientation="Vertical">
-                <lvc:CartesianChart Grid.Row="1" Grid.Column="1" Series="{Binding ProfessionColumnSeries}" LegendLocation="Top" Height="300">
+                <lvc:CartesianChart Series="{Binding ProfessionColumnSeries}" LegendLocation="Top" Height="300">
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Labels="{Binding ProfessionLabels}" LabelsRotation="20" Title="专业名称">
                             <lvc:Axis.Separator>
@@ -59,7 +59,6 @@
                             </lvc:Axis.Separator>
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisX>
-                    
                     <lvc:CartesianChart.AxisY>
                         <lvc:Axis/>
                     </lvc:CartesianChart.AxisY>
@@ -68,8 +67,15 @@
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="1" Margin="5">
-
+        <Border Background="AliceBlue" Grid.Row="1" Grid.Column="1" Margin="5">
+            <StackPanel Orientation="Vertical">
+                <lvc:CartesianChart DataClickCommand="{Binding ChartClickCommand}" Series="{Binding StackedAreaSeries}" Hoverable="True" LegendLocation="Top" Height="300">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Labels="{Binding RecentThreeYearLabels}"/>
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
+                <TextBlock Text="全专业近三年证书数量统计" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>

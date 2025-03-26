@@ -87,7 +87,7 @@
                     <DockPanel Margin="5">
                         <TextBlock Text="查询：" Style="{StaticResource OperateTextStyle}"/>
                         <!--UpdateSourceTrigger=PropertyChanged表示当文本发生改变时，ViewModel的SearchText随之改变-->
-                        <hc:TextBox Background="AliceBlue" Height="25" Width="300" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" TextWrapping="Wrap"/>
+                        <hc:TextBox Background="AliceBlue" Height="25" Width="305" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" TextWrapping="Wrap"/>
                     </DockPanel>
                     
                     <DockPanel Margin="5,0">
@@ -102,6 +102,7 @@
                         </WrapPanel>
                     </DockPanel>
                     <hc:ComboBox ItemsSource="{Binding ProfessionList}" DisplayMemberPath="ProfessionName" SelectedItem="{Binding SelectedProfession}" Margin="86,5" hc:InfoElement.Placeholder="专业"/>
+                    
                     <DockPanel Margin="5,0">
                         <TextBlock Text="导入：" VerticalAlignment="Center" Style="{StaticResource OperateTextStyle}"/>
                         <Button HorizontalAlignment="Left" Command="{Binding DBImportCommand}" Style="{StaticResource DataBaseButtonStyle}">
