@@ -94,10 +94,6 @@ namespace CertificateStatisticWPF.ViewModels
         {
             try
             {
-                if (year != "全部")
-                {
-                    year = null;
-                }
                 var request = new ApiRequest 
                 {
                     Route = "api/Statistic/GetByYear",

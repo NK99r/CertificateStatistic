@@ -16,13 +16,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows;
-using SixLabors.ImageSharp.Processing;
 
 namespace CertificateStatisticWPF.ViewModels
 {
     internal class TotalYearsUCViewModel : BindableBase, INavigationAware
     {
-        //webapi工具
+        /// <summary>
+        /// webapi工具
+        /// </summary>
         private readonly HttpRestClient Client;
 
         public TotalYearsUCViewModel(HttpRestClient Client)

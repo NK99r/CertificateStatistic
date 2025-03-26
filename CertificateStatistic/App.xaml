@@ -4,8 +4,7 @@
              xmlns:local="clr-namespace:CertificateStatistic"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF">
+             xmlns:hc="https://handyorg.github.io/handycontrol">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
