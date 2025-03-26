@@ -20,12 +20,12 @@ using SixLabors.ImageSharp.Processing;
 
 namespace CertificateStatisticWPF.ViewModels
 {
-    internal class MultiYearsUCViewModel : BindableBase, INavigationAware
+    internal class TotalYearsUCViewModel : BindableBase, INavigationAware
     {
         //webapi工具
         private readonly HttpRestClient Client;
 
-        public MultiYearsUCViewModel(HttpRestClient Client)
+        public TotalYearsUCViewModel(HttpRestClient Client)
         {
             this.Client = Client;
 

@@ -32,7 +32,7 @@ namespace CertificateStatistic
             containerRegistry.RegisterForNavigation<StatisticUC, StatisticViewModel>();
 
             //统计页导航
-            containerRegistry.RegisterForNavigation<MultiYearsUC, MultiYearsUCViewModel>();
+            containerRegistry.RegisterForNavigation<TotalYearsUC, TotalYearsUCViewModel>();
             containerRegistry.RegisterForNavigation<SingleYearUC, SingleYearUCViewModel>();
 
             containerRegistry.RegisterDialog<PreviewDialog, PreviewDialogViewModel>();

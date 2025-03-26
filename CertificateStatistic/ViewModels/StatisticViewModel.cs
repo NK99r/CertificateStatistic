@@ -74,7 +74,6 @@ namespace CertificateStatisticWPF.ViewModels
                     List<string> yearList = JsonConvert.DeserializeObject<List<string>>(response.Data.ToString());
                     yearList.Reverse();
                     yearList.Insert(0, "全部");
-                    yearList.Insert(1, "近五年");
                     //添加按钮
                     YearButtonList = new ObservableCollection<YearButton>();
                     foreach (var year in yearList)
@@ -95,11 +94,10 @@ namespace CertificateStatisticWPF.ViewModels
         {
             try
             {
-                if (year != "全部" && year != "近五年")
+                if (year != "全部")
                 {
                     year = null;
                 }
-
                 var request = new ApiRequest 
                 {
                     Route = "api/Statistic/GetByYear",
@@ -112,9 +110,9 @@ namespace CertificateStatisticWPF.ViewModels
                 if (response.Status == 1)
                 {
                     string viewName = "";
-                    if (year == "全部" || year == "近五年")
+                    if (year == "全部")
                     {
-                        viewName = "MultiYearsUC";
+                        viewName = "TotalYearsUC";
                     }
                     else
                     {

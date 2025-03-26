@@ -73,30 +73,6 @@ namespace CertificateStatisticAPI.Controllers
                         ResponseResult.Msg = "获取全部数据成功";
                         ResponseResult.Data = query.ToList();
                     }
-                    else if(year == "近五年")
-                    {
-                        //今年
-                        int currentYear = DateTime.Now.Year;
-
-                        //五年前
-                        int fiveYearsAgo = currentYear - 4;
-
-                        var Data = new List<Certificate>();
-                        foreach (var cer in query.ToList())
-                        {
-                            int cerYear = int.Parse(cer.Date.Substring(0, 4));
-
-                            //在近五年范围内
-                            if (cerYear >= fiveYearsAgo && cerYear <= currentYear)
-                            {
-                                Data.Add(cer);
-                            }
-                        }
-
-                        ResponseResult.Status = 1;
-                        ResponseResult.Msg = "获取近五年数据成功";
-                        ResponseResult.Data = query.ToList();
-                    }
                     else
                     {
                         //如果选择某一年，筛选该年
