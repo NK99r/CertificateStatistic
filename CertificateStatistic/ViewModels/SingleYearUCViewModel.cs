@@ -8,6 +8,7 @@ using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace CertificateStatisticWPF.ViewModels
             PieSeries = new SeriesCollection();
 
             //左下柱状图初始化
-            ProfessionColumnSeries = new SeriesCollection();
+            LevelDonutSeries = new SeriesCollection();
         }
 
         #region 左上柱状图
@@ -237,8 +238,46 @@ namespace CertificateStatisticWPF.ViewModels
         }
         #endregion
 
+        #region 右下环形图
+        private SeriesCollection _levelDonutSeries;
+        public SeriesCollection LevelDonutSeries
+        {
+            get { return _levelDonutSeries; }
+            set
+            {
+                _levelDonutSeries = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private void LevelChartData(List<Certificate> certificates)
+        {
+            // 1. 按证书等级分组统计
+            var levelGroups = certificates
+                .GroupBy(c => c.EventLevel)
+                .Select(g => new { Level = g.Key, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
+                .ToList();
+
+            LevelDonutSeries.Clear();
+            foreach (var group in levelGroups)
+            {
+                LevelDonutSeries.Add(new PieSeries
+                {
+                    Title = group.Level,
+                    Values = new ChartValues<double> { group.Count },
+                    DataLabels = true,
+                    LabelPoint = point => $"{group.Level}\n{point.Y} ({point.Participation:P0})",
+                    Stroke = Brushes.SteelBlue,
+                    StrokeThickness = 1
+                });
+            }
+        }
+        #endregion
+
         private void CreateCharts(List<Certificate> certificates,string year)
         {
+            //右上柱状图
             MainEventChartData(certificates);
 
             //右上饼图
@@ -246,6 +285,9 @@ namespace CertificateStatisticWPF.ViewModels
 
             //左下柱状图
             ProfessionColumnChartData(certificates,year);
+
+            //右下面积堆叠图
+            LevelChartData(certificates);
         }
 
         #region INavigationAware接口实现
