@@ -33,6 +33,7 @@ namespace CertificateStatisticAPI.Controllers
                 //返回数据库中目前拥有的年份，如2022、2023、2024...
                 //SqlFunc是SqlSugar框架调用SQL函数的方式
                 List<string> list = DB.Queryable<Certificate>().Select(c => SqlFunc.Substring(c.Date, 0, 4)).Distinct().ToList();
+                //SELECT DISTINCT SUBSTRING(Date, 1, 4) FROM CertificateTable;
                 if (list != null)
                 {
                     ResponseResult.Status = 1;
@@ -65,6 +66,7 @@ namespace CertificateStatisticAPI.Controllers
             try
             {
                 var query = DB.Queryable<Certificate>();
+                //SELECT * FROM CertificateTable
                 if (query != null)
                 {
                     if (year == "全部")
@@ -124,6 +126,16 @@ namespace CertificateStatisticAPI.Controllers
                         Count = SqlFunc.AggregateCount(c.StudentID)
                     })
                     .ToList();
+                /*
+                    SELECT 
+                        CASE
+                            WHEN p.ProfessionName IS NULL OR p.ProfessionName = '' THEN '其他专业'
+                            ELSE p.ProfessionName
+                        END AS ProfessionName,
+                        COUNT(c.StudentID) AS Count
+                    FROM CertificateTable c LEFT JOIN ProfessionTable p ON c.ProID = p.ProID
+                    GROUP BY p.ProfessionName;
+                 */
 
                 if (professionStat != null)
                 {
@@ -179,6 +191,22 @@ namespace CertificateStatisticAPI.Controllers
                                             Count = SqlFunc.AggregateCount(c.ID)
                                         })
                                         .ToList();
+                /*
+                    SELECT 
+                        CASE 
+                            WHEN ISNULL(p.ProfessionName, '') = '' THEN '其他专业' 
+                            ELSE p.ProfessionName]
+                        END AS ProfessionName,
+                        COUNT(c.ID) AS Count
+                    FROM CertificateTable c
+                    LEFT JOIN ProfessionTable p ON c.ProID = p.ProID
+                    WHERE c.Date LIKE '{year}%'
+                    GROUP BY 
+                        CASE 
+                            WHEN ISNULL(p.ProfessionName, '') = '' THEN '其他专业' 
+                            ELSE p.ProfessionName 
+                        END
+                 */
 
                 if (professionStat != null)
                 {

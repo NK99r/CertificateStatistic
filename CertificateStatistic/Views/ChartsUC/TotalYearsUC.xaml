@@ -38,14 +38,14 @@
                         </lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
-                <TextBlock Text="各年份证书数量统计" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                <TextBlock Text="各年份证书数量统计" Style="{StaticResource ChartTitleTextStyle}"/>
             </StackPanel>
         </Border>
 
         <Border Background="AliceBlue" Grid.Row="0" Grid.Column="1" Margin="5">
             <StackPanel Orientation="Vertical">
                 <lvc:PieChart LegendLocation="Right" Series="{Binding PieSeries}" Height="300"/>
-                <TextBlock Text="全部证书类别占比统计" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                <TextBlock Text="全部证书类别占比统计" Style="{StaticResource ChartTitleTextStyle}"/>
             </StackPanel>
         </Border>
 
@@ -63,7 +63,7 @@
                         <lvc:Axis/>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
-                <TextBlock Text="各专业证书数量统计" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                <TextBlock Text="各专业证书数量统计" Style="{StaticResource ChartTitleTextStyle}"/>
             </StackPanel>
         </Border>
 
@@ -74,7 +74,7 @@
                         <lvc:Axis Labels="{Binding RecentThreeYearLabels}"/>
                     </lvc:CartesianChart.AxisX>
                 </lvc:CartesianChart>
-                <TextBlock Text="全专业近三年证书数量统计" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
+                <TextBlock Text="全专业近三年证书数量统计" Style="{StaticResource ChartTitleTextStyle}"/>
             </StackPanel>
         </Border>
     </Grid>

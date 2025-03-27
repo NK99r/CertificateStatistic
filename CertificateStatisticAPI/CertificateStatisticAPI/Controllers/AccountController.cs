@@ -88,6 +88,7 @@ namespace CertificateStatisticAPI.Controllers
             {
                 //检查账号是否存在
                 var account = DB.Queryable<Account>().First(a => a.PhoneNum == accountDTO.PhoneNum);
+                //SELECT TOP 1 * FROM AccountTable WHERE PhoneNum = {};
                 if (account == null)
                 {
                     response.Status = -1;
@@ -129,6 +130,7 @@ namespace CertificateStatisticAPI.Controllers
             try
             {
                 var account = DB.Queryable<Account>().First(a => a.PhoneNum == phoneNum);
+                //SELECT TOP 1 * FROM AccountTable WHERE PhoneNum = {};
                 if (account == null)
                 {
                     response.Status = -1;

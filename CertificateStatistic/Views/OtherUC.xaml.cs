@@ -24,5 +24,12 @@ namespace CertificateStatisticWPF.Views
         {
             InitializeComponent();
         }
+
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            //打开浏览器并导航到链接
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+            e.Handled = true; 
+        }
     }
 }

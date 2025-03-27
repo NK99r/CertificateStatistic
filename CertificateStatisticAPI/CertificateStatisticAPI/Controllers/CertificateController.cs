@@ -52,6 +52,29 @@ namespace CertificateStatisticAPI.Controllers
                                            })
                                            .ToList();
 
+                /*
+                    SELECT StudentID,CertificateProject,LEFT(Date, 4) AS Year FROM CertificateTable C
+                    WHERE EXISTS (
+                            SELECT 1 
+                            FROM (
+                                内存中的checkKeys集合，需要参数化传递
+                                SELECT 
+                                    @StudentID1 AS StudentID, 
+                                    @CertificateProject1 AS CertificateProject, 
+                                    @Year1 AS Year
+                                UNION ALL
+                                SELECT 
+                                    @StudentID2 AS StudentID, 
+                                    @CertificateProject2 AS CertificateProject, 
+                                    @Year2 AS Year
+                            ) AS K
+                            WHERE 
+                                K.StudentID = C.StudentID 
+                                AND K.CertificateProject = C.CertificateProject 
+                                AND C.Date LIKE K.Year + '%'
+                        )
+                 */
+
                 //如果存在重复数据
                 if (duplicates.Any())
                 {
@@ -66,6 +89,7 @@ namespace CertificateStatisticAPI.Controllers
 
                 //否则正常插入
                 DB.Insertable(certificates).ExecuteReturnSnowflakeIdList();
+                //INSERT INTO Certificate (StudentID, CertificateProject, Date) VALUES ...
                 ResponseResult.Status = 1;
                 ResponseResult.Msg = "数据导入成功";
             }
@@ -88,6 +112,7 @@ namespace CertificateStatisticAPI.Controllers
             try
             {
                 List<Profession> professionList = DB.Queryable<Profession>().ToList();
+                //SELECT * FROM ProfessionTable
                 if(professionList == null)
                 {
                     ResponseResult.Status = -1;
