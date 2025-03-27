@@ -23,6 +23,12 @@ namespace CertificateStatisticWPF.ViewModels
         {
             this.Client = Client;
 
+            //获得主要赛事
+            MainEventLabels = new List<string>();
+
+            //左上柱状图初始化
+            MainEventSeries = new SeriesCollection();
+
             //获得所有专业
             ProfessionLabels = new List<string>();
 
@@ -32,6 +38,75 @@ namespace CertificateStatisticWPF.ViewModels
             //左下柱状图初始化
             ProfessionColumnSeries = new SeriesCollection();
         }
+
+        #region 左上柱状图
+        private SeriesCollection _mainEventSeries;
+        public SeriesCollection MainEventSeries
+        {
+            get { return _mainEventSeries; }
+            set
+            {
+                _mainEventSeries = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private List<string> _mainEventLabels;
+        public List<string> MainEventLabels
+        {
+            get { return _mainEventLabels; }
+            set
+            {
+                _mainEventLabels = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private void MainEventChartData(List<Certificate> certificates)
+        {
+            //主要赛事列表
+            var mainEvents = new List<string>
+            {
+                "计算机设计大赛",
+                "蓝桥杯",
+                "算法设计与编程挑战赛",
+                "传智杯",
+                "码蹄杯",
+                "团体程序设计天梯赛",
+                "高校计算机能力挑战赛"
+            };
+
+            //统计赛事数量
+            var eventStats = mainEvents.Select(e => new
+            {
+                EventName = e,
+                Count = certificates.Count(c => c.CertificateProject.Contains(e))
+            }).ToList();
+
+            //统计专利/软著数量
+            int patentCount = certificates.Count(c =>
+                c.Organizer.StartsWith("ZL") ||
+                char.IsDigit(c.Organizer.FirstOrDefault()) ||
+                c.Organizer.EndsWith("版权局"));
+
+            //组合数据
+            MainEventLabels = eventStats.Select(x => x.EventName).ToList();
+            MainEventLabels.Add("专利/软著");
+
+            var values = eventStats.Select(x => (double)x.Count).ToList();
+            values.Add(patentCount);
+
+            MainEventSeries = new SeriesCollection{
+               new ColumnSeries
+               {
+                   Title = "赛事统计",
+                   Values = new ChartValues<double>(values),
+                   Fill = Brushes.LightGreen,
+                   DataLabels = true
+               }
+            };
+        }
+        #endregion
 
         #region 右上饼图
         /// <summary>
@@ -164,6 +239,8 @@ namespace CertificateStatisticWPF.ViewModels
 
         private void CreateCharts(List<Certificate> certificates,string year)
         {
+            MainEventChartData(certificates);
+
             //右上饼图
             PieChartData(certificates);
 

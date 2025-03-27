@@ -176,7 +176,7 @@ namespace CertificateStatisticAPI.Controllers
                                             //如果专业名称为空，返回 "其他专业"，否则返回原专业名称
                                             ProfessionName = SqlFunc.IsNullOrEmpty(p.ProfessionName) ? "其他专业" : p.ProfessionName,
                                             //统计每个专业下的证书数量
-                                            Count = SqlFunc.AggregateCount(c.ID) // 使用 ID 来统计数量
+                                            Count = SqlFunc.AggregateCount(c.ID)
                                         })
                                         .ToList();
 
