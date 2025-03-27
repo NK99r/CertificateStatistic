@@ -30,11 +30,13 @@ namespace CertificateStatistic
             containerRegistry.RegisterForNavigation<HomeUC, HomeUCViewModel>();
             containerRegistry.RegisterForNavigation<CertificateUC, CertificateViewModel>();
             containerRegistry.RegisterForNavigation<StatisticUC, StatisticViewModel>();
+            containerRegistry.RegisterForNavigation<OtherUC, OtherUCViewModel>();
 
             //统计页导航
             containerRegistry.RegisterForNavigation<TotalYearsUC, TotalYearsUCViewModel>();
             containerRegistry.RegisterForNavigation<SingleYearUC, SingleYearUCViewModel>();
 
+            //注册对话框
             containerRegistry.RegisterDialog<PreviewDialog, PreviewDialogViewModel>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
         }

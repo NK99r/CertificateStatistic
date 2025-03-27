@@ -82,6 +82,7 @@ namespace CertificateStatistic.ViewModels
             NavBarList.Add(new NavBtn() { Icon = "/Asset/pic/navbar/home.png", Title = "首页", ViewName = "HomeUC" });
             NavBarList.Add(new NavBtn() { Icon = "/Asset/pic/navbar/cer.png", Title = "证书", ViewName = "CertificateUC" });
             NavBarList.Add(new NavBtn() { Icon = "/Asset/pic/navbar/stat.png", Title = "统计", ViewName = "StatisticUC" });
+            NavBarList.Add(new NavBtn() { Icon = "/Asset/pic/navbar/about.png", Title = "关于", ViewName = "OtherUC" });
         }
         #endregion
 

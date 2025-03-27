@@ -29,6 +29,7 @@
     <None Remove="Asset\pic\logo.png" />
     <None Remove="Asset\pic\max.png" />
     <None Remove="Asset\pic\mini.png" />
+    <None Remove="Asset\pic\navbar\about.png" />
     <None Remove="Asset\pic\navbar\cer.png" />
     <None Remove="Asset\pic\navbar\folder_close.png" />
     <None Remove="Asset\pic\navbar\folder_open.png" />
@@ -48,6 +49,7 @@
     <Resource Include="Asset\link\lanqiao.png" />
     <Resource Include="Asset\link\mtb.png" />
     <Resource Include="Asset\link\ncccu.png" />
+    <Resource Include="Asset\pic\navbar\about.png" />
     <Resource Include="Asset\pic\navbar\cer.png" />
     <Resource Include="Asset\pic\navbar\folder_close.png" />
     <Resource Include="Asset\pic\navbar\folder_open.png" />
