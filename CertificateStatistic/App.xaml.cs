@@ -41,7 +41,7 @@ namespace CertificateStatistic
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
         }
 
-        /*
+        
         /// <summary>
         /// 在主窗口初始化之前执行的方法
         /// </summary>
@@ -83,6 +83,6 @@ namespace CertificateStatistic
                 }
             });
         }
-        */
+        
     }
 }

@@ -54,8 +54,12 @@ namespace DailyApp.WPF.HttpClients
                     return new ApiResponse { Status = 400, Msg = "您的操作有误" };
                 case System.Net.HttpStatusCode.Unauthorized:
                     return new ApiResponse { Status = 401, Msg = "身份校验失败" };
+                case System.Net.HttpStatusCode.Forbidden:
+                    return new ApiResponse { Status = 403, Msg = "拒绝访问服务器" };
                 case System.Net.HttpStatusCode.NotFound:
                     return new ApiResponse { Status = 404, Msg = "网络链接失败，请检查您的网络设置" };
+                case System.Net.HttpStatusCode.InternalServerError:
+                    return new ApiResponse { Status = 500, Msg = "服务器暂不可用" };
                 case System.Net.HttpStatusCode.BadGateway:
                     return new ApiResponse { Status = 502, Msg = "服务器被关停，请联系我" };
                 case System.Net.HttpStatusCode.ServiceUnavailable:

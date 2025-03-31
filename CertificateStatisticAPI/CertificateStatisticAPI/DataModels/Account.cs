@@ -8,7 +8,7 @@ namespace CertificateStatisticAPI.DataModels
         [SugarColumn(IsPrimaryKey = true)]//long类型的主键会自动赋值
         public long ID { get; set; }
 
-        public string PhoneNum { get; set; }
+        public string AccountID { get; set; }
 
         public string Pwd {  get; set; }
 

@@ -23,6 +23,6 @@ namespace CertificateStatisticAPI.DataModels
         public string Date { get; set; }
 
         [SugarColumn(IsNullable = true)]
-        public string ProID { get; set; }
+        public string? ProID { get; set; }
     }
 }

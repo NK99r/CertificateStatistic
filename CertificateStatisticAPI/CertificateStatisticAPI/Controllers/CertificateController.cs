@@ -120,13 +120,13 @@ namespace CertificateStatisticAPI.Controllers
                     return Ok(ResponseResult);
                 }
                 ResponseResult.Status = 1;
-                ResponseResult.Msg = "数据导入成功";
+                ResponseResult.Msg = "数据获取成功";
                 ResponseResult.Data = professionList;
             }
             catch (Exception ex)
             {
                 ResponseResult.Status = -1;
-                ResponseResult.Msg = $"数据导入失败：{ex.Message}";
+                ResponseResult.Msg = $"数据获取失败：{ex.Message}";
             }
             return Ok(ResponseResult);
         }

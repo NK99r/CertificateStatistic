@@ -2,11 +2,20 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
+    <UseWPF>true</UseWPF>       
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="ViewModels\StatisticUCViewModel.cs" />
   </ItemGroup>
+<ItemGroup>
+  <BootstrapperPackage Include="Microsoft.NetCore.DesktopRuntime.6.0.35">
+    <Install>true</Install>
+    <InstallFromCustomLocation>true</InstallFromCustomLocation>  <!-- 强制安装 -->
+    <SkipPackageInstallCheck>true</SkipPackageInstallCheck>     <!-- 跳过版本检查 -->
+    <ProductName>.NET Desktop Runtime 6.0.35 (x64)</ProductName>
+  </BootstrapperPackage>
+</ItemGroup>
   <ItemGroup>
     <None Remove="Asset\link\blcu.png" />
     <None Remove="Asset\link\bxg.png" />

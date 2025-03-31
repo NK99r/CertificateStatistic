@@ -10,7 +10,7 @@ namespace CertificateStatisticWPF.Enum
     {
         public static readonly string CONTENTTYPE_JSON = "application/json";
 
-        public static readonly string BASEURL = "https://localhost:44387/";
+        public static readonly string BASEURL = "http://115.29.227.224:5000/";
 
     }
 }

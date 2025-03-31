@@ -11,7 +11,7 @@ namespace CertificateStatisticWPF.Models.DTOs
         /// <summary>
         /// 登录账号
         /// </summary>
-        public string PhoneNum { get; set; }
+        public string AccountID { get; set; }
 
         /// <summary>
         /// 密码

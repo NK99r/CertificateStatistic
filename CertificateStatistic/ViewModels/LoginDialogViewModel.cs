@@ -3,17 +3,11 @@ using CertificateStatisticWPF.Models.DTOs;
 using CertificateStatisticWPF.Tools;
 using DailyApp.WPF.HttpClients;
 using DailyApp.WPF.MsgEvents;
-using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CertificateStatisticWPF.ViewModels
 {
@@ -38,9 +32,8 @@ namespace CertificateStatisticWPF.ViewModels
             #region 视图切换
             ShowRegisterContentCommand = new DelegateCommand(ShowRegisterContent);
 
-            ShowLogin_PwdContentCommand = new DelegateCommand(ShowLogin_PwdContent);
+            ShowLoginContentCommand = new DelegateCommand(ShowLoginContent);
 
-            ShowLogin_CpaContentCommand = new DelegateCommand(ShowLogin_CpaContent);
             #endregion
 
             #region 登陆注册操作
@@ -104,14 +97,13 @@ namespace CertificateStatisticWPF.ViewModels
         private void Register()
         {
             //基本数据验证
-            //验证手机号长度
-            if (AccountDTO.PhoneNum == null || AccountDTO.PhoneNum.Length != 11)
+            if (AccountDTO.AccountID == null || AccountDTO.AccountID.Length > 30)
             {
-                Aggregator.GetEvent<MsgEvent>().Publish("手机号不足11位");
+                Aggregator.GetEvent<MsgEvent>().Publish("账号最大长度为30位");
                 return;
             }
 
-            if (string.IsNullOrEmpty(AccountDTO.PhoneNum) || string.IsNullOrEmpty(AccountDTO.Pwd) || string.IsNullOrEmpty(AccountDTO.ConfirmPwd))
+            if (string.IsNullOrEmpty(AccountDTO.AccountID) || string.IsNullOrEmpty(AccountDTO.Pwd) || string.IsNullOrEmpty(AccountDTO.ConfirmPwd))
             {
                 //将"注册信息不全"广播给订阅者(LoginDialog)
                 Aggregator.GetEvent<MsgEvent>().Publish("注册信息不全");
@@ -154,10 +146,9 @@ namespace CertificateStatisticWPF.ViewModels
 
         private void Login()
         {
-            // 数据基本验证
-            if (AccountDTO.PhoneNum == null || AccountDTO.PhoneNum.Length != 11)
+            if (AccountDTO.AccountID == null || AccountDTO.AccountID.Length > 30)
             {
-                Aggregator.GetEvent<MsgEvent>().Publish("手机号不足11位");
+                Aggregator.GetEvent<MsgEvent>().Publish("账号最大长度为30位");
                 return;
             }
 
@@ -170,12 +161,12 @@ namespace CertificateStatisticWPF.ViewModels
             //获取用户的盐值
             ApiRequest saltRequest = new ApiRequest();
             saltRequest.Method = RestSharp.Method.GET;
-            saltRequest.Route = $"api/Account/GetSalt?phoneNum={AccountDTO.PhoneNum}";
+            saltRequest.Route = $"api/Account/GetSalt?AID={AccountDTO.AccountID}";
 
             var saltResponse = Client.Execute(saltRequest);
             if (saltResponse.Status != 1)
             {
-                Aggregator.GetEvent<MsgEvent>().Publish("获取用户信息失败，确保手机号输入正确");
+                Aggregator.GetEvent<MsgEvent>().Publish("获取用户信息失败，确保账号输入正确");
                 return;
             }
 
@@ -223,24 +214,15 @@ namespace CertificateStatisticWPF.ViewModels
 
         public DelegateCommand ShowRegisterContentCommand { get; set; }
 
-        public DelegateCommand ShowLogin_PwdContentCommand { get; set; }
+        public DelegateCommand ShowLoginContentCommand { get; set; }
 
-        public DelegateCommand ShowLogin_CpaContentCommand { get; set; }
 
         /// <summary>
         /// 显示密码登录内容
         /// </summary>
-        private void ShowLogin_PwdContent()
+        private void ShowLoginContent()
         {
             SelectedIndex = 0;
-        }
-
-        /// <summary>
-        /// 显示短信验证码登录内容
-        /// </summary>
-        private void ShowLogin_CpaContent()
-        {
-            SelectedIndex = 1;
         }
 
         /// <summary>
@@ -248,7 +230,7 @@ namespace CertificateStatisticWPF.ViewModels
         /// </summary>
         private void ShowRegisterContent()
         {
-            SelectedIndex = 2;
+            SelectedIndex = 1;
         }
         #endregion
 

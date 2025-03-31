@@ -380,7 +380,7 @@ namespace CertificateStatisticWPF.ViewModels
 
             //3. 按年份和专业统计证书数量（LINQ 分组）
             var groupedData = certificates
-                .Where(c => threeYears.Contains(c.Year))
+                .Where(c => threeYears.Contains(c.Date.Substring(0,4)))
                 .GroupBy(c =>
                 {
                     //分类逻辑：ProID 有效则保留，否则归为 "Other"
@@ -390,7 +390,7 @@ namespace CertificateStatisticWPF.ViewModels
                     g => g.Key, //专业 ProID 或 "Other"
                     g => threeYears.ToDictionary(
                         year => year,
-                        year => g.Count(c => c.Year == year)
+                        year => g.Count(c => c.Date.Substring(0, 4) == year)
                     )
                 );
 

@@ -4,7 +4,10 @@ using CertificateStatisticAPI.DataModels.DTOs;
 using CertificateStatisticAPI.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using MySqlX.XDevAPI;
 using SqlSugar;
+
 
 namespace CertificateStatisticAPI.Controllers
 {
@@ -41,7 +44,7 @@ namespace CertificateStatisticAPI.Controllers
             try
             {
                 //检查账号是否存在
-                bool exist = DB.Queryable<Account>().Any(a => a.PhoneNum == loginDTO.PhoneNum);
+                bool exist = DB.Queryable<Account>().Any(a => a.AccountID == loginDTO.AccountID);
                 if (exist)
                 {
                     response.Status = -1;
@@ -87,7 +90,7 @@ namespace CertificateStatisticAPI.Controllers
             try
             {
                 //检查账号是否存在
-                var account = DB.Queryable<Account>().First(a => a.PhoneNum == accountDTO.PhoneNum);
+                var account = DB.Queryable<Account>().First(a => a.AccountID == accountDTO.AccountID);
                 //SELECT TOP 1 * FROM AccountTable WHERE PhoneNum = {};
                 if (account == null)
                 {
@@ -124,12 +127,12 @@ namespace CertificateStatisticAPI.Controllers
         /// <param name="phoneNum">手机号</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetSalt(string phoneNum)
+        public IActionResult GetSalt(string AID)
         {
             ResponseResult response = new ResponseResult();
             try
             {
-                var account = DB.Queryable<Account>().First(a => a.PhoneNum == phoneNum);
+                var account = DB.Queryable<Account>().First(a => a.AccountID == AID);
                 //SELECT TOP 1 * FROM AccountTable WHERE PhoneNum = {};
                 if (account == null)
                 {
