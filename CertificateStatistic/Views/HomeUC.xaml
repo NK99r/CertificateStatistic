@@ -57,8 +57,7 @@
                             <TextBlock Text="{Binding Title}" Margin="5" TextAlignment="Center" VerticalAlignment="Center" FontSize="15" FontWeight="Bold"/>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding DataContext.OpenLinkCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
-                                                           CommandParameter="{Binding Url}">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.OpenLinkCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Url}">
                                     </i:InvokeCommandAction>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
@@ -102,8 +101,7 @@
                             <TextBlock Text="{Binding Title}" FontSize="15"/>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding DataContext.OpenLinkCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
-                                                           CommandParameter="{Binding Url}">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.OpenLinkCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Url}">
                                     </i:InvokeCommandAction>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>

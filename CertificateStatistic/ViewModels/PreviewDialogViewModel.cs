@@ -2,10 +2,6 @@
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CertificateStatisticWPF.ViewModels
 {
@@ -44,6 +40,7 @@ namespace CertificateStatisticWPF.ViewModels
             }
         }
 
+        #region IDialogAware实现
         public string Title { get; set; } = "规范预览";
 
         public event Action<IDialogResult> RequestClose;
@@ -73,11 +70,13 @@ namespace CertificateStatisticWPF.ViewModels
             Tip = parameters.GetValue<string>("Tip");
             ImagePath = parameters.GetValue<string>("Preview");
         }
+        #endregion
 
         public DelegateCommand CloseCommand { get; set; }
 
         private void CloseDialog()
         {
+            //点击确认按钮后关闭对话框
             RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
         }
 

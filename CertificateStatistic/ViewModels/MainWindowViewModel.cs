@@ -2,16 +2,15 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Controls;
 
 namespace CertificateStatistic.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        //prism区域管理
+        /// <summary>
+        /// prism区域管理
+        /// </summary>
         private readonly IRegionManager RegionManager;
 
         public MainWindowViewModel(IRegionManager regionManager)
@@ -32,10 +31,11 @@ namespace CertificateStatistic.ViewModels
 
         #region 左侧导航栏功能
 
-        #region 左侧导航集合
-        //ObservableCollection表示一个动态数据收集，该集合在添加或删除项时或刷新整个列表时提供通知。
+        /// <summary>
+        /// 左侧导航集合
+        /// ObservableCollection表示一个动态数据收集，该集合在添加或删除项时或刷新整个列表时提供通知。
+        /// </summary>
         private ObservableCollection<NavBtn> _NavBarList;
-
         public ObservableCollection<NavBtn> NavBarList
         {
             get { return _NavBarList; }
@@ -45,11 +45,11 @@ namespace CertificateStatistic.ViewModels
                 RaisePropertyChanged();
             }
         }
-        #endregion
 
-        #region 左侧导航被选中项
+        /// <summary>
+        /// 左侧导航被选中项
+        /// </summary>
         private NavBtn _selectedNavItem;
-
         public NavBtn SelectedNavItem
         {
             get { return _selectedNavItem; }
@@ -62,8 +62,6 @@ namespace CertificateStatistic.ViewModels
                 //如果传来的参数为空，不会报异常，也什么都不做
             }
         }
-
-        #endregion
 
         public DelegateCommand<string> NavigateCommand { get; set; }
 

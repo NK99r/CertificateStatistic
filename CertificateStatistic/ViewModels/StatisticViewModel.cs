@@ -17,10 +17,14 @@ namespace CertificateStatisticWPF.ViewModels
 {
     class StatisticViewModel:BindableBase
     {
-        //webapi工具
+        /// <summary>
+        /// webapi工具
+        /// </summary>
         private readonly HttpRestClient Client;
 
-        //prism区域管理
+        /// <summary>
+        /// prism区域管理
+        /// </summary>
         private readonly IRegionManager RegionManager;
 
         public StatisticViewModel(HttpRestClient Client, IRegionManager RegionManager)
@@ -90,6 +94,11 @@ namespace CertificateStatisticWPF.ViewModels
 
         public DelegateCommand<string> SelectYearCommand { get; set; }
 
+        /// <summary>
+        /// 选择查看某一年份
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
         private async Task SelectYear(string year)
         {
             try

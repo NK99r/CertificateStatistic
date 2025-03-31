@@ -84,22 +84,6 @@ namespace CertificateStatisticWPF.ViewModels
 
         private void YearColumnChartData(List<Certificate> certificates)
         {
-            /*
-                var yearGroups = new Dictionary<string, List<Certificate>>();
-
-                foreach (var certificate in certificates)
-                {
-                    //从日期截取年份作为键
-                    string year = certificate.Date.Substring(0, 4);
-                    if (!yearGroups.ContainsKey(year))
-                    {
-                        //如果字典中不包含本次遍历到的年份
-                        yearGroups[year] = new List<Certificate>();
-                        //则为其新建一个空列表
-                    }
-                    yearGroups[year].Add(certificate);
-                }
-            */
             //按年份分组（总数量）
             var yearGroups = certificates
                 .GroupBy(c => c.Date.Substring(0, 4))
@@ -121,14 +105,6 @@ namespace CertificateStatisticWPF.ViewModels
                 })
                 .ToList();
 
-            /*
-                var yearLabels = new List<string>();
-                foreach (var group in yearGroups)
-                {
-                    //将年份添加到X轴标签列表中
-                    yearLabels.Add(group.Key); 
-                }
-             */
             //设置X轴标签
             YearLabels = yearGroups.Select(g => g.Key).ToList();
 
@@ -199,41 +175,11 @@ namespace CertificateStatisticWPF.ViewModels
 
         private void PieChartData(List<Certificate> certificates)
         {
-            /*
-                var categoryGroups = new Dictionary<string, List<Certificate>>();
-
-                foreach (var certificate in certificates)
-                {
-                    if (!categoryGroups.ContainsKey(certificate.Category))
-                    {
-                        //如果字典中不包含本次遍历到的类别名称
-                        categoryGroups[certificate.Category] = new List<Certificate>();
-                        //则为其新建一个空列表
-                    }
-                    //把本证书添加进这个类别的列表
-                    categoryGroups[certificate.Category].Add(certificate);
-                }
-             */
             //按照类别分组并统计各类别的数量
             var categoryGroups = certificates
                 .GroupBy(c => c.Category)
                 .ToList();
 
-
-            /*
-                var pieValues = new List<PieSeries>();
-
-                foreach (var group in categoryGroups)
-                {
-                    //遍历字典，以类别名(键)为Title,对应的数量(值.count)为Values
-                    var pieSeries = new PieSeries
-                    {
-                        Title = group.Key, // 类别名称
-                        Values = new ChartValues<int> { group.Value.Count } // 类别对应的数量
-                    };
-                    pieValues.Add(pieSeries);
-                }
-             */
             //构建饼图数据
             var pieValues = categoryGroups
                 .Select(g => new PieSeries
@@ -294,7 +240,10 @@ namespace CertificateStatisticWPF.ViewModels
             if (response.Status == 1)
             {
                 var stats = JsonConvert.DeserializeObject<List<ProfessionCountDTO>>(response.Data.ToString());
+
+                //提取专业名称
                 ProfessionLabels = stats.Select(s => s.ProfessionName).ToList();
+                //提取对应数量
                 var values = stats.Select(s => (double)s.Count).ToList();
 
                 ProfessionColumnSeries = new SeriesCollection
@@ -358,11 +307,12 @@ namespace CertificateStatisticWPF.ViewModels
 
         /// <summary>
         /// 生成堆叠图
+        /// 此处的Other其他专业意指部分学生转专业，但由于学号不变不知其现处于哪个专业，因此归类为其他专业
         /// </summary>
         /// <param name="certificates"></param>
         private void ProfessionStackedAreaData(List<Certificate> certificates)
         {
-            //获得近三年
+            //获得近三年（从去年开始）
             var threeYears = new List<string>
             {
                 (DateTime.Now.Year - 3).ToString(),
@@ -373,21 +323,21 @@ namespace CertificateStatisticWPF.ViewModels
             //设置 X 轴标签
             RecentThreeYearLabels = threeYears;
 
-            // 2. 获取所有有效 ProID（从已加载的专业列表中提取，包含 "Other"）
+            //获取所有有效 ProID（从已加载的专业列表中提取，包含"Other"）
             var validProIDs = ProfessionList
                 .Select(p => p.ProID)
                 .ToList();
 
-            //3. 按年份和专业统计证书数量（LINQ 分组）
+            //按年份和专业统计证书数量（LINQ分组）
             var groupedData = certificates
                 .Where(c => threeYears.Contains(c.Date.Substring(0,4)))
                 .GroupBy(c =>
                 {
-                    //分类逻辑：ProID 有效则保留，否则归为 "Other"
+                    //ProID存在则保留，否则归为 "Other"
                     return validProIDs.Contains(c.ProID) ? c.ProID : "Other";
                 })
                 .ToDictionary(
-                    g => g.Key, //专业 ProID 或 "Other"
+                    g => g.Key, //专业ProID或"Other"
                     g => threeYears.ToDictionary(
                         year => year,
                         year => g.Count(c => c.Date.Substring(0, 4) == year)
@@ -395,7 +345,7 @@ namespace CertificateStatisticWPF.ViewModels
                 );
 
             StackedAreaSeries = new SeriesCollection();
-            foreach (var proID in groupedData.Keys.OrderBy(k => k == "Other" ? 1 : 0)) // 其他专业排在最后
+            foreach (var proID in groupedData.Keys.OrderBy(k => k == "Other" ? 1 : 0)) //其他专业排在最后
             {
                 var values = new ChartValues<int>();
                 foreach (var year in threeYears)
@@ -497,6 +447,7 @@ namespace CertificateStatisticWPF.ViewModels
                     StackedAreaSeries = new SeriesCollection { clickedSeries };
                 }
                 IsSingleMode = !IsSingleMode;
+                //通知数据发生改变
                 RaisePropertyChanged(nameof(StackedAreaSeries));
             }
         }

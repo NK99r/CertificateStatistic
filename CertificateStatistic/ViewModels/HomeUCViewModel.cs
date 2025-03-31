@@ -62,9 +62,10 @@ namespace CertificateStatistic.ViewModels
 
         public DelegateCommand<string> OpenLinkCommand { get; }
 
-        #region 当前图片索引
+        /// <summary>
+        /// 当前图片索引
+        /// </summary>
         private int _currentIndex;
-
         public int CurrentIndex
         {
             get { return _currentIndex; }
@@ -74,15 +75,16 @@ namespace CertificateStatistic.ViewModels
                 {
                     _currentIndex = value;
                     RaisePropertyChanged();
+                    //仅当轮播图集合有图片的时候，将Slide[当前索引]赋值给当前图片，否则null防空指针异常
                     CurrentSlide = SlideList.Count > 0 ? SlideList[_currentIndex] : null;
                 }
             }
         }
-        #endregion
 
-        #region 当前图片
+        /// <summary>
+        /// 当前图片
+        /// </summary>
         private Slide _currentSlide;
-
         public Slide CurrentSlide
         {
             get { return _currentSlide; }
@@ -92,11 +94,11 @@ namespace CertificateStatistic.ViewModels
                 RaisePropertyChanged();
             }
         }
-        #endregion
 
-        #region 轮播图集合
+        /// <summary>
+        /// 轮播图集合
+        /// </summary>
         private ObservableCollection<Slide> _slideList;
-
         public ObservableCollection<Slide> SlideList
         {
             get { return _slideList; }
@@ -106,7 +108,6 @@ namespace CertificateStatistic.ViewModels
                 RaisePropertyChanged();
             }
         }
-        #endregion
 
         #region 轮播方法
         /// <summary>
@@ -117,6 +118,7 @@ namespace CertificateStatistic.ViewModels
             SlideList.Add(new Slide { ImagePath = "/Asset/pic/slide1.jpg", Title = "2025年3月全国计算机等级考试报名工作启动", Url = "https://ncre.neea.edu.cn/html1/report/2412/138-1.htm#" });
             SlideList.Add(new Slide { ImagePath = "/Asset/pic/slide2.jpg", Title = "中国制造2025", Url = "https://wap.miit.gov.cn/ztzl/lszt/zgzz2025/index.html" });
             SlideList.Add(new Slide { ImagePath = "/Asset/pic/slide3.jpg", Title = "腾讯智慧能源数字孪生", Url = "https://cloud.tencent.com/product/enertwin" });
+            CurrentSlide = SlideList[0];
             CurrentIndex = 0;
         }
 
@@ -159,7 +161,6 @@ namespace CertificateStatistic.ViewModels
 
         #region 通道集合
         private ObservableCollection<Link> _LinkList;
-
         public ObservableCollection<Link> LinkList
         {
             get { return _LinkList; }
@@ -192,9 +193,10 @@ namespace CertificateStatistic.ViewModels
 
         #region 新闻
 
-        #region 新闻项
+        /// <summary>
+        /// 新闻项
+        /// </summary>
         private News _news;
-
         public News News
         {
             get { return _news; }
@@ -204,11 +206,11 @@ namespace CertificateStatistic.ViewModels
                 RaisePropertyChanged();
             }
         }
-        #endregion
 
-        #region 新闻集合
+        /// <summary>
+        /// 新闻集合
+        /// </summary>
         private ObservableCollection<News> _newsList;
-
         public ObservableCollection<News> NewsList
         {
             get { return _newsList; }
@@ -218,8 +220,6 @@ namespace CertificateStatistic.ViewModels
                 RaisePropertyChanged();
             }
         }
-
-        #endregion
 
         private void CreateNewsList()
         {
@@ -231,7 +231,6 @@ namespace CertificateStatistic.ViewModels
             NewsList.Add(new News { Title = "Generative Physical AI in Vision: A Survey（视觉领域生成式物理AI）", Url = "https://arxiv.org/abs/2501.10928" });
         }
         #endregion
-
 
     }
 }

@@ -6,12 +6,8 @@ using LiveCharts.Wpf;
 using Newtonsoft.Json;
 using Prism.Mvvm;
 using Prism.Regions;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace CertificateStatisticWPF.ViewModels
@@ -252,7 +248,7 @@ namespace CertificateStatisticWPF.ViewModels
 
         private void LevelChartData(List<Certificate> certificates)
         {
-            // 1. 按证书等级分组统计
+            //按证书等级分组统计
             var levelGroups = certificates
                 .GroupBy(c => c.EventLevel)
                 .Select(g => new { Level = g.Key, Count = g.Count() })

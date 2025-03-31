@@ -14,7 +14,6 @@ using DailyApp.WPF.HttpClients;
 using CertificateStatisticWPF.Models;
 using Prism.Services.Dialogs;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 
 namespace CertificateStatistic.ViewModels
 {
@@ -25,6 +24,9 @@ namespace CertificateStatistic.ViewModels
         /// </summary>
         private readonly HttpRestClient Client;
 
+        /// <summary>
+        /// 对话服务
+        /// </summary>
         private readonly IDialogService DialogService;
 
         public CertificateViewModel(HttpRestClient Client, IDialogService DialogService)
@@ -88,7 +90,7 @@ namespace CertificateStatistic.ViewModels
             var openFileDialog = new OpenFileDialog { Filter = "Excel Files|*.xls;*.xlsx" };
             if (openFileDialog.ShowDialog() == true)
             {
-                //直接调用整合后的方法
+                //调用整合后的方法
                 ProcessedExcelData = ExcelTool.ReadAndProcessExcel(openFileDialog.FileName);
                 CertificateView = CollectionViewSource.GetDefaultView(ProcessedExcelData);
                 //统计方法
@@ -96,6 +98,9 @@ namespace CertificateStatistic.ViewModels
             }
         }
 
+        /// <summary>
+        /// 导出当前当前DataGridView控件里的数据
+        /// </summary>
         private void ExportExcelData()
         {
             try
@@ -106,7 +111,7 @@ namespace CertificateStatistic.ViewModels
                     return;
                 }
 
-                // 打开保存文件对话框
+                //打开保存文件对话框
                 var saveFileDialog = new SaveFileDialog
                 {
                     Filter = "Excel Files|*.xls;*.xlsx",
@@ -115,8 +120,9 @@ namespace CertificateStatistic.ViewModels
 
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    //取得当前DataGridView控件里的数据
                     ObservableCollection<Certificate> filterData = new ObservableCollection<Certificate>(CertificateView.Cast<Certificate>().ToList());
-                    // 调用 ExcelTool 中的导出方法
+                    //调用ExcelTool中的导出方法
                     ExcelTool.ExportToExcel(filterData, saveFileDialog.FileName);
                     MessageBox.Show("导出成功！");
                 }
@@ -136,18 +142,11 @@ namespace CertificateStatistic.ViewModels
         public DelegateCommand HightLightCommand { get; set; }
 
         public DelegateCommand<string> FilterCommand { get; set; }
-
-        #region 集合和属性
-
-        #region 表格操作视图CertificateView
+   
         /// <summary>
         /// CollectionView提供一个视图层，用于管理数据集合，允许方便的进行筛选、排序、分组、导航动作
         /// </summary>
         private ICollectionView _certificateView;
-
-        /// <summary>
-        /// CollectionView提供一个视图层，用于管理数据集合，允许方便的进行筛选、排序、分组、导航动作
-        /// </summary>
         public ICollectionView CertificateView
         {
             get { return _certificateView; }
@@ -157,11 +156,10 @@ namespace CertificateStatistic.ViewModels
                 RaisePropertyChanged();
             }
         }
-        #endregion
-
-        #region 筛选表FilterList
+        /// <summary>
+        /// 筛选表
+        /// </summary>
         private List<string> _filterList = new List<string>();
-
         public List<string> FilterList
         {
             get { return _filterList; }
@@ -171,11 +169,11 @@ namespace CertificateStatistic.ViewModels
                 RaisePropertyChanged();
             }
         }
-        #endregion
 
-        #region 文本属性SearchText
+        /// <summary>
+        /// 搜索框绑定的文本
+        /// </summary>
         private string _searchText;
-
         public string SearchText
         {
             get { return _searchText; }
@@ -183,12 +181,14 @@ namespace CertificateStatistic.ViewModels
             {
                 _searchText = value;
                 RaisePropertyChanged();
+                //高亮搜索到的行
                 HighlightData();
             }
         }
-        #endregion
 
-        #region 专业列表ProfessionList
+        /// <summary>
+        /// 专业列表
+        /// </summary>
         private ObservableCollection<Profession> _professionList;
         public ObservableCollection<Profession> ProfessionList
         {
@@ -199,9 +199,10 @@ namespace CertificateStatistic.ViewModels
                 RaisePropertyChanged();
             }
         }
-        #endregion
 
-        #region 被选择的专业SelectedProfession
+        /// <summary>
+        /// 被选择的专业
+        /// </summary>
         private Profession _selectedProfession;
         public Profession SelectedProfession
         {
@@ -217,9 +218,6 @@ namespace CertificateStatistic.ViewModels
                 }
             }
         }
-        #endregion
-
-        #endregion
 
         #region 管理方法
         /// <summary>
@@ -227,8 +225,8 @@ namespace CertificateStatistic.ViewModels
         /// </summary>
         private void HighlightData()
         {
-            //重置所有行的高亮状态
             if (ProcessedExcelData == null) return;
+            //重置所有行的高亮状态
             foreach (var item in ProcessedExcelData)
             {
                 item.IsHighlighted = false;
@@ -272,6 +270,7 @@ namespace CertificateStatistic.ViewModels
             else FilterList.Add(filter); //如果未选中，添加
             //ICollection类的过滤逻辑。false不显示数据，true显示数据
 
+            //ICollection过滤链，对于每一行数据
             CertificateView.Filter = item =>
             {
                 var certificate = item as Certificate;
@@ -283,8 +282,7 @@ namespace CertificateStatistic.ViewModels
                 /*
                  * 检查 EventLevel 是否满足任一条件（或逻辑）使用linq语句
                  * eventLevelFilterList.Count == 0表示若没有选中国家级或省部级则默认返回所有数据
-                 * 否则，任何certificate.EventLevel里包含至少一个条件（"国家级" 或 "省部级"）的就为true
-                 * Any()可以判断List里是否有国家级或省部级或二者都有
+                 * 否则，任何certificate.EventLevel里包含至少一个条件（"国家级" 或 "省部级"）的就为truefgg
                 */
                 //从总筛选表里抽出赛事级别的条件表
                 List<string> eventLevelFilterList = FilterList.Where(f => f == "国家级" || f == "省部级").ToList();
@@ -298,7 +296,7 @@ namespace CertificateStatistic.ViewModels
                 bool matchCategory = true;
                 if (categoryFilterList.Contains("科研类") && categoryFilterList.Contains("非科研类"))
                 {
-                    //如果同时选中"科研类"和"非科研类"，则跳过 Category 筛选
+                    //如果同时选中"科研类"和"非科研类"，则跳过Category筛选
                     matchCategory = true;
                 }
                 else if (categoryFilterList.Contains("科研类"))
@@ -308,7 +306,7 @@ namespace CertificateStatistic.ViewModels
                 }
                 else if (categoryFilterList.Contains("非科研类"))
                 {
-                    //如果选中了"非科研类"，则显示非科研类（即不包含 "科研类" 的行）
+                    //如果选中了"非科研类"，则显示非科研类（即不是"科研类"的行）
                     matchCategory = !certificate.Category.Contains("科研类", StringComparison.OrdinalIgnoreCase);
                 }
 
@@ -379,7 +377,7 @@ namespace CertificateStatistic.ViewModels
                 if (response.Status == 1)
                 {
                     var professionList = JsonConvert.DeserializeObject<List<Profession>>(response.Data.ToString());
-                    // 添加 "其他专业" 选项
+                    // 添加"其他专业"选项
                     professionList.Add(new Profession { ProID = "Other", ProfessionName = "其他专业" });
                     ProfessionList = new ObservableCollection<Profession>(professionList);
                 }
@@ -521,27 +519,6 @@ namespace CertificateStatistic.ViewModels
                                     })
                                     .Select(g => g.First()) // 每组取第一条
                                     .ToList();
-                /*  
-                    .GroupBy()后可能会有这样的数据：
-                    [
-                        [
-                            { StudentID = 123, 其他字段, CertificateProject = "奖项1", 其他字段, Date = "2022-05" }
-                        ],
-                        [
-                            { StudentID = 123, 其他字段, CertificateProject = "奖项1", 其他字段, Date = "2021-08" }
-                        ],                     
-                        [                      
-                            { StudentID = 456, 其他字段, CertificateProject = "奖项2", 其他字段, Date = "2022-01" },
-                            { StudentID = 456, 其他字段, CertificateProject = "奖项2", 其他字段, Date = "2022-03" }
-                        ],                     
-                        [                      
-                            { StudentID = 123, 其他字段, CertificateProject = "奖项1", 其他字段, Date = "2020-07" }
-                        ]
-                        ...
-                    ]
-                    第三组的学号-奖项-年份相同
-                    因为部分人在填写Excel表格时填写的某个赛事没有具体年份或哪一届，因此仅靠 学号+获奖项目名 无法保证数据库中一定没有这条数据
-                */
 
                 if (certificates.Count == 0)
                 {

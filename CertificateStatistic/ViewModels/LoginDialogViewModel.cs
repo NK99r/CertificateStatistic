@@ -120,6 +120,7 @@ namespace CertificateStatisticWPF.ViewModels
             string salt = EncryptionTool.GenerateSalt();
             AccountDTO.Salt = salt;
 
+            //依据盐值对当前密码加密
             string hashedPassword = EncryptionTool.HashPassword(AccountDTO.Pwd, salt);
             AccountDTO.Pwd = hashedPassword;
 
