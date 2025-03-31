@@ -175,11 +175,7 @@ namespace CertificateStatistic.ViewModels
 
         private void CreateHSTCLinkList()
         {
-            LinkList.Add(new Link { Icon = "/Asset/link/jwgl.png", Title = "教务管理", Url = "https://www.hstc.edu.cn/index/jxgl1.htm" });
-            LinkList.Add(new Link { Icon = "/Asset/link/zhhy.png", Title = "智慧韩园", Url = "https://hscas.hstc.edu.cn/cas" });
-            LinkList.Add(new Link { Icon = "/Asset/link/tsg.png", Title = "图书馆", Url = "https://newlib.hstc.edu.cn/" });
             LinkList.Add(new Link { Icon = "/Asset/link/xxt.png", Title = "学习通", Url = "https://passport2.chaoxing.com/" });
-            LinkList.Add(new Link { Icon = "/Asset/link/wlfw.png", Title = "网络服务", Url = "https://www.hstc.edu.cn/xyfw/wlfw.htm" });
             LinkList.Add(new Link { Icon = "/Asset/link/zw.png", Title = "知网", Url = "https://www.cnki.net/" });
             LinkList.Add(new Link { Icon = "/Asset/link/lanqiao.png", Title = "蓝桥杯全国大学生TMT行业赛事", Url = "https://dasai.lanqiao.cn/" });
             LinkList.Add(new Link { Icon = "/Asset/link/blcu.png", Title = "中国大学生计算机设计大赛", Url = "https://jsjds.blcu.edu.cn/index.htm" });
